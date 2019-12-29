@@ -1,4 +1,4 @@
-package com.futurecollars.invoices.model;
+package com.futurecollars.accounting;
 
 public class HelloWorld {
 
@@ -13,7 +13,7 @@ public class HelloWorld {
   }
 
   public String message() {
-    if (name == "") {
+    if (name.equals("")) {
       return "Hello!";
     } else {
       return "Hello " + name + "!";

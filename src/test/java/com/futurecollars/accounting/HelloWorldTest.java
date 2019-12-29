@@ -1,6 +1,6 @@
-package com.futurecollars.invoices.model;
+package com.futurecollars.accounting;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,6 @@ class HelloWorldTest {
 
     //then
     assertEquals("Hello!", helloWorld.message());
-
   }
 
   @Test
