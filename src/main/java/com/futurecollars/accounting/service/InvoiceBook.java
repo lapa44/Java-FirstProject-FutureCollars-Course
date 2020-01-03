@@ -1,12 +1,12 @@
 package com.futurecollars.accounting.service;
 
-import com.futurecollars.accounting.database.InMemoryDatabase;
+import com.futurecollars.accounting.infrastructure.database.Database;
 
 public class InvoiceBook {
 
-    private InMemoryDatabase database;
+  private Database database;
 
-    public InvoiceBook() {
-        this.database = new InMemoryDatabase();
-    }
+  public InvoiceBook(Database database) {
+    this.database = database;
+  }
 }
