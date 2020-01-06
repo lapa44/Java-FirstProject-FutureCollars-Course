@@ -16,8 +16,8 @@ class InvoiceTest {
     //given
     Invoice invoice = new Invoice(1, UUID.randomUUID(), LocalDate.now(), new Company(),
         new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", new BigDecimal("20.00"), VAT.VAT_23),
-        new InvoiceEntry("Cola", new BigDecimal("5"), VAT.VAT_8)));
+        new InvoiceEntry("Tequila", new BigDecimal("20.00"), Vat.VAT_23),
+        new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8)));
 
     //when
     BigDecimal actual = invoice.getTotalValue();
@@ -31,8 +31,8 @@ class InvoiceTest {
     //given
     Invoice invoice = new Invoice(1, UUID.randomUUID(), LocalDate.now(), new Company(),
         new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", new BigDecimal("20"), VAT.VAT_23),
-        new InvoiceEntry("Cola", new BigDecimal("5"), VAT.VAT_8)));
+        new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
+        new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8)));
 
     //when
     BigDecimal actual = invoice.getTotalValueWithTaxes();

@@ -8,9 +8,9 @@ public class InvoiceEntry {
   private String description;
   private BigDecimal price;
   private BigDecimal vatValue;
-  private VAT vatRate;
+  private Vat vatRate;
 
-  public InvoiceEntry(String description, BigDecimal price, VAT vatRate) {
+  public InvoiceEntry(String description, BigDecimal price, Vat vatRate) {
     this.description = description;
     this.price = price;
     this.vatRate = vatRate;
@@ -41,11 +41,11 @@ public class InvoiceEntry {
     this.vatValue = vatValue;
   }
 
-  public VAT getVatRate() {
+  public Vat getVatRate() {
     return vatRate;
   }
 
-  public void setVatRate(VAT vatRate) {
+  public void setVatRate(Vat vatRate) {
     this.vatRate = vatRate;
   }
 

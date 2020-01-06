@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.futurecollars.accounting.domain.model.Company;
 import com.futurecollars.accounting.domain.model.Invoice;
 import com.futurecollars.accounting.domain.model.InvoiceEntry;
-import com.futurecollars.accounting.domain.model.VAT;
+import com.futurecollars.accounting.domain.model.Vat;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -23,8 +23,8 @@ class InMemoryDatabaseTest {
     InMemoryDatabase database = new InMemoryDatabase();
     UUID id = UUID.randomUUID();
     Invoice invoice = new Invoice(1, id, LocalDate.now(), new Company(), new Company(),
-        Arrays.asList(new InvoiceEntry("Tequila", new BigDecimal("20"), VAT.VAT_23),
-            new InvoiceEntry("Cola", new BigDecimal("5"), VAT.VAT_8)));
+        Arrays.asList(new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
+            new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8)));
 
     //when
     database.saveInvoice(invoice);
@@ -38,8 +38,8 @@ class InMemoryDatabaseTest {
     InMemoryDatabase database = new InMemoryDatabase();
     Invoice invoice = database.saveInvoice(new Invoice(1, UUID.randomUUID(), LocalDate.now(),
         new Company(), new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", new BigDecimal("20"), VAT.VAT_23),
-        new InvoiceEntry("Cola", new BigDecimal("5"), VAT.VAT_8))));
+        new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
+        new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8))));
     invoice.setLocalId(2);
     assertEquals(invoice, database.saveInvoice(invoice));
   }
@@ -50,12 +50,12 @@ class InMemoryDatabaseTest {
     InMemoryDatabase database = new InMemoryDatabase();
     Invoice invoice = new Invoice(1, UUID.randomUUID(), LocalDate.now(), new Company(),
         new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", new BigDecimal("20"), VAT.VAT_23),
-        new InvoiceEntry("Cola", new BigDecimal("5"), VAT.VAT_8)));
+        new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
+        new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8)));
     Invoice invoice2 = new Invoice(2, UUID.randomUUID(), LocalDate.now(), new Company(),
         new Company(), Arrays.asList(
-        new InvoiceEntry("Sprite", new BigDecimal("3.33"), VAT.VAT_23),
-        new InvoiceEntry("Tea", new BigDecimal("2.42"), VAT.VAT_8)));
+        new InvoiceEntry("Sprite", new BigDecimal("3.33"), Vat.VAT_23),
+        new InvoiceEntry("Tea", new BigDecimal("2.42"), Vat.VAT_8)));
 
     //when
     database.saveInvoice(invoice);
@@ -88,8 +88,8 @@ class InMemoryDatabaseTest {
     InMemoryDatabase database = new InMemoryDatabase();
     Invoice invoice = new Invoice(1, UUID.randomUUID(), LocalDate.now(), new Company(),
         new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", new BigDecimal("20"), VAT.VAT_23),
-        new InvoiceEntry("Cola", new BigDecimal("5"), VAT.VAT_8)));
+        new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
+        new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8)));
     database.saveInvoice(invoice);
     assertEquals(invoice, database.removeInvoice(invoice));
   }
@@ -99,8 +99,8 @@ class InMemoryDatabaseTest {
     InMemoryDatabase database = new InMemoryDatabase();
     assertThrows(NoSuchElementException.class, () -> database.removeInvoice(new Invoice(1,
         UUID.randomUUID(), LocalDate.now(), new Company(), new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", new BigDecimal("20"), VAT.VAT_23),
-        new InvoiceEntry("Cola", new BigDecimal("5"), VAT.VAT_8)))));
+        new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
+        new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8)))));
   }
 
   @Test
