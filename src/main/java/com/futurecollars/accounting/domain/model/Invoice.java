@@ -1,6 +1,7 @@
 package com.futurecollars.accounting.domain.model;
 
-import java.math.BigDecimal;
+import com.futurecollars.accounting.service.InvoiceCalculateTotalValue;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class Invoice {
   private Company buyer;
   private Company seller;
   private List<InvoiceEntry> entries;
+  public InvoiceCalculateTotalValue invoiceCalculateTotalValue;
 
   public Invoice(int localId, UUID generalId, LocalDate date, Company buyer, Company seller,
                  List<InvoiceEntry> entries) {
@@ -25,6 +27,7 @@ public class Invoice {
     this.seller = seller;
     this.entries = new ArrayList<>();
     this.entries.addAll(entries);
+    this.invoiceCalculateTotalValue = new InvoiceCalculateTotalValue();
   }
 
   public Invoice(Invoice invoice) {
@@ -34,18 +37,7 @@ public class Invoice {
     this.buyer = invoice.buyer;
     this.seller = invoice.seller;
     this.entries = invoice.entries;
-  }
-
-  public BigDecimal getTotalValue() {
-    return entries.stream()
-        .map(InvoiceEntry::getPrice)
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
-  }
-
-  public BigDecimal getTotalValueWithTaxes() {
-    return entries.stream()
-        .map(InvoiceEntry::getPriceWithTax)
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    this.invoiceCalculateTotalValue = invoice.invoiceCalculateTotalValue;
   }
 
   public void addEntry(InvoiceEntry entry) {
