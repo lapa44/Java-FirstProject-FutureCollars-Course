@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 class InMemoryDatabase implements Database {
 
@@ -20,52 +21,59 @@ class InMemoryDatabase implements Database {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
-    if (findInvoiceById(invoice.getGeneralId()) == -1) {
-      invoicesDatabase.add(invoice);
+    if (!isInvoiceExists(invoice)) {
+      return insertInvoice(invoice);
     } else {
-      invoicesDatabase.set(findInvoiceById(invoice.getGeneralId()), invoice);
+      return updateInvoice(invoice);
     }
+  }
+
+  @Override
+  public synchronized Invoice insertInvoice(Invoice invoice) {
+    invoicesDatabase.add(invoice);
     return new Invoice(invoice);
   }
 
   @Override
-  public synchronized Invoice getInvoiceById(UUID id) {
+  public synchronized Invoice updateInvoice(Invoice invoice) {
+    return invoicesDatabase.set(invoicesDatabase.indexOf(invoice), invoice);
+  }
+
+  @Override
+  public synchronized Invoice getInvoiceById(UUID id) throws DatabaseOperationException {
     if (id == null) {
       throw new IllegalArgumentException("ID cannot be null.");
     }
     for (Invoice e : invoicesDatabase) {
-      if (id == e.getGeneralId()) {
+      if (id.equals(e.getId())) {
         return e;
       }
     }
-    throw new NoSuchElementException("Invoice of given ID was not found in database.");
+    throw new DatabaseOperationException(
+        new NoSuchElementException("Invoice of given ID was not found in database."));
   }
 
   @Override
   public synchronized List<Invoice> getInvoices() {
-    return new ArrayList<>(invoicesDatabase);
+    return invoicesDatabase.stream().map(Invoice::new).collect(Collectors.toList());
   }
 
   @Override
-  public synchronized Invoice removeInvoice(Invoice invoice) {
-    if (findInvoiceById(invoice.getGeneralId()) == -1) {
-      throw new NoSuchElementException("Invoice of given ID was not found in database.");
+  public synchronized Invoice removeInvoice(Invoice invoice) throws DatabaseOperationException {
+    if (!isInvoiceExists(invoice)) {
+      throw new DatabaseOperationException(
+          new NoSuchElementException("Invoice of given ID was not found in database."));
     }
-    return invoicesDatabase.remove(findInvoiceById(invoice.getGeneralId()));
+    return invoicesDatabase.remove(invoicesDatabase.indexOf(invoice));
   }
 
   @Override
-  public synchronized int findInvoiceById(UUID id) {
-    if (id == null) {
-      throw new NullPointerException("Id cannot be null.");
-    }
-    if (invoicesDatabase.size() > 0) {
-      for (int i = 0; i < invoicesDatabase.size(); i++) {
-        if (invoicesDatabase.get(i).getGeneralId() == id) {
-          return i;
-        }
+  public boolean isInvoiceExists(Invoice invoice) {
+    for (Invoice inv : invoicesDatabase) {
+      if (inv.equals(invoice)) {
+        return true;
       }
     }
-    return -1;
+    return false;
   }
 }

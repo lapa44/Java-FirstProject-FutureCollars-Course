@@ -1,6 +1,7 @@
 package com.futurecollars.accounting.infrastructure.database;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.futurecollars.accounting.domain.model.Company;
@@ -12,68 +13,66 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.NoSuchElementException;
+import java.util.List;
 import java.util.UUID;
 
 abstract class DatabaseTest {
   abstract Database getDatabase();
 
   @Test
-  void shouldSaveInvoiceToMemoryAndReturnItById() {
-    //given
+  void shouldSaveInvoiceToMemoryAndReturnItById() throws DatabaseOperationException {
     Database database = getDatabase();
     UUID id = UUID.randomUUID();
-    Invoice invoice = new Invoice(1, id, LocalDate.now(), new Company(), new Company(),
-        Arrays.asList(new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
-            new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8)));
-
-    //when
-    database.saveInvoice(invoice);
-
-    //then
-    assertEquals(invoice, database.getInvoiceById(id));
+    Invoice invoice = new Invoice(id, "No1", LocalDate.now(), new Company(), new Company(),
+        Arrays.asList(new InvoiceEntry("Tequila", "Pln", new BigDecimal("20"), Vat.VAT_23),
+            new InvoiceEntry("Cola", "Pln", new BigDecimal("5"), Vat.VAT_8)));
+    assertEquals(database.saveInvoice(invoice), database.getInvoiceById(id));
   }
 
   @Test
   void shouldSaveAndUpdateInvoiceInMemory() {
     Database database = getDatabase();
-    Invoice invoice = database.saveInvoice(new Invoice(1, UUID.randomUUID(), LocalDate.now(),
-        new Company(), new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
-        new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8))));
-    invoice.setLocalId(2);
-    assertEquals(invoice, database.saveInvoice(invoice));
+    Invoice invoice = database.saveInvoice(new Invoice(UUID.randomUUID(), "No1",
+        LocalDate.now(), new Company(), new Company(), Arrays.asList(
+        new InvoiceEntry("Tequila", "PLN", new BigDecimal("20"), Vat.VAT_23),
+        new InvoiceEntry("Cola", "PLN", new BigDecimal("5"), Vat.VAT_8))));
+    assertNotEquals(invoice, database.saveInvoice(new Invoice(invoice.getId(), "No2",
+        LocalDate.now(), new Company(), new Company(), Arrays.asList(new InvoiceEntry(
+            "Beer", "Pln", new BigDecimal("7"), Vat.VAT_5)))));
   }
 
   @Test
   void shouldReturnAllInvoices() {
     //given
     Database database = getDatabase();
-    Invoice invoice = new Invoice(1, UUID.randomUUID(), LocalDate.now(), new Company(),
-        new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
-        new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8)));
-    Invoice invoice2 = new Invoice(2, UUID.randomUUID(), LocalDate.now(), new Company(),
-        new Company(), Arrays.asList(
-        new InvoiceEntry("Sprite", new BigDecimal("3.33"), Vat.VAT_23),
-        new InvoiceEntry("Tea", new BigDecimal("2.42"), Vat.VAT_8)));
+    Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
+        new Company(), new Company(), Arrays.asList(
+        new InvoiceEntry("Tequila", "PLN", new BigDecimal("20"), Vat.VAT_23),
+        new InvoiceEntry("Cola", "PLN", new BigDecimal("5"), Vat.VAT_8)));
+    Invoice invoice2 = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
+        new Company(), new Company(), Arrays.asList(
+        new InvoiceEntry("Sprite", "Pln", new BigDecimal("3.33"), Vat.VAT_23),
+        new InvoiceEntry("Tea", "Pln", new BigDecimal("2.42"), Vat.VAT_8)));
 
     //when
     database.saveInvoice(invoice);
+    List<Invoice> actual = database.getInvoices();
     database.saveInvoice(invoice2);
 
+
     //then
-    assertEquals(Arrays.asList(invoice, invoice2), database.getInvoices());
+    assertNotEquals(actual, database.getInvoices());
   }
 
   @Test
   void shouldThrowExceptionForNoInvoiceWhileGettingById() {
     Database database = getDatabase();
-    assertThrows(NoSuchElementException.class, () -> database.getInvoiceById(UUID.randomUUID()));
+    assertThrows(DatabaseOperationException.class, () ->
+        database.getInvoiceById(UUID.randomUUID()));
   }
 
   @Test
-  void shouldThrowExceptionForNullGeneralIdWhileGettingById() {
+  void shouldThrowExceptionForNullIdWhileGettingById() {
     Database database = getDatabase();
     assertThrows(IllegalArgumentException.class, () -> database.getInvoiceById(null));
   }
@@ -85,12 +84,12 @@ abstract class DatabaseTest {
   }
 
   @Test
-  void shouldRemoveInvoiceFromDatabase() {
+  void shouldRemoveInvoiceFromDatabase() throws DatabaseOperationException {
     Database database = getDatabase();
-    Invoice invoice = new Invoice(1, UUID.randomUUID(), LocalDate.now(), new Company(),
-        new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
-        new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8)));
+    Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
+        new Company(), new Company(), Arrays.asList(
+        new InvoiceEntry("Tequila", "PLN", new BigDecimal("20"), Vat.VAT_23),
+        new InvoiceEntry("Cola", "PLN", new BigDecimal("5"), Vat.VAT_8)));
     database.saveInvoice(invoice);
     assertEquals(invoice, database.removeInvoice(invoice));
   }
@@ -98,15 +97,9 @@ abstract class DatabaseTest {
   @Test
   void shouldThrowExceptionForNoInvoiceToRemove() {
     Database database = getDatabase();
-    assertThrows(NoSuchElementException.class, () -> database.removeInvoice(new Invoice(1,
-        UUID.randomUUID(), LocalDate.now(), new Company(), new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", new BigDecimal("20"), Vat.VAT_23),
-        new InvoiceEntry("Cola", new BigDecimal("5"), Vat.VAT_8)))));
-  }
-
-  @Test
-  void shouldThrowExceptionForNullIdWhileFindingInvoice() {
-    Database database = getDatabase();
-    assertThrows(NullPointerException.class, () -> database.findInvoiceById(null));
+    assertThrows(DatabaseOperationException.class, () -> database.removeInvoice(new Invoice(
+        UUID.randomUUID(), "No1", LocalDate.now(), new Company(), new Company(), Arrays.asList(
+        new InvoiceEntry("Tequila", "PLN", new BigDecimal("20"), Vat.VAT_23),
+        new InvoiceEntry("Cola", "PLN", new BigDecimal("5"), Vat.VAT_8)))));
   }
 }

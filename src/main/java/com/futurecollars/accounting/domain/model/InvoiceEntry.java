@@ -6,12 +6,14 @@ import java.util.Objects;
 public class InvoiceEntry {
 
   private String description;
+  private String unit;
   private BigDecimal price;
   private BigDecimal vatValue;
   private Vat vatRate;
 
-  public InvoiceEntry(String description, BigDecimal price, Vat vatRate) {
+  public InvoiceEntry(String description, String unit, BigDecimal price, Vat vatRate) {
     this.description = description;
+    this.unit = unit;
     this.price = price;
     this.vatRate = vatRate;
     this.vatValue = price.multiply(vatRate.getValue());
@@ -23,6 +25,14 @@ public class InvoiceEntry {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public String getUnit() {
+    return unit;
+  }
+
+  public void setUnit(String unit) {
+    this.unit = unit;
   }
 
   public BigDecimal getPrice() {
@@ -59,6 +69,7 @@ public class InvoiceEntry {
     }
     InvoiceEntry that = (InvoiceEntry) ob;
     return Objects.equals(description, that.description)
+        && Objects.equals(unit, that.unit)
         && Objects.equals(price, that.price)
         && Objects.equals(vatValue, that.vatValue)
         && vatRate == that.vatRate;
@@ -66,7 +77,7 @@ public class InvoiceEntry {
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, price, vatValue, vatRate);
+    return Objects.hash(description, unit, price, vatValue, vatRate);
   }
 
   public BigDecimal getPriceWithTax() {

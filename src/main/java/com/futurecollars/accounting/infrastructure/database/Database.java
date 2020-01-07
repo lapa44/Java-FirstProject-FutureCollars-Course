@@ -7,14 +7,17 @@ import java.util.UUID;
 
 public interface Database {
 
-  public Invoice saveInvoice(Invoice invoice);
+  Invoice saveInvoice(Invoice invoice);
 
-  public Invoice getInvoiceById(UUID id);
+  Invoice insertInvoice(Invoice invoice);
 
-  public List<Invoice> getInvoices();
+  Invoice updateInvoice(Invoice invoice);
 
-  public Invoice removeInvoice(Invoice invoice);
+  Invoice getInvoiceById(UUID id) throws DatabaseOperationException;
 
-  public int findInvoiceById(UUID id);
+  List<Invoice> getInvoices();
 
+  Invoice removeInvoice(Invoice invoice) throws DatabaseOperationException;
+
+  boolean isInvoiceExists(Invoice invoice);
 }

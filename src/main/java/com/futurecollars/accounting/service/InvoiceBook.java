@@ -2,11 +2,11 @@ package com.futurecollars.accounting.service;
 
 import com.futurecollars.accounting.infrastructure.database.Database;
 
-public class InvoiceBook {
+class InvoiceBook {
 
-  private Database database;
+  private final Database database;
 
-  public InvoiceBook(Database database) {
+  InvoiceBook(Database database) {
     this.database = database;
   }
 }
