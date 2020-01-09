@@ -7,11 +7,11 @@ import java.util.UUID;
 
 public interface Database {
 
-  Invoice saveInvoice(Invoice invoice);
+  Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException;
 
   Invoice insertInvoice(Invoice invoice);
 
-  Invoice updateInvoice(Invoice invoice);
+  Invoice updateInvoice(Invoice invoice) throws DatabaseOperationException;
 
   Invoice getInvoiceById(UUID id) throws DatabaseOperationException;
 

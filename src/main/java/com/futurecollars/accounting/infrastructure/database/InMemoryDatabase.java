@@ -17,26 +17,36 @@ class InMemoryDatabase implements Database {
   }
 
   @Override
-  public synchronized Invoice saveInvoice(Invoice invoice) {
+  public synchronized Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
-    if (!isInvoiceExists(invoice)) {
+    if (invoice.getId() == null) {
       return insertInvoice(invoice);
-    } else {
+    }
+    if (isInvoiceExists(invoice)) {
       return updateInvoice(invoice);
+    } else {
+      throw new DatabaseOperationException(new IllegalStateException("Fatal error"));
     }
   }
 
   @Override
   public synchronized Invoice insertInvoice(Invoice invoice) {
+    invoice.setId(UUID.randomUUID());
     invoicesDatabase.add(invoice);
     return new Invoice(invoice);
   }
 
   @Override
-  public synchronized Invoice updateInvoice(Invoice invoice) {
-    return invoicesDatabase.set(invoicesDatabase.indexOf(invoice), invoice);
+  public synchronized Invoice updateInvoice(Invoice invoice) throws DatabaseOperationException {
+    for (int i = 0; i < invoicesDatabase.size(); i++) {
+      if (invoicesDatabase.get(i).getId().equals(invoice.getId())) {
+        invoicesDatabase.set(i, invoice);
+        return invoice;
+      }
+    }
+    throw new DatabaseOperationException(new IllegalStateException("Fatal Error"));
   }
 
   @Override
@@ -70,7 +80,7 @@ class InMemoryDatabase implements Database {
   @Override
   public boolean isInvoiceExists(Invoice invoice) {
     for (Invoice inv : invoicesDatabase) {
-      if (inv.equals(invoice)) {
+      if (inv.getId().equals(invoice.getId())) {
         return true;
       }
     }
