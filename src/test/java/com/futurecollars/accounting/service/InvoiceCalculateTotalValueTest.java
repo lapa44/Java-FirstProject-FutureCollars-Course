@@ -18,8 +18,9 @@ class InvoiceCalculateTotalValueTest {
   @Test
   public void shouldReturnTotalValue() {
     //given
-    Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(), new Company(),
-        new Company(), Arrays.asList(
+    Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
+        new Company(UUID.randomUUID(), "A", "B"),
+        new Company(UUID.randomUUID(), "C", "D"), Arrays.asList(
         new InvoiceEntry("Tequila", "Pln", new BigDecimal("20.00"), Vat.VAT_23),
         new InvoiceEntry("Cola", "Pln", new BigDecimal("5"), Vat.VAT_8)));
 
@@ -33,8 +34,9 @@ class InvoiceCalculateTotalValueTest {
   @Test
   public void shouldReturnTotalValueWithTaxes() {
     //given
-    Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(), new Company(),
-        new Company(), Arrays.asList(
+    Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
+        new Company(UUID.randomUUID(), "A", "B"),
+        new Company(UUID.randomUUID(), "C", "D"), Arrays.asList(
         new InvoiceEntry("Tequila", "Pln", new BigDecimal("20"), Vat.VAT_23),
         new InvoiceEntry("Cola", "Pln", new BigDecimal("5"), Vat.VAT_8)));
 

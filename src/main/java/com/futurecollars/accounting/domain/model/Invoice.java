@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Invoice {
 
@@ -36,7 +37,7 @@ public class Invoice {
     this.date = invoice.date;
     this.buyer = invoice.buyer;
     this.seller = invoice.seller;
-    this.entries = invoice.entries;
+    this.entries = invoice.entries.stream().map(InvoiceEntry::new).collect(Collectors.toList());
     this.invoiceCalculateTotalValue = invoice.invoiceCalculateTotalValue;
   }
 
@@ -48,48 +49,24 @@ public class Invoice {
     return id;
   }
 
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
   public String getInvoiceNumber() {
     return invoiceNumber;
-  }
-
-  public void setInvoiceNumber(String invoiceNumber) {
-    this.invoiceNumber = invoiceNumber;
   }
 
   public LocalDate getDate() {
     return date;
   }
 
-  public void setDate(LocalDate date) {
-    this.date = date;
-  }
-
   public Company getBuyer() {
     return buyer;
-  }
-
-  public void setBuyer(Company buyer) {
-    this.buyer = buyer;
   }
 
   public Company getSeller() {
     return seller;
   }
 
-  public void setSeller(Company seller) {
-    this.seller = seller;
-  }
-
   public List<InvoiceEntry> getEntries() {
-    return entries;
-  }
-
-  public void setEntries(List<InvoiceEntry> entries) {
-    this.entries = entries;
+    return entries.stream().map(InvoiceEntry::new).collect(Collectors.toList());
   }
 
   @Override
