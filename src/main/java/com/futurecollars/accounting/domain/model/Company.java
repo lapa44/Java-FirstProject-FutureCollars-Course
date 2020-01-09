@@ -8,27 +8,21 @@ public class Company {
   private String address;
   private String name;
 
-  public UUID getTaxIdentificationNumber() {
-    return taxIdentificationNumber;
+  public Company(UUID taxIdentificationNumber, String address, String name) {
+    this.taxIdentificationNumber = taxIdentificationNumber;
+    this.address = address;
+    this.name = name;
   }
 
-  public void setTaxIdentificationNumber(UUID taxIdentificationNumber) {
-    this.taxIdentificationNumber = taxIdentificationNumber;
+  public UUID getTaxIdentificationNumber() {
+    return taxIdentificationNumber;
   }
 
   public String getAddress() {
     return address;
   }
 
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
   public String getName() {
     return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 }

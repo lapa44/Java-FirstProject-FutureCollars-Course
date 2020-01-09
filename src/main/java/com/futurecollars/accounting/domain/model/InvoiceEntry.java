@@ -19,44 +19,32 @@ public class InvoiceEntry {
     this.vatValue = price.multiply(vatRate.getValue());
   }
 
-  public String getDescription() {
-    return description;
+  public InvoiceEntry(InvoiceEntry invoiceEntry) {
+    this.description = invoiceEntry.description;
+    this.unit = invoiceEntry.unit;
+    this.price = invoiceEntry.price;
+    this.vatRate = invoiceEntry.vatRate;
+    this.vatValue = invoiceEntry.vatValue;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public String getDescription() {
+    return description;
   }
 
   public String getUnit() {
     return unit;
   }
 
-  public void setUnit(String unit) {
-    this.unit = unit;
-  }
-
   public BigDecimal getPrice() {
     return price;
-  }
-
-  public void setPrice(BigDecimal price) {
-    this.price = price;
   }
 
   public BigDecimal getVatValue() {
     return vatValue;
   }
 
-  public void setVatValue(BigDecimal vatValue) {
-    this.vatValue = vatValue;
-  }
-
   public Vat getVatRate() {
     return vatRate;
-  }
-
-  public void setVatRate(Vat vatRate) {
-    this.vatRate = vatRate;
   }
 
   @Override
