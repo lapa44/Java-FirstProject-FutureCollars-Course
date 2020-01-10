@@ -24,7 +24,7 @@ class InMemoryDatabase implements Database {
     if (invoice.getId() == null) {
       return insertInvoice(invoice);
     }
-    if (isInvoiceExists(invoice)) {
+    if (isInvoiceExists(invoice.getId())) {
       return updateInvoice(invoice);
     } else {
       throw new DatabaseOperationException(new IllegalStateException("Fatal error"));
@@ -33,9 +33,10 @@ class InMemoryDatabase implements Database {
 
   @Override
   public synchronized Invoice insertInvoice(Invoice invoice) {
-    invoice.setId(UUID.randomUUID());
-    invoicesDatabase.add(invoice);
-    return new Invoice(invoice);
+    Invoice invoiceToSave = new Invoice(UUID.randomUUID(), invoice.getInvoiceNumber(),
+        invoice.getDate(), invoice.getBuyer(), invoice.getSeller(), invoice.getEntries());
+    invoicesDatabase.add(invoiceToSave);
+    return new Invoice(invoiceToSave);
   }
 
   @Override
@@ -69,18 +70,24 @@ class InMemoryDatabase implements Database {
   }
 
   @Override
-  public synchronized Invoice removeInvoice(Invoice invoice) throws DatabaseOperationException {
-    if (!isInvoiceExists(invoice)) {
+  public synchronized Invoice removeInvoiceById(UUID id) throws DatabaseOperationException {
+    if (!isInvoiceExists(id)) {
       throw new DatabaseOperationException(
           new NoSuchElementException("Invoice of given ID was not found in database."));
     }
-    return invoicesDatabase.remove(invoicesDatabase.indexOf(invoice));
+    for (int i = 0; i < invoicesDatabase.size(); i++) {
+      if (invoicesDatabase.get(i).getId().equals(id)) {
+        return invoicesDatabase.remove(i);
+      }
+    }
+    throw new DatabaseOperationException(
+        new IllegalStateException("Fatal Error"));
   }
 
   @Override
-  public boolean isInvoiceExists(Invoice invoice) {
+  public boolean isInvoiceExists(UUID id) {
     for (Invoice inv : invoicesDatabase) {
-      if (inv.getId().equals(invoice.getId())) {
+      if (inv.getId().equals(id)) {
         return true;
       }
     }
