@@ -17,7 +17,7 @@ public interface Database {
 
   List<Invoice> getInvoices();
 
-  Invoice removeInvoice(Invoice invoice) throws DatabaseOperationException;
+  Invoice removeInvoiceById(UUID id) throws DatabaseOperationException;
 
-  boolean isInvoiceExists(Invoice invoice);
+  boolean isInvoiceExists(UUID id);
 }

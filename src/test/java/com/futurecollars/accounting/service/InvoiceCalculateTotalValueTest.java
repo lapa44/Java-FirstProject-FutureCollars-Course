@@ -18,14 +18,14 @@ class InvoiceCalculateTotalValueTest {
   @Test
   public void shouldReturnTotalValue() {
     //given
+    InvoiceCalculateTotalValue invoiceCalculateTotalValue = new InvoiceCalculateTotalValue();
     Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
-        new Company(UUID.randomUUID(), "A", "B"),
-        new Company(UUID.randomUUID(), "C", "D"), Arrays.asList(
+        new Company(), new Company(), Arrays.asList(
         new InvoiceEntry("Tequila", "Pln", new BigDecimal("20.00"), Vat.VAT_23),
         new InvoiceEntry("Cola", "Pln", new BigDecimal("5"), Vat.VAT_8)));
 
     //when
-    BigDecimal actual = invoice.invoiceCalculateTotalValue.getTotalValue(invoice.getEntries());
+    BigDecimal actual = invoiceCalculateTotalValue.getTotalValue(invoice.getEntries());
 
     //then
     assertEquals(new BigDecimal("25.00"), actual);
@@ -34,15 +34,14 @@ class InvoiceCalculateTotalValueTest {
   @Test
   public void shouldReturnTotalValueWithTaxes() {
     //given
+    InvoiceCalculateTotalValue invoiceCalculateTotalValue = new InvoiceCalculateTotalValue();
     Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
-        new Company(UUID.randomUUID(), "A", "B"),
-        new Company(UUID.randomUUID(), "C", "D"), Arrays.asList(
+        new Company(), new Company(), Arrays.asList(
         new InvoiceEntry("Tequila", "Pln", new BigDecimal("20"), Vat.VAT_23),
         new InvoiceEntry("Cola", "Pln", new BigDecimal("5"), Vat.VAT_8)));
 
     //when
-    BigDecimal actual =
-        invoice.invoiceCalculateTotalValue.getTotalValueWithTaxes(invoice.getEntries());
+    BigDecimal actual = invoiceCalculateTotalValue.getTotalValueWithTaxes(invoice.getEntries());
 
     //then
     assertEquals(new BigDecimal("30.00"), actual);
