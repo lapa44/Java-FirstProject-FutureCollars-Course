@@ -20,8 +20,9 @@ class InvoiceCalculateTotalValueTest {
     //given
     InvoiceCalculateTotalValue invoiceCalculateTotalValue = new InvoiceCalculateTotalValue();
     Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
-        new Company(), new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", "Pln", new BigDecimal("20.00"), Vat.VAT_23),
+        new Company(UUID.randomUUID(), " ", " "), new Company(UUID.randomUUID(),
+        " ", " "), Arrays.asList(new InvoiceEntry("Tequila", "Pln",
+            new BigDecimal("20.00"), Vat.VAT_23),
         new InvoiceEntry("Cola", "Pln", new BigDecimal("5"), Vat.VAT_8)));
 
     //when
@@ -36,9 +37,10 @@ class InvoiceCalculateTotalValueTest {
     //given
     InvoiceCalculateTotalValue invoiceCalculateTotalValue = new InvoiceCalculateTotalValue();
     Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
-        new Company(), new Company(), Arrays.asList(
-        new InvoiceEntry("Tequila", "Pln", new BigDecimal("20"), Vat.VAT_23),
-        new InvoiceEntry("Cola", "Pln", new BigDecimal("5"), Vat.VAT_8)));
+        new Company(UUID.randomUUID(), " ", " "), new Company(UUID.randomUUID(),
+        " ", " "), Arrays.asList(new InvoiceEntry("Tequila", "Pln",
+            new BigDecimal("20"), Vat.VAT_23), new InvoiceEntry("Cola", "Pln",
+        new BigDecimal("5"), Vat.VAT_8)));
 
     //when
     BigDecimal actual = invoiceCalculateTotalValue.getTotalValueWithTaxes(invoice.getEntries());

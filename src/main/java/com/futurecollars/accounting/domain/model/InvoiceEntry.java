@@ -3,13 +3,13 @@ package com.futurecollars.accounting.domain.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class InvoiceEntry {
+public final class InvoiceEntry {
 
-  private String description;
-  private String unit;
-  private BigDecimal price;
-  private BigDecimal vatValue;
-  private Vat vatRate;
+  private final String description;
+  private final String unit;
+  private final BigDecimal price;
+  private final BigDecimal vatValue;
+  private final Vat vatRate;
 
   public InvoiceEntry(String description, String unit, BigDecimal price, Vat vatRate) {
     this.description = description;

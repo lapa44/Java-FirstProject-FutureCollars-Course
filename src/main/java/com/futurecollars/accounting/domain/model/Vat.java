@@ -9,7 +9,7 @@ public enum Vat {
   VAT_5(BigDecimal.valueOf(0.05)),
   VAT_0(BigDecimal.valueOf(0.00));
 
-  private BigDecimal value;
+  private final BigDecimal value;
 
   Vat(BigDecimal value) {
     this.value = value;
