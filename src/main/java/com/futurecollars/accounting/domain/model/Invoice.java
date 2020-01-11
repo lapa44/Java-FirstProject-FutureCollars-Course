@@ -7,14 +7,14 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class Invoice {
+public final class Invoice {
 
-  private UUID id;
-  private String invoiceNumber;
-  private LocalDate date;
-  private Company buyer;
-  private Company seller;
-  private List<InvoiceEntry> entries;
+  private final UUID id;
+  private final String invoiceNumber;
+  private final LocalDate date;
+  private final Company buyer;
+  private final Company seller;
+  private final List<InvoiceEntry> entries;
 
   public Invoice(UUID id, String invoiceNumber, LocalDate date, Company buyer, Company seller,
                  List<InvoiceEntry> entries) {
@@ -84,5 +84,9 @@ public class Invoice {
   @Override
   public int hashCode() {
     return Objects.hash(id, invoiceNumber, date, buyer, seller, entries);
+  }
+
+  private class InvoiceBuilder {
+    //dorobic
   }
 }
