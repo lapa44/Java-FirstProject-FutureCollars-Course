@@ -124,4 +124,20 @@ abstract class DatabaseTest {
     assertThrows(DatabaseOperationException.class, () ->
         database.removeInvoiceById(UUID.randomUUID()));
   }
+
+  @Test
+  void shouldBuildInvoiceByBuilderAndAddItToDatabase() throws DatabaseOperationException {
+    Database database = getDatabase();
+    Invoice savedInvoice = database.saveInvoice(Invoice.builder()
+        .setInvoiceNumber(" ")
+        .setDate(LocalDate.now())
+        .setBuyer(new Company(UUID.randomUUID(), " ", " "))
+        .setSeller(new Company(UUID.randomUUID(), " ", " "))
+        .addEntry(new InvoiceEntry("Cola", "PLN", new BigDecimal("5"), Vat.VAT_0))
+        .build());
+    assertNotNull(savedInvoice);
+    assertNotNull(savedInvoice.getId());
+    assertEquals(savedInvoice, database.getInvoiceById(savedInvoice.getId()));
+    assertEquals(1, database.getInvoices().size());
+  }
 }

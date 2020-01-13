@@ -86,7 +86,86 @@ public final class Invoice {
     return Objects.hash(id, invoiceNumber, date, buyer, seller, entries);
   }
 
-  private class InvoiceBuilder {
-    //dorobic
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static class Builder {
+    private UUID id;
+    private String invoiceNumber;
+    private LocalDate date;
+    private Company buyer;
+    private Company seller;
+    private List<InvoiceEntry> entries;
+
+    private Builder() {
+    }
+
+    public Builder setId(UUID id) {
+      this.id = id;
+      return this;
+    }
+
+    public Builder setInvoiceNumber(String invoiceNumber) {
+      this.invoiceNumber = invoiceNumber;
+      return this;
+    }
+
+    public Builder setDate(LocalDate date) {
+      this.date = date;
+      return this;
+    }
+
+    public Builder setBuyer(Company buyer) {
+      this.buyer = buyer;
+      return this;
+    }
+
+    public Builder setSeller(Company seller) {
+      this.seller = seller;
+      return this;
+    }
+
+    public Builder setEntries(List<InvoiceEntry> entries) {
+      if (this.entries == null) {
+        this.entries = new ArrayList<>();
+      }
+      this.entries.addAll(entries);
+      return this;
+    }
+
+    public Builder addEntry(InvoiceEntry entry) {
+      if (this.entries == null) {
+        this.entries = new ArrayList<>();
+      }
+      this.entries.add(entry);
+      return this;
+    }
+
+    public Builder clearEntries() {
+      if (this.entries != null) {
+        this.entries.clear();
+      }
+      return this;
+    }
+
+    public Invoice build() {
+      if (invoiceNumber == null) {
+        throw new IllegalStateException("Invoice number cannot be null.");
+      }
+      if (date == null) {
+        throw new IllegalStateException("Invoice date cannot be null.");
+      }
+      if (buyer == null) {
+        throw new IllegalStateException("Buyer cannot be null.");
+      }
+      if (seller == null) {
+        throw new IllegalStateException("Seller cannot be null.");
+      }
+      if (entries.size() < 1) {
+        throw new IllegalStateException("Invoice cannot have no entries.");
+      }
+      return new Invoice(id, invoiceNumber, date, buyer, seller, entries);
+    }
   }
 }
