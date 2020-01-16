@@ -1,6 +1,7 @@
 package com.futurecollars.accounting.infrastructure.database;
 
 import com.futurecollars.accounting.domain.model.Invoice;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Repository
 class InMemoryDatabase implements Database {
 
   private List<Invoice> invoicesDatabase;
