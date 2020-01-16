@@ -18,7 +18,7 @@ public class FileHelper {
 
   public FileHelper(String path) {
     this.path = path;
-//    this.line = line;
+    //    this.line = line;
   }
 
   public void writeLineToFile(String line) {
@@ -65,20 +65,9 @@ public class FileHelper {
     }
 
     FileHelper fileHelper = new FileHelper(path);
-    LinkedList<String> linesFromFile = (LinkedList<String>) fileHelper
-        .readLinesFromFile(path);
+    List<String> linesFromFile = fileHelper.readLinesFromFile(path);
+    String line = linesFromFile.remove(numberOfLine);
     new FileWriter(path, false).close();
     linesFromFile.forEach(fileHelper::writeLineToFile);
-
-    //    LinkedList<String> linesFromFile = (LinkedList<String>) fileHelper
-//        .readLinesFromFile(path);
-//    int sizeListBeforeRemoveLine = linesFromFile.size();
-//    linesFromFile.forEach(System.out::println);
-//    new FileWriter(path, false).close();
-//    LinkedList<String> linesFromFile2 = (LinkedList<String>) fileHelper
-//        .readLinesFromFile(path);
-//    int sizeListAfterRemovingLine = linesFromFile2.size();
-//    linesFromFile.forEach(System.out::println);
-
   }
 }

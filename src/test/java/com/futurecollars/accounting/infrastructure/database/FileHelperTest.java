@@ -5,9 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 class FileHelperTest {
@@ -31,14 +32,20 @@ class FileHelperTest {
 
   @Test
   void shouldRemoveLineFromFile() throws IOException {
+
     //given
     String path = "src\\main\\resources\\testFileDatabase.json";
-    int numberOfLine = 1;
+    int numberOfLine = 0;
     FileHelper fileHelper = new FileHelper(path);
 
     //when
+    List linesFromFileBefore = new ArrayList(
+        Files.readAllLines(Paths.get(path)));
     fileHelper.deleteLineFromFile(path, numberOfLine);
+    List linesFromFileAfter = new ArrayList(
+        Files.readAllLines(Paths.get(path)));
 
     //then
+    assertThat(linesFromFileBefore).isNotEqualTo(linesFromFileAfter);
   }
 }
