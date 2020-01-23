@@ -9,8 +9,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppConfig {
+
   @Bean
-  @ConditionalOnProperty(name = "database", havingValue = "inMemory")
+  @ConditionalOnProperty(name = "database", havingValue = "memory")
   public Database inMemoryDatabase() {
     return new InMemoryDatabase();
   }
@@ -21,8 +22,4 @@ public class AppConfig {
     return null;
   }
 
-  @Bean
-  public InvoiceBook invoiceBook(final Database database) {
-    return new InvoiceBook(database);
-  }
 }

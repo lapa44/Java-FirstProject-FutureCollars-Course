@@ -9,4 +9,5 @@ public class InvoiceBook {
   public InvoiceBook(Database database) {
     this.database = database;
   }
+
 }

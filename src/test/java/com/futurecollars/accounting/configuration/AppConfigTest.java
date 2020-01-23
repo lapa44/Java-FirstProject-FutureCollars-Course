@@ -9,7 +9,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
-@ContextConfiguration(classes = AppConfig.class)
+@ContextConfiguration(classes = { AppConfig.class, InvoiceBookConfig.class } )
 class AppConfigTest {
 
   @Autowired
