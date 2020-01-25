@@ -1,5 +1,7 @@
 package com.futurecollars.accounting.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -11,7 +13,8 @@ public final class InvoiceEntry {
   private final BigDecimal vatValue;
   private final Vat vatRate;
 
-  public InvoiceEntry(String description, String unit, BigDecimal price, Vat vatRate) {
+  public InvoiceEntry(String description, String unit, BigDecimal price,
+      Vat vatRate) {
     this.description = description;
     this.unit = unit;
     this.price = price;
@@ -68,6 +71,7 @@ public final class InvoiceEntry {
     return Objects.hash(description, unit, price, vatValue, vatRate);
   }
 
+  @JsonIgnore
   public BigDecimal getPriceWithTax() {
     return price.add(vatValue);
   }

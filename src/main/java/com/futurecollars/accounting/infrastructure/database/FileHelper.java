@@ -1,5 +1,7 @@
 package com.futurecollars.accounting.infrastructure.database;
 
+import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,64 +12,55 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileHelper {
 
-  String path;
-  String line;
+  private final String path;
 
   public FileHelper(String path) {
-    this.path = path;
-    //    this.line = line;
-  }
-
-  public void writeLineToFile(String line) {
-
-    try {
-      BufferedWriter writer = new BufferedWriter(
-          new FileWriter(path, true));
-      writer.append(line).append("\r\n");
-      writer.close();
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
-  }
-
-  public List<String> readLinesFromFile(String path)
-      throws FileNotFoundException {
-
     if (path == null) {
       throw new IllegalArgumentException("File path cannot by empty.");
     }
+    this.path = path;
+  }
 
-    List<String> listOfLines = new LinkedList<>();
+  public void writeLineToFile(String line) throws IOException {
+
+    try (BufferedWriter bufferedWriter = new BufferedWriter(
+        new FileWriter(path, true))) {
+      bufferedWriter.append(line).append("\r\n");
+    }
+  }
+
+  public List<String> readLinesFromFile()
+      throws IOException {
+
+    List<String> listOfLinesFromFile;
 
     try (BufferedReader lineFromFile = new BufferedReader(
         new FileReader(path))) {
-      while (lineFromFile.ready()) {
-        listOfLines.add(lineFromFile.readLine());
-      }
-    } catch (IOException ex) {
-      ex.printStackTrace();
+      listOfLinesFromFile = lineFromFile.lines()
+          .collect(Collectors.toList());
     }
-    return listOfLines;
+    return listOfLinesFromFile;
   }
 
-  public void deleteLineFromFile(String path, int numberOfLine)
+
+  public void deleteLineFromFile(int lineNumber)
       throws IOException {
 
-    if (path == null) {
-      throw new IllegalArgumentException("File path cannot by empty.");
-    }
-    if (new File(path).length() == 0) {
+    if (new File(path).length() < lineNumber) {
       throw new IllegalArgumentException(
-          "File is empty, nothing to remove.");
+          "Usunięcie danego wiersza jest niemożliwe.");
     }
 
-    FileHelper fileHelper = new FileHelper(path);
-    List<String> linesFromFile = fileHelper.readLinesFromFile(path);
-    String line = linesFromFile.remove(numberOfLine);
-    new FileWriter(path, false).close();
-    linesFromFile.forEach(fileHelper::writeLineToFile);
+    List<String> linesFromFile = readLinesFromFile();
+    FileWriter fileWriter = new FileWriter(path, false);
+    linesFromFile.remove(lineNumber);
+    for (String s : linesFromFile) {
+      fileWriter.write(s + "\r\n");
+    }
+    fileWriter.close();
   }
 }

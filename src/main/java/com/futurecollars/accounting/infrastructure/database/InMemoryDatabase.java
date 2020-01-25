@@ -17,7 +17,8 @@ class InMemoryDatabase implements Database {
   }
 
   @Override
-  public synchronized Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
+  public synchronized Invoice saveInvoice(Invoice invoice)
+      throws DatabaseOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
@@ -27,31 +28,37 @@ class InMemoryDatabase implements Database {
     if (isInvoiceExists(invoice.getId())) {
       return updateInvoice(invoice);
     } else {
-      throw new DatabaseOperationException(new IllegalStateException("Fatal error"));
+      throw new DatabaseOperationException(
+          new IllegalStateException("Fatal error"));
     }
   }
 
   @Override
   public synchronized Invoice insertInvoice(Invoice invoice) {
-    Invoice invoiceToSave = new Invoice(UUID.randomUUID(), invoice.getInvoiceNumber(),
-        invoice.getDate(), invoice.getBuyer(), invoice.getSeller(), invoice.getEntries());
+    Invoice invoiceToSave = new Invoice(UUID.randomUUID(),
+        invoice.getInvoiceNumber(),
+        invoice.getDate(), invoice.getBuyer(), invoice.getSeller(),
+        invoice.getEntries());
     invoicesDatabase.add(invoiceToSave);
     return new Invoice(invoiceToSave);
   }
 
   @Override
-  public synchronized Invoice updateInvoice(Invoice invoice) throws DatabaseOperationException {
+  public synchronized Invoice updateInvoice(Invoice invoice)
+      throws DatabaseOperationException {
     for (int i = 0; i < invoicesDatabase.size(); i++) {
       if (invoicesDatabase.get(i).getId().equals(invoice.getId())) {
         invoicesDatabase.set(i, invoice);
         return invoice;
       }
     }
-    throw new DatabaseOperationException(new IllegalStateException("Fatal Error"));
+    throw new DatabaseOperationException(
+        new IllegalStateException("Fatal Error"));
   }
 
   @Override
-  public synchronized Invoice getInvoiceById(UUID id) throws DatabaseOperationException {
+  public synchronized Invoice getInvoiceById(UUID id)
+      throws DatabaseOperationException {
     if (id == null) {
       throw new IllegalArgumentException("ID cannot be null.");
     }
@@ -61,19 +68,23 @@ class InMemoryDatabase implements Database {
       }
     }
     throw new DatabaseOperationException(
-        new NoSuchElementException("Invoice of given ID was not found in database."));
+        new NoSuchElementException(
+            "Invoice of given ID was not found in database."));
   }
 
   @Override
   public synchronized List<Invoice> getInvoices() {
-    return invoicesDatabase.stream().map(Invoice::new).collect(Collectors.toList());
+    return invoicesDatabase.stream().map(Invoice::new)
+        .collect(Collectors.toList());
   }
 
   @Override
-  public synchronized Invoice removeInvoiceById(UUID id) throws DatabaseOperationException {
+  public synchronized Invoice removeInvoiceById(UUID id)
+      throws DatabaseOperationException {
     if (!isInvoiceExists(id)) {
       throw new DatabaseOperationException(
-          new NoSuchElementException("Invoice of given ID was not found in database."));
+          new NoSuchElementException(
+              "Invoice of given ID was not found in database."));
     }
     for (int i = 0; i < invoicesDatabase.size(); i++) {
       if (invoicesDatabase.get(i).getId().equals(id)) {

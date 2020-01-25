@@ -1,5 +1,7 @@
 package com.futurecollars.accounting.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public final class Invoice {
   private final Company seller;
   private final List<InvoiceEntry> entries;
 
+  @JsonCreator
   public Invoice(UUID id,
       String invoiceNumber,
       LocalDate date,
