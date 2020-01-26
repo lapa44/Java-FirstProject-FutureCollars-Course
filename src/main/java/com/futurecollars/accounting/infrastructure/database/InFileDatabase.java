@@ -18,14 +18,17 @@ class InFileDatabase implements Database {
   private String path;
   private FileHelper fileHelper;
   private List<Invoice> invoicesDatabase;
-  private List<Invoice> listInvoicesFromFile;
+  //  private List<Invoice> listInvoicesFromFile;
   private ObjectMapper mapper;
 
   public InFileDatabase() {
     this.path = "src\\main\\resources\\testFileDatabase.json";
     this.fileHelper = new FileHelper(path);
-    this.invoicesDatabase = new ArrayList<>();
-    this.listInvoicesFromFile = new ArrayList<>();
+    try {
+      this.invoicesDatabase = new ArrayList<>(getInvoices());
+    } catch (DatabaseOperationException e) {
+    }
+//    this.listInvoicesFromFile = new ArrayList<>();
     this.mapper = new ObjectMapper();
     this.mapper.registerModule(new JavaTimeModule());
     this.mapper.registerModule(new ParameterNamesModule());
@@ -74,6 +77,7 @@ class InFileDatabase implements Database {
     for (int i = 0; i < invoicesDatabase.size(); i++) {
       if (invoicesDatabase.get(i).getId().equals(invoice.getId())) {
         invoicesDatabase.set(i, invoice);
+
         return invoice;
       }
     }
@@ -101,7 +105,7 @@ class InFileDatabase implements Database {
   public synchronized List<Invoice> getInvoices()
       throws DatabaseOperationException {
     List<String> invoicesFromFile;
-    List<Invoice> objectInvoicesFromFile = new ArrayList<>();
+//    List<Invoice> objectInvoicesFromFile = new ArrayList<>();
     try {
       invoicesFromFile = new ArrayList<>(fileHelper.readLinesFromFile());
     } catch (IOException ex) {
@@ -111,12 +115,12 @@ class InFileDatabase implements Database {
       for (String s : invoicesFromFile) {
         Invoice invoice = mapper
             .readValue(s, Invoice.class);
-        objectInvoicesFromFile.add(invoice);
+        invoicesDatabase.add(invoice);
       }
     } catch (JsonProcessingException ex) {
       throw new DatabaseOperationException(ex);
     }
-    return objectInvoicesFromFile;
+    return invoicesDatabase;
   }
 
   public synchronized Invoice removeInvoiceById(UUID id)
@@ -126,14 +130,14 @@ class InFileDatabase implements Database {
           new NoSuchElementException(
               "Invoice of given ID was not found in database."));
     }
-    for (int i = 0; i < listInvoicesFromFile.size(); i++) {
-      if (listInvoicesFromFile.get(i).getId().equals(id)) {
+    for (int i = 0; i < invoicesDatabase.size(); i++) {
+      if (invoicesDatabase.get(i).getId().equals(id)) {
         try {
           fileHelper.deleteLineFromFile(i);
         } catch (IOException ex) {
           throw new DatabaseOperationException(ex);
         }
-        return listInvoicesFromFile.remove(i);
+        return invoicesDatabase.remove(i);
       }
     }
     throw new DatabaseOperationException(
@@ -143,8 +147,8 @@ class InFileDatabase implements Database {
   @Override
   public boolean isInvoiceExists(UUID id)
       throws DatabaseOperationException {
-    listInvoicesFromFile.addAll(getInvoices());
-    for (Invoice inv : listInvoicesFromFile) {
+    invoicesDatabase.addAll(getInvoices());
+    for (Invoice inv : invoicesDatabase) {
       if (inv.getId().equals(id)) {
         return true;
       }
