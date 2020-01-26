@@ -11,7 +11,7 @@ class InFileDatabaseTest extends DatabaseTest {
     return new InFileDatabase();
   }
 
-  //  @BeforeEach
+  @BeforeEach
   void removeTestFileBeforeTest() {
 
     File file = new File("src\\main\\resources\\testFileDatabase.json");

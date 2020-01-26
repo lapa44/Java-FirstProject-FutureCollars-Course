@@ -1,6 +1,5 @@
 package com.futurecollars.accounting.infrastructure.database;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -12,10 +11,7 @@ import com.futurecollars.accounting.domain.model.Company;
 import com.futurecollars.accounting.domain.model.Invoice;
 import com.futurecollars.accounting.domain.model.InvoiceEntry;
 import com.futurecollars.accounting.domain.model.Vat;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,34 +22,12 @@ abstract class DatabaseTest {
 
   abstract Database getDatabase();
 
-  @Disabled
-  @Test
-  void shouldReturnInvoiceById() throws DatabaseOperationException {
-
-    //given
-    Database database = getDatabase();
-    UUID id = UUID.fromString("896b627c-b176-4f89-b374-6f9e95849c74");
-    Invoice invoiceReadById = null;
-
-    //when
-    invoiceReadById = new Invoice(database.getInvoiceById(id));
-
-    Invoice removedInvoiceFromFile = database.removeInvoiceById(id);
-
-    //then
-    System.out.println(invoiceReadById);
-    assertNotNull(invoiceReadById);
-    assertThat(invoiceReadById.getId()).isEqualTo(id);
-  }
-
-  //todo wchodzi do getInvoiceById, przechodzi testy (musi byc
-  // czyszczenie pliku przed testem, bo zwraca za dużą ilość wpisów)
-  @RepeatedTest(1)
+  @RepeatedTest(3)
   void shouldSaveInvoiceToMemoryAndReturnItById()
       throws DatabaseOperationException {
     //given
     Database database = getDatabase();
-    Invoice invoice = new Invoice(null, "No5",
+    Invoice invoice = new Invoice(null, "No1",
         LocalDate.now(),
         new Company(
             UUID.randomUUID(), " ", " "),
@@ -75,14 +49,13 @@ abstract class DatabaseTest {
     assertEquals(1, database.getInvoices().size());
   }
 
-  //todo wchodzi do getInvoiceById
-  @RepeatedTest(1)
+  @RepeatedTest(3)
   void shouldSaveAndUpdateInvoiceInMemory()
       throws DatabaseOperationException {
     //given
     Database database = getDatabase();
     //when
-    Invoice savedInvoiceBeforeUpdate = database//todo id 11d poz. 67
+    Invoice savedInvoiceBeforeUpdate = database
         .saveInvoice(new Invoice(null, "No1",
             LocalDate.now(), new Company(UUID.randomUUID(), " ", " "),
             new Company(
@@ -92,23 +65,16 @@ abstract class DatabaseTest {
                 new InvoiceEntry("Cola", "PLN", new BigDecimal("5"),
                     Vat.VAT_8))));
     Invoice savedInvoiceAfterUpdate = database.saveInvoice(
-        new Invoice(//todo ma ustowione id takie samo jak beforeUpdate
+        new Invoice(
             savedInvoiceBeforeUpdate.getId(), "No2", LocalDate.now(),
             new Company(UUID.randomUUID(), " ", " "),
             new Company(UUID.randomUUID(),
                 " ", " "), Arrays.asList(new InvoiceEntry(
             "Beer", "Pln", new BigDecimal("7"), Vat.VAT_5))));
-//    database.insertInvoice(savedInvoiceBeforeUpdate);
-//    database.insertInvoice(savedInvoiceBeforeUpdate);
-//    database.insertInvoice(savedInvoiceBeforeUpdate);
-//    database.insertInvoice(savedInvoiceBeforeUpdate);
     //then
     assertNotNull(savedInvoiceBeforeUpdate);
     assertNotNull(savedInvoiceAfterUpdate);
     assertNotNull(savedInvoiceAfterUpdate.getId());
-
-//    database.getInvoiceById(savedInvoiceBeforeUpdate.getId());
-
     assertNotEquals(savedInvoiceBeforeUpdate,
         database.getInvoiceById(savedInvoiceBeforeUpdate.getId()));
     assertEquals(savedInvoiceAfterUpdate,
@@ -116,7 +82,7 @@ abstract class DatabaseTest {
     assertEquals(1, database.getInvoices().size());
   }
 
-  @RepeatedTest(1)
+  @RepeatedTest(3)
   void shouldReturnAllInvoices()
       throws DatabaseOperationException {
     //given
@@ -148,14 +114,14 @@ abstract class DatabaseTest {
     assertEquals(2, database.getInvoices().size());
   }
 
-  @RepeatedTest(1)
+  @RepeatedTest(3)
   void shouldThrowExceptionForNoInvoiceWhileGettingById() {
     Database database = getDatabase();
     assertThrows(DatabaseOperationException.class, () ->
         database.getInvoiceById(UUID.randomUUID()));
   }
 
-  @RepeatedTest(1)
+  @RepeatedTest(3)
   void shouldThrowExceptionForNullIdWhileGettingById() {
     Database database = getDatabase();
     assertThrows(IllegalArgumentException.class,
@@ -169,7 +135,7 @@ abstract class DatabaseTest {
         () -> database.saveInvoice(null));
   }
 
-  @RepeatedTest(1)
+  @RepeatedTest(3)
   void shouldRemoveInvoiceFromDatabase()
       throws DatabaseOperationException {
     //given
@@ -192,7 +158,7 @@ abstract class DatabaseTest {
     assertEquals(0, database.getInvoices().size());
   }
 
-  @RepeatedTest(1)
+  @RepeatedTest(3)
   void shouldThrowExceptionForNoInvoiceToRemove() {
     Database database = getDatabase();
     assertThrows(DatabaseOperationException.class, () ->

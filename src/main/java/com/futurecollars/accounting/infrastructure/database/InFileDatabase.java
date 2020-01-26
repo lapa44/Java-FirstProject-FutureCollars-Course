@@ -15,17 +15,12 @@ import java.util.UUID;
 
 class InFileDatabase implements Database {
 
-  private String path;
   private FileHelper fileHelper;
-  private List<Invoice> invoicesDatabase;
-  //  private List<Invoice> listInvoicesFromFile;
   private ObjectMapper mapper;
 
   public InFileDatabase() {
-    this.path = "src\\main\\resources\\testFileDatabase.json";
+    String path = "src\\main\\resources\\testFileDatabase.json";
     this.fileHelper = new FileHelper(path);
-    this.invoicesDatabase = new ArrayList<>();
-//    this.listInvoicesFromFile = new ArrayList<>();
     this.mapper = new ObjectMapper();
     this.mapper.registerModule(new JavaTimeModule());
     this.mapper.registerModule(new ParameterNamesModule());
@@ -64,7 +59,6 @@ class InFileDatabase implements Database {
     } catch (IOException ex) {
       throw new DatabaseOperationException(ex);
     }
-    invoicesDatabase.add(invoiceToSave);
     return new Invoice(invoiceToSave);
   }
 
@@ -73,25 +67,16 @@ class InFileDatabase implements Database {
       throws DatabaseOperationException {
     List<Invoice> listInvoicesFromFile = new ArrayList<>(getInvoices());
     for (int i = 0; i < listInvoicesFromFile.size(); i++) {
-      //todo - czy tu nie powinna byc lista faktur z pliku? chyba nie
-      //todo - chyba jednak tak bo musi zupdatowac invoice'a w pliku
-//      if (invoicesDatabase.get(i).getId().equals(invoice.getId())) {
-//        invoicesDatabase.set(i, invoice);
-      //todo - powinno chyba byc tak, tylko jescze trzeba zaktualizowac plik,
-      // czyli: zrobić metode w FileHelperze "updateinvoice",
-      // albo wykorzystac usuwanie invoica i zapisanie invoice'a
       if (listInvoicesFromFile.get(i).getId().equals(invoice.getId())) {
         listInvoicesFromFile.set(i, invoice);
-        //todo - tu sie wywala z tym remove, bo ponownie wchodzi
-        // do isInvoiceExist i pobiera ponownie linie z pliku i dodaje
-        // do listy, stąd sie bierze podówjna ilość. Trzeba chyba zrobić
-        // metodę update w FileHelperze
         removeInvoiceById(invoice.getId());
-        //todo - to bez sensu, trzeba by było na każdego invoice'a
-        // wołac FileHelpera
+        try {
+          fileHelper.writeLineToFile(mapper
+              .writeValueAsString(invoice));
+        } catch (IOException ex) {
+          throw new DatabaseOperationException(ex);
+        }
         listInvoicesFromFile.add(invoice);
-        //todo - to tez bez sensu jesli posiada juz Id
-//        insertInvoice(invoice);
         return invoice;
       }
     }
@@ -102,14 +87,11 @@ class InFileDatabase implements Database {
   @Override
   public synchronized Invoice getInvoiceById(UUID id)
       throws DatabaseOperationException {
-    List<Invoice> objectInvoicesFromFile = new ArrayList<>(getInvoices());
     if (id == null) {
       throw new IllegalArgumentException("ID cannot be null.");
     }
-
-    // todo zmienic aby sprawdzało invoice'y z pliku
-
-    for (Invoice e : objectInvoicesFromFile/*invoicesDatabase*/) {
+    List<Invoice> objectInvoicesFromFile = new ArrayList<>(getInvoices());
+    for (Invoice e : objectInvoicesFromFile) {
       if (id.equals(e.getId())) {
         return e;
       }
