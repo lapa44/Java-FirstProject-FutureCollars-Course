@@ -46,7 +46,6 @@ public class FileHelper {
     return listOfLinesFromFile;
   }
 
-
   public void deleteLineFromFile(int lineNumber)
       throws IOException {
 
@@ -63,4 +62,5 @@ public class FileHelper {
     }
     fileWriter.close();
   }
+
 }

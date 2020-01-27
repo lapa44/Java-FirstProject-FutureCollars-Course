@@ -23,4 +23,5 @@ class InFileDatabaseTest extends DatabaseTest {
       System.out.println("File doesn't exist.");
     }
   }
+
 }

@@ -11,7 +11,7 @@ public interface Database {
 
   Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException;
 
-  Invoice insertInvoice(Invoice invoice);
+  Invoice insertInvoice(Invoice invoice) throws DatabaseOperationException;
 
   Invoice updateInvoice(Invoice invoice) throws DatabaseOperationException;
 

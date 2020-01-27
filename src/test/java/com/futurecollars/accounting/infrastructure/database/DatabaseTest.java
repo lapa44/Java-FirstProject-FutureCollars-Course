@@ -27,13 +27,17 @@ abstract class DatabaseTest {
       throws DatabaseOperationException {
     //given
     Database database = getDatabase();
-    Invoice invoice = new Invoice(null, "No1", LocalDate.now(),
+    Invoice invoice = new Invoice(null, "No1",
+        LocalDate.now(),
         new Company(
             UUID.randomUUID(), " ", " "),
         new Company(UUID.randomUUID(), " ",
-            " "), Arrays.asList(new InvoiceEntry("Tequila", "Pln",
-        new BigDecimal("20"), Vat.VAT_23), new InvoiceEntry("Cola", "Pln",
-        new BigDecimal("5"), Vat.VAT_8)));
+            " "), Arrays.asList(
+        new InvoiceEntry(
+            "Tequila", "Pln",
+            new BigDecimal("20"), Vat.VAT_23),
+        new InvoiceEntry("Cola", "Pln",
+            new BigDecimal("5"), Vat.VAT_8)));
     //when
     Invoice savedInvoice = database.saveInvoice(invoice);
     //then
