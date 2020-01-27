@@ -76,7 +76,6 @@ class InFileDatabase implements Database {
         } catch (IOException ex) {
           throw new DatabaseOperationException(ex);
         }
-        listInvoicesFromFile.add(invoice);
         return invoice;
       }
     }
