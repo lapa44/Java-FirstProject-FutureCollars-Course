@@ -1,49 +1,48 @@
 package com.futurecollars.accounting.infrastructure.database;
 
-import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class FileHelper {
 
   private final String path;
+  private final String endOfTheLine;
 
   public FileHelper(String path) {
     if (path == null) {
       throw new IllegalArgumentException("File path cannot by empty.");
     }
+    //todo verify directory - IS THAT OK?
+    if (!Files.isDirectory(Paths.get(path).getParent())) {
+      throw new RuntimeException("Directory does not exist.");
+    }
     this.path = path;
+    this.endOfTheLine = "\r\n";
   }
 
   public void writeLineToFile(String line) throws IOException {
 
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(path, true))) {
-      bufferedWriter.append(line).append("\r\n");
+      bufferedWriter.append(line).append(endOfTheLine);
     }
   }
 
   public List<String> readLinesFromFile()
       throws IOException {
 
-    List<String> listOfLinesFromFile;
-
     try (BufferedReader lineFromFile = new BufferedReader(
         new FileReader(path))) {
-      listOfLinesFromFile = lineFromFile.lines()
-          .collect(Collectors.toList());
+      return lineFromFile.lines().collect(Collectors.toList());
     }
-    return listOfLinesFromFile;
   }
 
   public void deleteLineFromFile(int lineNumber)
@@ -51,16 +50,15 @@ public class FileHelper {
 
     if (new File(path).length() < lineNumber) {
       throw new IllegalArgumentException(
-          "Usunięcie danego wiersza jest niemożliwe.");
+          "Removing the given row is not possible.");
     }
 
     List<String> linesFromFile = readLinesFromFile();
     FileWriter fileWriter = new FileWriter(path, false);
     linesFromFile.remove(lineNumber);
     for (String s : linesFromFile) {
-      fileWriter.write(s + "\r\n");
+      fileWriter.write(s + endOfTheLine);
     }
     fileWriter.close();
   }
-
 }

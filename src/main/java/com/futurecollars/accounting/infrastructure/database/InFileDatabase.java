@@ -6,19 +6,24 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.futurecollars.accounting.domain.model.Invoice;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+@Service
 class InFileDatabase implements Database {
 
-  private FileHelper fileHelper;
-  private ObjectMapper mapper;
+  private final FileHelper fileHelper;
+  private final ObjectMapper mapper;
 
   public InFileDatabase() {
+    //todo path should be injected from properties file - Jonash springDI
     String path = "src\\main\\resources\\testFileDatabase.json";
     this.fileHelper = new FileHelper(path);
     this.mapper = new ObjectMapper();
@@ -38,17 +43,17 @@ class InFileDatabase implements Database {
       return insertInvoice(invoice);
     }
 
-    if (isInvoiceExists(invoice.getId())) {
-      return updateInvoice(invoice);
-    } else {
+    if (!isInvoiceExists(invoice.getId())) {
       throw new DatabaseOperationException(
           new IllegalStateException("Fatal error"));
+    } else {
+      return updateInvoice(invoice);
     }
   }
 
-  @Override
-  public synchronized Invoice insertInvoice(Invoice invoice)
+  private synchronized Invoice insertInvoice(Invoice invoice)
       throws DatabaseOperationException {
+    //todo missing validation of what?
     Invoice invoiceToSave = new Invoice(UUID.randomUUID(),
         invoice.getInvoiceNumber(), invoice.getDate(),
         invoice.getBuyer(), invoice.getSeller(), invoice.getEntries());
@@ -62,8 +67,7 @@ class InFileDatabase implements Database {
     return new Invoice(invoiceToSave);
   }
 
-  @Override
-  public synchronized Invoice updateInvoice(Invoice invoice)
+  private synchronized Invoice updateInvoice(Invoice invoice)
       throws DatabaseOperationException {
     List<Invoice> listInvoicesFromFile = new ArrayList<>(getInvoices());
     for (int i = 0; i < listInvoicesFromFile.size(); i++) {
@@ -76,10 +80,14 @@ class InFileDatabase implements Database {
         } catch (IOException ex) {
           throw new DatabaseOperationException(ex);
         }
+        //todo There is the same invoice what has been passed as an input argument.
+        // It's not good practice to return statement from the middle of the method.
         listInvoicesFromFile.add(invoice);
         return invoice;
       }
     }
+    //todo Please describe what really happens in the error message.
+    // If it is possible give tip what should be done to fix this issue.
     throw new DatabaseOperationException(
         new IllegalStateException("Fatal Error"));
   }
@@ -145,15 +153,10 @@ class InFileDatabase implements Database {
         new IllegalStateException("Fatal Error"));
   }
 
-  @Override
-  public boolean isInvoiceExists(UUID id)
+  private boolean isInvoiceExists(UUID id)
       throws DatabaseOperationException {
     List<Invoice> listInvoicesFromFile = new ArrayList<>(getInvoices());
-    for (Invoice inv : listInvoicesFromFile) {
-      if (inv.getId().equals(id)) {
-        return true;
-      }
-    }
-    return false;
+    return listInvoicesFromFile.stream().map(Invoice::getId)
+        .collect(Collectors.toList()).contains(id);
   }
 }

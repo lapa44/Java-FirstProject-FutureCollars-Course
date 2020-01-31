@@ -1,6 +1,8 @@
 package com.futurecollars.accounting.infrastructure.database;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 
@@ -23,5 +25,4 @@ class InFileDatabaseTest extends DatabaseTest {
       System.out.println("File doesn't exist.");
     }
   }
-
 }

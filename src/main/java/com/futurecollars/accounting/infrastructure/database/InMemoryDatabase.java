@@ -33,8 +33,7 @@ class InMemoryDatabase implements Database {
     }
   }
 
-  @Override
-  public synchronized Invoice insertInvoice(Invoice invoice) {
+  private synchronized Invoice insertInvoice(Invoice invoice) {
     Invoice invoiceToSave = new Invoice(UUID.randomUUID(),
         invoice.getInvoiceNumber(),
         invoice.getDate(), invoice.getBuyer(), invoice.getSeller(),
@@ -43,8 +42,7 @@ class InMemoryDatabase implements Database {
     return new Invoice(invoiceToSave);
   }
 
-  @Override
-  public synchronized Invoice updateInvoice(Invoice invoice)
+  private synchronized Invoice updateInvoice(Invoice invoice)
       throws DatabaseOperationException {
     for (int i = 0; i < invoicesDatabase.size(); i++) {
       if (invoicesDatabase.get(i).getId().equals(invoice.getId())) {
@@ -95,8 +93,7 @@ class InMemoryDatabase implements Database {
         new IllegalStateException("Fatal Error"));
   }
 
-  @Override
-  public boolean isInvoiceExists(UUID id) {
+  private boolean isInvoiceExists(UUID id) {
     for (Invoice inv : invoicesDatabase) {
       if (inv.getId().equals(id)) {
         return true;
