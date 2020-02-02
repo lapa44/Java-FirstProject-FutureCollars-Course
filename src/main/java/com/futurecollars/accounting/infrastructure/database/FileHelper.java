@@ -20,9 +20,8 @@ public class FileHelper {
     if (path == null) {
       throw new IllegalArgumentException("File path cannot by empty.");
     }
-    //todo verify directory - IS THAT OK?
     if (!Files.isDirectory(Paths.get(path).getParent())) {
-      throw new RuntimeException("Directory does not exist.");
+      throw new IllegalArgumentException("Directory does not exist.");
     }
     this.path = path;
     this.endOfTheLine = "\r\n";
