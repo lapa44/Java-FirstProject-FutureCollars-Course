@@ -1,14 +1,13 @@
 package com.futurecollars.accounting.infrastructure.database;
 
-import com.futurecollars.accounting.domain.model.Invoice;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import com.futurecollars.accounting.domain.model.Invoice;
 
-class InMemoryDatabase implements Database {
+public class InMemoryDatabase implements Database {
 
   private List<Invoice> invoicesDatabase;
 
