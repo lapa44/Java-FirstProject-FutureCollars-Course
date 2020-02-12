@@ -14,7 +14,8 @@ public class InvoiceService {
   private final Database database;
 
     InvoiceService(Database database) {
-      this.database = database;
+
+        this.database = database;
     }
 
   public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
