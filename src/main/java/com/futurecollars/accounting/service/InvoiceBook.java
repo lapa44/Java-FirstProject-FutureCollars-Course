@@ -6,28 +6,21 @@ import com.futurecollars.accounting.infrastructure.database.DatabaseOperationExc
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class InvoiceService {
+public class InvoiceBook {
 
   private final Database database;
 
-    InvoiceService(Database database) {
+    InvoiceBook(Database database) {
 
         this.database = database;
     }
 
   public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
       return database.saveInvoice(invoice);
-  }
-
-  public Invoice insertInvoice(Invoice invoice){
-      return database.insertInvoice(invoice);
-  }
-
-  public Invoice updateInvoice(Invoice invoice) throws DatabaseOperationException{
-      return database.updateInvoice(invoice);
   }
 
   public Invoice getInvoiceById(UUID id) throws DatabaseOperationException{
@@ -40,10 +33,5 @@ public class InvoiceService {
 
   public Invoice removeInvoiceById(UUID id) throws DatabaseOperationException{
       return database.removeInvoiceById(id);
-  }
-
-  public boolean doesInvoiceExist(UUID id){
-    System.out.println("Someone asked if invoice with id " + id + " exists");
-      return database.isInvoiceExists(id);
   }
 }
