@@ -61,8 +61,7 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>3.14.0</version>
-      <scope>test</scope>
-      <groupId>org.springframework.boot</groupId>
+             <scope>test</scope>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
