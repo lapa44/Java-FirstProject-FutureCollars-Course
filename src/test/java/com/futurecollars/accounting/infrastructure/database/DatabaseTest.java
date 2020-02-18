@@ -12,6 +12,7 @@ import com.futurecollars.accounting.domain.model.Invoice;
 import com.futurecollars.accounting.domain.model.InvoiceEntry;
 import com.futurecollars.accounting.domain.model.Vat;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -166,18 +167,21 @@ abstract class DatabaseTest {
   }
 
   @Test
-  void shouldBuildInvoiceByBuilderAndAddItToDatabase() throws DatabaseOperationException {
+  void shouldBuildInvoiceByBuilderAndAddItToDatabase()
+      throws DatabaseOperationException {
     Database database = getDatabase();
     Invoice savedInvoice = database.saveInvoice(Invoice.builder()
         .setInvoiceNumber(" ")
         .setDate(LocalDate.now())
         .setBuyer(new Company(UUID.randomUUID(), " ", " "))
         .setSeller(new Company(UUID.randomUUID(), " ", " "))
-        .addEntry(new InvoiceEntry("Cola", "PLN", new BigDecimal("5"), Vat.VAT_0))
+        .addEntry(new InvoiceEntry("Cola", "PLN", new BigDecimal("5"),
+            Vat.VAT_0))
         .build());
     assertNotNull(savedInvoice);
     assertNotNull(savedInvoice.getId());
-    assertEquals(savedInvoice, database.getInvoiceById(savedInvoice.getId()));
+    assertEquals(savedInvoice,
+        database.getInvoiceById(savedInvoice.getId()));
     assertEquals(1, database.getInvoices().size());
   }
 }
