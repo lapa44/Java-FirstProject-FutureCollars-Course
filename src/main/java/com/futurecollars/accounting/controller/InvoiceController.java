@@ -3,14 +3,14 @@ package com.futurecollars.accounting.controller;
 import com.futurecollars.accounting.domain.model.Invoice;
 import com.futurecollars.accounting.infrastructure.database.DatabaseOperationException;
 import com.futurecollars.accounting.service.InvoiceBook;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/invoices")
@@ -23,22 +23,22 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public ResponseEntity<Invoice> saveInvoice(@Valid @RequestBody Invoice invoice) {
+    public ResponseEntity<Invoice> saveInvoice(@Valid @RequestParam @RequestBody Invoice invoice) {
         try {
-            return new ResponseEntity<>(invoiceBook.saveInvoice(invoice), HttpStatus.OK);
+            return new ResponseEntity<>(invoiceBook.saveInvoice(invoice), OK);
         } catch (DatabaseOperationException ex) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Provide all invoice details.", ex);
+            return new ResponseEntity<>(BAD_REQUEST);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Invoice> getInvoiceById(@Valid @PathVariable UUID id) {
+    public ResponseEntity<Invoice> getInvoiceById(@Valid @RequestBody @PathVariable UUID id) {
         try {
-            return new ResponseEntity<>(invoiceBook.getInvoiceById(id), HttpStatus.OK);
+            Invoice invoiceById = invoiceBook.getInvoiceById(id);
+            ResponseEntity<Invoice> invoiceResponseEntity = new ResponseEntity<>(invoiceById, OK);
+            return invoiceResponseEntity;
         } catch (DatabaseOperationException ex) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Provide correct invoice id.", ex);
+            return new ResponseEntity<>(NOT_FOUND);
         }
     }
 
@@ -51,10 +51,9 @@ public class InvoiceController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Invoice> removeInvoiceById(@PathVariable UUID id) {
         try {
-            return new ResponseEntity<>(invoiceBook.removeInvoiceById(id), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(invoiceBook.removeInvoiceById(id), NO_CONTENT);
         } catch (DatabaseOperationException ex) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Provide correct invoice id.", ex);
+            return new ResponseEntity<>(BAD_REQUEST);
         }
     }
 }
