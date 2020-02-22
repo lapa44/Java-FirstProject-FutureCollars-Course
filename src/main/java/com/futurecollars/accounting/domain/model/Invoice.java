@@ -1,5 +1,7 @@
 package com.futurecollars.accounting.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +18,13 @@ public final class Invoice {
   private final Company seller;
   private final List<InvoiceEntry> entries;
 
-  public Invoice(UUID id, String invoiceNumber, LocalDate date, Company buyer, Company seller,
-                 List<InvoiceEntry> entries) {
+  @JsonCreator
+  public Invoice(UUID id,
+      String invoiceNumber,
+      LocalDate date,
+      Company buyer,
+      Company seller,
+      List<InvoiceEntry> entries) {
     this.id = id;
     this.invoiceNumber = invoiceNumber;
     this.date = date;
@@ -33,7 +40,8 @@ public final class Invoice {
     this.date = invoice.date;
     this.buyer = invoice.buyer;
     this.seller = invoice.seller;
-    this.entries = invoice.entries.stream().map(InvoiceEntry::new).collect(Collectors.toList());
+    this.entries = invoice.entries.stream().map(InvoiceEntry::new)
+        .collect(Collectors.toList());
   }
 
   public void addEntry(InvoiceEntry entry) {
@@ -61,7 +69,8 @@ public final class Invoice {
   }
 
   public List<InvoiceEntry> getEntries() {
-    return entries.stream().map(InvoiceEntry::new).collect(Collectors.toList());
+    return entries.stream().map(InvoiceEntry::new)
+        .collect(Collectors.toList());
   }
 
   @Override

@@ -9,15 +9,9 @@ public interface Database {
 
   Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException;
 
-  Invoice insertInvoice(Invoice invoice);
-
-  Invoice updateInvoice(Invoice invoice) throws DatabaseOperationException;
-
   Invoice getInvoiceById(UUID id) throws DatabaseOperationException;
 
-  List<Invoice> getInvoices();
+  List<Invoice> getInvoices() throws DatabaseOperationException;
 
   Invoice removeInvoiceById(UUID id) throws DatabaseOperationException;
-
-  boolean isInvoiceExists(UUID id);
 }

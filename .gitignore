@@ -5,6 +5,9 @@ target/
 *.iml
 *.ipr
 
+#JSON files
+*.json
+
 # Compiled class file
 *.class
 
