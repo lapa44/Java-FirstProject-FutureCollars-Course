@@ -1,15 +1,32 @@
-package com.futurecollars.accounting.domain.model;
+package com.futurecollars.accounting.infrastructure.database.hibernate.model;
 
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
+import org.hibernate.annotations.GenericGenerator;
 
-public final class Company {
+@Entity
+@Table(name = "companies")
+public class CompanyHibernate {
 
-  private final UUID taxIdentificationNumber;
-  private final String address;
-  private final String name;
+  @Id
+  @GeneratedValue(generator = "UUID", strategy = GenerationType.AUTO)
+  @GenericGenerator(
+      name = "UUID",
+      strategy = "org.hibernate.id.UUIDGenerator"
+      )
+  @Column(name = "id", updatable = false, nullable = false)
+  private UUID taxIdentificationNumber;
+  private String address;
+  private String name;
 
-  public Company(UUID taxIdentificationNumber, String address, String name) {
+  public CompanyHibernate() {}
+
+  public CompanyHibernate(UUID taxIdentificationNumber, String address, String name) {
     this.taxIdentificationNumber = taxIdentificationNumber;
     this.address = address;
     this.name = name;
@@ -25,25 +42,6 @@ public final class Company {
 
   public String getName() {
     return name;
-  }
-
-  @Override
-  public boolean equals(Object ob) {
-    if (this == ob) {
-      return true;
-    }
-    if (ob == null || getClass() != ob.getClass()) {
-      return false;
-    }
-    Company company = (Company) ob;
-    return Objects.equals(taxIdentificationNumber, company.taxIdentificationNumber)
-        && Objects.equals(address, company.address)
-        && Objects.equals(name, company.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(taxIdentificationNumber, address, name);
   }
 
   public static Builder builder() {
@@ -72,7 +70,7 @@ public final class Company {
       return this;
     }
 
-    public Company build() {
+    public CompanyHibernate build() {
       if (taxIdentificationNumber == null) {
         throw new IllegalStateException("Tax identification number cannot be null.");
       }
@@ -82,7 +80,7 @@ public final class Company {
       if (name == null) {
         throw new IllegalStateException("Address cannot be null.");
       }
-      return new Company(taxIdentificationNumber, address, name);
+      return new CompanyHibernate(taxIdentificationNumber, address, name);
     }
   }
 }

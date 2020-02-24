@@ -8,33 +8,23 @@
   <artifactId>project-16-irek-jonasz-magda</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <properties>
-    <java.version>11</java.version>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.source>11</maven.compiler.source>
-    <start-class>org.roshan.Application</start-class>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <junit.version>5.5.2</junit.version>
-    <jackson.version>2.10.2</jackson.version>
-  </properties>
-
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.2.2.RELEASE</version>
   </parent>
 
+  <properties>
+    <java.version>11</java.version>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <start-class>com.futurecollars.accounting.Application</start-class>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <junit.version>5.5.2</junit.version>
+  </properties>
+
   <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.jayway.jsonpath</groupId>
-      <artifactId>json-path</artifactId>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
@@ -141,6 +131,10 @@
           </execution>
         </executions>
         <configuration>
+          <sourceDirectories>
+            <sourceDirectory>src/main/java</sourceDirectory>
+            <sourceDirectory>src/test/java</sourceDirectory>
+          </sourceDirectories>
           <failsOnError>true</failsOnError>
           <failOnViolation>true</failOnViolation>
           <violationSeverity>warning</violationSeverity>
@@ -157,6 +151,13 @@
         <version>3.8.0</version>
         <configuration>
           <release>11</release>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${org.mapstruct.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>

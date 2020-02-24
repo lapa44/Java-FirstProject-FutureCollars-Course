@@ -3,7 +3,7 @@ package com.futurecollars.accounting.configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.futurecollars.accounting.infrastructure.database.Database;
-import com.futurecollars.accounting.infrastructure.database.InMemoryDatabase;
+import com.futurecollars.accounting.infrastructure.database.HibernateDatabase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,11 +12,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("memory")
-class AppConfigTest {
+@ActiveProfiles("hibernate")
+class AppConfigHibernateTest {
 
   @Autowired
-  Database database;
+  private Database database;
 
   @Autowired
   private ApplicationContext context;
@@ -28,8 +28,8 @@ class AppConfigTest {
   }
 
   @Test
-  public void shouldLoadConfigContextForSpecifiedDatabase() {
+  public void shouldLoadContextWithHibernateDatabase() {
     context = new AnnotationConfigApplicationContext(AppConfig.class);
-    assertThat(database instanceof InMemoryDatabase).isTrue();
+    assertThat(database instanceof HibernateDatabase).isTrue();
   }
 }

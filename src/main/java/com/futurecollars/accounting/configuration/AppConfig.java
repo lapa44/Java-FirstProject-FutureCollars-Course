@@ -1,8 +1,9 @@
 package com.futurecollars.accounting.configuration;
 
 import com.futurecollars.accounting.infrastructure.database.Database;
+import com.futurecollars.accounting.infrastructure.database.HibernateDatabase;
 import com.futurecollars.accounting.infrastructure.database.InMemoryDatabase;
-import com.futurecollars.accounting.service.InvoiceBook;
+import com.futurecollars.accounting.infrastructure.database.hibernate.InvoiceRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,4 +23,9 @@ public class AppConfig {
     return null;
   }
 
+  @Bean
+  @ConditionalOnProperty(name = "database", havingValue = "hibernate")
+  public Database hibernateDatabase(InvoiceRepository invoiceRepository) {
+    return new HibernateDatabase(invoiceRepository);
+  }
 }
