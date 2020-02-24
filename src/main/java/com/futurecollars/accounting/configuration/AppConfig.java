@@ -2,6 +2,7 @@ package com.futurecollars.accounting.configuration;
 
 import com.futurecollars.accounting.infrastructure.database.Database;
 import com.futurecollars.accounting.infrastructure.database.HibernateDatabase;
+import com.futurecollars.accounting.infrastructure.database.HibernateDatabase;
 import com.futurecollars.accounting.infrastructure.database.InFileDatabase;
 import com.futurecollars.accounting.infrastructure.database.InMemoryDatabase;
 import com.futurecollars.accounting.infrastructure.database.hibernate.InvoiceRepository;

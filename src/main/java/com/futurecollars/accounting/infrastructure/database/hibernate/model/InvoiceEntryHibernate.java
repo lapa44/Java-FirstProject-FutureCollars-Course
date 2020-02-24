@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 import com.futurecollars.accounting.domain.model.Vat;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "entries")
@@ -25,6 +26,8 @@ public class InvoiceEntryHibernate {
   private UUID id;
   private String description;
   private String unit;
+  @Type(type = "big_decimal")
+  @Column(name = "price", scale = 2)
   private BigDecimal price;
   private BigDecimal vatValue;
   private Vat vatRate;
@@ -36,7 +39,7 @@ public class InvoiceEntryHibernate {
     this.id = id;
     this.description = description;
     this.unit = unit;
-    this.price = price;
+    this.price = price.setScale(2); //this is unacceptable.
     this.vatRate = vatRate;
     this.vatValue = price.multiply(vatRate.getValue());
   }
@@ -60,6 +63,7 @@ public class InvoiceEntryHibernate {
 
   public BigDecimal getPrice() {
     return price;
+    //return new BigDecimal(price.stripTrailingZeros().toPlainString());
   }
 
   public BigDecimal getVatValue() {
@@ -132,4 +136,5 @@ public class InvoiceEntryHibernate {
       return new InvoiceEntryHibernate(id, description, unit, price, vatRate);
     }
   }
+
 }
