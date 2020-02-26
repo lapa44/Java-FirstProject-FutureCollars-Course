@@ -26,8 +26,6 @@ public class InvoiceEntryHibernate {
   private UUID id;
   private String description;
   private String unit;
-  @Type(type = "big_decimal")
-  @Column(name = "price", scale = 2)
   private BigDecimal price;
   private BigDecimal vatValue;
   private Vat vatRate;
@@ -39,7 +37,7 @@ public class InvoiceEntryHibernate {
     this.id = id;
     this.description = description;
     this.unit = unit;
-    this.price = price.setScale(2); //this is unacceptable.
+    this.price = price;
     this.vatRate = vatRate;
     this.vatValue = price.multiply(vatRate.getValue());
   }
