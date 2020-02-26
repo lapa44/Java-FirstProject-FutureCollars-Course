@@ -61,8 +61,8 @@ public final class InvoiceEntry {
     InvoiceEntry that = (InvoiceEntry) ob;
     return Objects.equals(description, that.description)
         && Objects.equals(unit, that.unit)
-        && Objects.equals(price, that.price)
-        && Objects.equals(vatValue, that.vatValue)
+        && price.compareTo(that.price) == 0
+        && vatValue.compareTo(that.vatValue) == 0
         && vatRate == that.vatRate;
   }
 
