@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.UUID;
 import com.futurecollars.accounting.domain.model.Vat;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "entries")
@@ -61,7 +60,6 @@ public class InvoiceEntryHibernate {
 
   public BigDecimal getPrice() {
     return price;
-    //return new BigDecimal(price.stripTrailingZeros().toPlainString());
   }
 
   public BigDecimal getVatValue() {
