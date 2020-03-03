@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-class InFileDatabase implements Database {
+public class InFileDatabase implements Database {
 
   private final FileHelper fileHelper;
   private final ObjectMapper mapper;

@@ -132,5 +132,4 @@ public class InvoiceEntryHibernate {
       return new InvoiceEntryHibernate(id, description, unit, price, vatRate);
     }
   }
-
 }
