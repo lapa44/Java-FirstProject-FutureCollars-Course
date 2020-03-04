@@ -32,7 +32,7 @@ public class InvoiceController {
   }
 
   @PostMapping
-  public ResponseEntity<Invoice> saveInvoice(@RequestBody Invoice invoice) {
+  public ResponseEntity<Invoice> saveInvoice(@Valid @RequestBody Invoice invoice) {
     try {
       return new ResponseEntity<>(invoiceBook.saveInvoice(invoice), OK);
     } catch (DatabaseOperationException ex) {

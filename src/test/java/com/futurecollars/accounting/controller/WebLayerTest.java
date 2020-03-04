@@ -55,28 +55,17 @@ public class WebLayerTest {
   public void shouldSaveInvoice() throws Exception {
     LocalDate today = LocalDate.now();
     UUID id = UUID.randomUUID();
-//    when(book.saveInvoice(invoice)).
-//        thenReturn(
     Invoice invoice = new Invoice(id, "123", today,
         new Company(UUID.randomUUID(), "address2", "company2"),
         new Company(UUID.randomUUID(), "address3", "company3"),
         Collections.singletonList(new InvoiceEntry("computer", "unit",
             new BigDecimal("2.25"), Vat.VAT_23)));
-
-
     this.mockMvc.perform(
         MockMvcRequestBuilders.post("/invoices")
             .contentType(MediaType.APPLICATION_JSON)
             .content(asJsonString(invoice)))
         .andExpect(status().isOk());
     verify(book).saveInvoice(eq(invoice));
-
-
-//        .andExpect(status().isOk())
-//        .andExpect(jsonPath("$.invoiceNumber").value("123"))
-//        .andExpect(jsonPath("$.date").value(DateTimeFormatter.ofPattern("YYYY-MM-dd").format(today)))
-//        .andExpect(jsonPath("$.id").value(id.toString()))
-
   }
 
   @Test
