@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <springProfile name="default">
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <root level="INFO">
+      <appender-ref ref="CONSOLE"/>
+    </root>
+  </springProfile>
+
+  <springProfile name="prod">
+    <property name="LOGS" value="./src/main/resources/logs"/>
+
+    <appender name="Console"
+      class="ch.qos.logback.core.ConsoleAppender">
+      <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+          <Pattern>
+            %green(Settings from Logback-spring.xml) \r\n %cyan(%d{ISO8601}) %highlight(%-5level) [%blue(%t)]
+            %yellow(%C{1.}):
+            %msg%n%throwable
+          </Pattern>
+        </layout>
+      </encoder>
+    </appender>
+
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOGS}/app-logger.log</file>
+      <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+      </encoder>
+
+      <rollingPolicy
+        class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>
+          ${LOGS}/archived/app-logger-%d{yyyy-MM-dd}_%i.log
+        </fileNamePattern>
+        <maxHistory>60</maxHistory>
+        <maxFileSize>10MB</maxFileSize>
+      </rollingPolicy>
+
+    </appender>
+
+    <!-- LOG "com.futurecollars*" at INFO level -->
+    <logger name="com.futurecollars" level="info" additivity="false">
+      <appender-ref ref="RollingFile"/>
+      <appender-ref ref="Console"/>
+    </logger>
+
+    <!-- LOG everything at INFO level to console -->
+    <root level="INFO">
+      <appender-ref ref="Console"/>
+    </root>
+
+    <!-- LOG everything at WARN level to LogFile -->
+    <root level="warn">
+      <appender-ref ref="RollingFile"/>
+    </root>
+
+  </springProfile>
+
+</configuration>
