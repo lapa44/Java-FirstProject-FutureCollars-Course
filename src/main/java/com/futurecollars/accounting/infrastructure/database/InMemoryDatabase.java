@@ -28,7 +28,7 @@ public class InMemoryDatabase implements Database {
       return updateInvoice(invoice);
     } else {
       throw new DatabaseOperationException(
-          new IllegalStateException("Fatal error"));
+          new IllegalStateException("Invoice of given ID doesn't exist."));
     }
   }
 
