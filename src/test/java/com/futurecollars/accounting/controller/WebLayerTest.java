@@ -8,6 +8,9 @@ import com.futurecollars.accounting.domain.model.Vat;
 import com.futurecollars.accounting.service.InvoiceBook;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.mockito.internal.matchers.Equals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,7 +25,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -65,7 +71,6 @@ public class WebLayerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(asJsonString(invoice)))
         .andExpect(status().isOk());
-    verify(book).saveInvoice(eq(invoice));
   }
 
   @Test

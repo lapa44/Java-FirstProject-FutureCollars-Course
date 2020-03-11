@@ -1,6 +1,7 @@
 package com.futurecollars.accounting.domain.model;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,18 +12,18 @@ import java.util.stream.Collectors;
 
 public final class Invoice {
 
-  @NotEmpty
+  @NotNull
   private final UUID id;
-  @NotEmpty
+  @NotNull
   private final String invoiceNumber;
-  @NotEmpty
+  @NotNull
   @PastOrPresent
   private final LocalDate date;
-  @NotEmpty
+  @NotNull
   private final Company buyer;
-  @NotEmpty
+  @NotNull
   private final Company seller;
-  @NotEmpty
+  @NotNull
   private final List<InvoiceEntry> entries;
 
   public Invoice(UUID id, String invoiceNumber, LocalDate date, Company buyer, Company seller,
