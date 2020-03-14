@@ -1,5 +1,6 @@
 package com.futurecollars.accounting.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.futurecollars.accounting.domain.model.InvoiceEntry;
 
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ public class InvoiceCalculateTotalValue {
         .map(InvoiceEntry::getPrice)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
+
 
   public BigDecimal getTotalValueWithTaxes(List<InvoiceEntry> entries) {
     return entries.stream()

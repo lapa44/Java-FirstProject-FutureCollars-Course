@@ -9,14 +9,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
 public class InvoiceBook {
 
   private final Database database;
 
-    InvoiceBook(Database database) {
-
-        this.database = database;
+  public InvoiceBook(Database database) {
+    this.database = database;
     }
 
   public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
@@ -27,7 +25,7 @@ public class InvoiceBook {
       return database.getInvoiceById(id);
   }
 
-  public List<Invoice> getInvoices(){
+  public List<Invoice> getInvoices() throws DatabaseOperationException {
       return database.getInvoices();
   }
 

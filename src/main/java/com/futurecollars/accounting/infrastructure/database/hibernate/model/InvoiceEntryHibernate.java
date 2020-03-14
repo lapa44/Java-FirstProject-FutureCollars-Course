@@ -1,20 +1,39 @@
-package com.futurecollars.accounting.domain.model;
+package com.futurecollars.accounting.infrastructure.database.hibernate.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
+import com.futurecollars.accounting.domain.model.Vat;
+import org.hibernate.annotations.GenericGenerator;
 
-public final class InvoiceEntry {
+@Entity
+@Table(name = "entries")
+public class InvoiceEntryHibernate {
+  @Id
+  @GeneratedValue(generator = "UUID", strategy = GenerationType.AUTO)
+  @GenericGenerator(
+      name = "UUID",
+      strategy = "org.hibernate.id.UUIDGenerator"
+      )
+  @Column(name = "id", updatable = false, nullable = false)
+  private UUID id;
+  private String description;
+  private String unit;
+  private BigDecimal price;
+  private BigDecimal vatValue;
+  private Vat vatRate;
 
-  private final String description;
-  private final String unit;
-  private final BigDecimal price;
-  private final BigDecimal vatValue;
-  private final Vat vatRate;
+  public InvoiceEntryHibernate() {}
 
-  public InvoiceEntry(String description, String unit, BigDecimal price,
-      Vat vatRate) {
+  public InvoiceEntryHibernate(UUID id, String description, String unit, BigDecimal price,
+                               Vat vatRate) {
+    this.id = id;
     this.description = description;
     this.unit = unit;
     this.price = price;
@@ -22,7 +41,8 @@ public final class InvoiceEntry {
     this.vatValue = price.multiply(vatRate.getValue());
   }
 
-  public InvoiceEntry(InvoiceEntry invoiceEntry) {
+  public InvoiceEntryHibernate(InvoiceEntryHibernate invoiceEntry) {
+    this.id = UUID.randomUUID();
     this.description = invoiceEntry.description;
     this.unit = invoiceEntry.unit;
     this.price = invoiceEntry.price;
@@ -51,27 +71,10 @@ public final class InvoiceEntry {
   }
 
   @Override
-  public boolean equals(Object ob) {
-    if (this == ob) {
-      return true;
-    }
-    if (ob == null || getClass() != ob.getClass()) {
-      return false;
-    }
-    InvoiceEntry that = (InvoiceEntry) ob;
-    return Objects.equals(description, that.description)
-        && Objects.equals(unit, that.unit)
-        && price.compareTo(that.price) == 0
-        && vatValue.compareTo(that.vatValue) == 0
-        && vatRate == that.vatRate;
-  }
-
-  @Override
   public int hashCode() {
     return Objects.hash(description, unit, price, vatValue, vatRate);
   }
 
-  @JsonIgnore
   public BigDecimal getPriceWithTax() {
     return price.add(vatValue);
   }
@@ -81,11 +84,17 @@ public final class InvoiceEntry {
   }
 
   public static class Builder {
+    private UUID id;
     private String description;
     private String unit;
     private BigDecimal price;
     private BigDecimal vatValue;
     private Vat vatRate;
+
+    public Builder setId(UUID id) {
+      this.id = id;
+      return this;
+    }
 
     public Builder setDescription(String description) {
       this.description = description;
@@ -107,7 +116,7 @@ public final class InvoiceEntry {
       return this;
     }
 
-    public InvoiceEntry build() {
+    public InvoiceEntryHibernate build() {
       if (description == null) {
         throw new IllegalStateException("Description cannot be null.");
       }
@@ -120,7 +129,7 @@ public final class InvoiceEntry {
       if (vatRate == null) {
         throw new IllegalStateException("Vat rate cannot be null.");
       }
-      return new InvoiceEntry(description, unit, price, vatRate);
+      return new InvoiceEntryHibernate(id, description, unit, price, vatRate);
     }
   }
 }

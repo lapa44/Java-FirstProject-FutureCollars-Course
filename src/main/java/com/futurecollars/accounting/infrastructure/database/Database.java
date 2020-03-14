@@ -11,8 +11,7 @@ public interface Database {
 
   Invoice getInvoiceById(UUID id) throws DatabaseOperationException;
 
-  List<Invoice> getInvoices();
+  List<Invoice> getInvoices() throws DatabaseOperationException;
 
   Invoice removeInvoiceById(UUID id) throws DatabaseOperationException;
-
 }
