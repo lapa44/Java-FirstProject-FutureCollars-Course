@@ -53,12 +53,6 @@ public class InvoiceController {
     }
   }
 
-//  @GetMapping
-//  public List<Invoice> getInvoices() {
-//    List<Invoice> invoices = invoiceBook.getInvoices();
-//    return invoices;
-//  }
-
   @GetMapping
   public ResponseEntity <List<Invoice>> getInvoices() {
     List<Invoice> invoices;
