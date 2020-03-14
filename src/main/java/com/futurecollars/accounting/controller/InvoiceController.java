@@ -53,10 +53,23 @@ public class InvoiceController {
     }
   }
 
+//  @GetMapping
+//  public List<Invoice> getInvoices() {
+//    List<Invoice> invoices = invoiceBook.getInvoices();
+//    return invoices;
+//  }
+
   @GetMapping
-  public List<Invoice> getInvoices() {
-    List<Invoice> invoices = invoiceBook.getInvoices();
-    return invoices;
+  public ResponseEntity <List<Invoice>> getInvoices() {
+    List<Invoice> invoices;
+    try {
+      invoices = invoiceBook.getInvoices();
+      ResponseEntity <List<Invoice>> invoicesResponseEntity = new ResponseEntity<>(
+          invoices, OK);
+      return invoicesResponseEntity;
+    } catch (DatabaseOperationException ex) {
+      return new ResponseEntity<>(NOT_FOUND);
+    }
   }
 
   @DeleteMapping("/{id}")
