@@ -49,8 +49,7 @@ abstract class DatabaseTest {
     //when
     Invoice savedInvoiceBeforeUpdate = database
         .saveInvoice(DataGenerator.randomInvoice().build());
-    Invoice savedInvoiceAfterUpdate = database
-        .saveInvoice(DataGenerator.randomInvoice()
+    Invoice savedInvoiceAfterUpdate = database.saveInvoice(DataGenerator.randomInvoice()
             .setId(savedInvoiceBeforeUpdate.getId())
             .build());
     //then
