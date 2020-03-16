@@ -54,11 +54,11 @@ public class InvoiceController {
   }
 
   @GetMapping
-  public ResponseEntity <List<Invoice>> getInvoices() {
+  public ResponseEntity<List<Invoice>> getInvoices() {
     List<Invoice> invoices;
     try {
       invoices = invoiceBook.getInvoices();
-      ResponseEntity <List<Invoice>> invoicesResponseEntity = new ResponseEntity<>(
+      ResponseEntity<List<Invoice>> invoicesResponseEntity = new ResponseEntity<>(
           invoices, OK);
       return invoicesResponseEntity;
     } catch (DatabaseOperationException ex) {

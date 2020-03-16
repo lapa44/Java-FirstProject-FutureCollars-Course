@@ -1,5 +1,6 @@
 package com.futurecollars.accounting.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.futurecollars.accounting.domain.model.Company;
 import com.futurecollars.accounting.domain.model.Invoice;
@@ -8,9 +9,6 @@ import com.futurecollars.accounting.domain.model.Vat;
 import com.futurecollars.accounting.service.InvoiceBook;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import org.mockito.internal.matchers.Equals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,10 +23,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -41,15 +35,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class WebLayerTest {
 
   @Autowired
-  ObjectMapper mapper;
+  private ObjectMapper mapper;
 
-  private String asJsonString(final Invoice invoice) {
-    try {
+  private String asJsonString(final Invoice invoice) throws JsonProcessingException {
       return mapper.writeValueAsString(invoice);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
   }
+
+//  private String asJsonString(final Invoice invoice) {
+//    try {
+//      return mapper.writeValueAsString(invoice);
+//    } catch (Exception e) {
+//      throw new RuntimeException(e);
+//    }
+//  }
 
   @Autowired
   private MockMvc mockMvc;
@@ -66,7 +64,7 @@ public class WebLayerTest {
         new Company(UUID.randomUUID(), "address3", "company3"),
         Collections.singletonList(new InvoiceEntry("computer", "unit",
             new BigDecimal("2.25"), Vat.VAT_23)));
-    this.mockMvc.perform(
+    mockMvc.perform(
         MockMvcRequestBuilders.post("/invoices")
             .contentType(MediaType.APPLICATION_JSON)
             .content(asJsonString(invoice)))

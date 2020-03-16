@@ -22,9 +22,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -74,28 +72,6 @@ class InvoiceControllerTest {
     assertThat(controller.getInvoiceById(id).equals(invoice));
   }
 
-//  @Test
-//  public void shouldReturnInvoices() {
-//    //given
-//    InvoiceBook book = mock(InvoiceBook.class);
-//    InvoiceController controller = new InvoiceController(book);
-//    UUID id = UUID.randomUUID();
-//    when(book.getInvoices()).thenReturn(Arrays.asList(
-//        new Invoice(id, "123", LocalDate.now(),
-//            new Company(UUID.randomUUID(), "address2", "company2"),
-//            new Company(UUID.randomUUID(), "address3", "company3"),
-//            Collections.singletonList(new InvoiceEntry("computer", "unit",
-//                new BigDecimal("2.25"), Vat.VAT_23)))));
-//    //when
-//    List<Invoice> result = controller.getInvoices();
-//    //then
-//    verify(book).getInvoices();
-//    assertThat(result).hasSize(1);
-//    assertThat(result.equals(Arrays.asList()));
-//    assertThat(result.iterator().next().getId()).isEqualTo(id);
-//    assertEquals(1, book.getInvoices().size());
-//  }
-
   @Test
   public void shouldReturnInvoices() throws DatabaseOperationException {
     //given
@@ -113,6 +89,7 @@ class InvoiceControllerTest {
     //then
     verify(book).getInvoices();
     assertThat(result.equals(Arrays.asList()));
+    assertThat(result.equals(book.getInvoices()));
     assertNotNull(result);
     assertEquals(1, book.getInvoices().size());
   }
@@ -130,9 +107,10 @@ class InvoiceControllerTest {
             new BigDecimal("2.25"), Vat.VAT_23)));
 
     //when
-    controller.removeInvoiceById(id);
+    ResponseEntity<Invoice> result = controller.removeInvoiceById(id);
     //then
     verify(book).removeInvoiceById(id);
+    assertThat(result.equals(null));
     assertEquals(null, book.removeInvoiceById(id));
   }
 }
