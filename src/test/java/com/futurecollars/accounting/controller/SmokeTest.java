@@ -12,11 +12,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 public class SmokeTest {
 
-    @Autowired
-    private InvoiceController controller;
+  @Autowired
+  private InvoiceController controller;
 
-    @Test
-    public void contextLoads() throws Exception {
-        assertThat(controller).isNotNull();
-    }
+  @Test
+  public void contextLoads() throws Exception {
+    assertThat(controller).isNotNull();
+  }
 }

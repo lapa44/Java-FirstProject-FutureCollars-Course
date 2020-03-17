@@ -41,13 +41,13 @@ public class WebLayerTest {
     return mapper.writeValueAsString(invoice);
   }
 
-//  private String asJsonString(final Invoice invoice) {
-//    try {
-//      return mapper.writeValueAsString(invoice);
-//    } catch (Exception e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
+  //  private String asJsonString(final Invoice invoice) {
+  //    try {
+  //      return mapper.writeValueAsString(invoice);
+  //    } catch (Exception e) {
+  //      throw new RuntimeException(e);
+  //    }
+  //  }
 
   @Autowired
   private MockMvc mockMvc;
@@ -75,8 +75,8 @@ public class WebLayerTest {
   public void shouldGettingInvoices() throws Exception {
     UUID id = UUID.randomUUID();
     LocalDate today = LocalDate.now();
-    when(book.getInvoices()).
-        thenReturn(Collections.singletonList(
+    when(book.getInvoices())
+        .thenReturn(Collections.singletonList(
             new Invoice(id, "123", today,
                 new Company(UUID.randomUUID(), "address2", "company2"),
                 new Company(UUID.randomUUID(), "address3", "company3"),
@@ -85,7 +85,8 @@ public class WebLayerTest {
     this.mockMvc.perform(get("/invoices"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].invoiceNumber").value("123"))
-        .andExpect(jsonPath("$[0].date").value(DateTimeFormatter.ofPattern("YYYY-MM-dd").format(today)))
+        .andExpect(jsonPath("$[0].date")
+            .value(DateTimeFormatter.ofPattern("YYYY-MM-dd").format(today)))
         .andExpect(jsonPath("$[0].id").value(id.toString()))
         .andExpect(jsonPath("$[0].entries").isNotEmpty())
         .andReturn();
@@ -97,8 +98,8 @@ public class WebLayerTest {
     UUID taxId2 = UUID.randomUUID();
     UUID taxId3 = UUID.randomUUID();
     LocalDate today = LocalDate.now();
-    when(book.getInvoiceById(id)).
-        thenReturn(
+    when(book.getInvoiceById(id))
+        .thenReturn(
             new Invoice(id, "123", today,
                 new Company(taxId2, "address2", "company2"),
                 new Company(taxId3, "address3", "company3"),
@@ -107,7 +108,8 @@ public class WebLayerTest {
     this.mockMvc.perform(get("/invoices/" + id))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.invoiceNumber").value("123"))
-        .andExpect(jsonPath("$.date").value(DateTimeFormatter.ofPattern("YYYY-MM-dd").format(today)))
+        .andExpect(jsonPath("$.date")
+            .value(DateTimeFormatter.ofPattern("YYYY-MM-dd").format(today)))
         .andExpect(jsonPath("$.id").value(id.toString()))
         .andExpect(jsonPath("$.entries").isNotEmpty());
   }
@@ -126,8 +128,8 @@ public class WebLayerTest {
     UUID taxId2 = UUID.randomUUID();
     UUID taxId3 = UUID.randomUUID();
     LocalDate today = LocalDate.now();
-    when(book.getInvoiceById(id)).
-        thenReturn(
+    when(book.getInvoiceById(id))
+        .thenReturn(
             new Invoice(id, "123", today,
                 new Company(taxId2, "address2", "company2"),
                 new Company(taxId3, "address3", "company3"),
