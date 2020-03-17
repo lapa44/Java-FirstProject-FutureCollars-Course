@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
-public class WebLayerTest {
+public class RestControllerTest {
 
   @Autowired
   private ObjectMapper mapper;
@@ -40,14 +40,6 @@ public class WebLayerTest {
   private String asJsonString(final Invoice invoice) throws JsonProcessingException {
     return mapper.writeValueAsString(invoice);
   }
-
-  //  private String asJsonString(final Invoice invoice) {
-  //    try {
-  //      return mapper.writeValueAsString(invoice);
-  //    } catch (Exception e) {
-  //      throw new RuntimeException(e);
-  //    }
-  //  }
 
   @Autowired
   private MockMvc mockMvc;

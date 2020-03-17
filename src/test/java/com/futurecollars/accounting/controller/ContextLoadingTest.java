@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class SmokeTest {
+public class ContextLoadingTest {
 
   @Autowired
   private InvoiceController controller;
