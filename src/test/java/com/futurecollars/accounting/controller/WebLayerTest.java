@@ -38,7 +38,7 @@ public class WebLayerTest {
   private ObjectMapper mapper;
 
   private String asJsonString(final Invoice invoice) throws JsonProcessingException {
-      return mapper.writeValueAsString(invoice);
+    return mapper.writeValueAsString(invoice);
   }
 
 //  private String asJsonString(final Invoice invoice) {
