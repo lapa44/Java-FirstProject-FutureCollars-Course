@@ -1,10 +1,7 @@
 package com.futurecollars.accounting.controller;
 
-import com.futurecollars.accounting.domain.model.Company;
 import com.futurecollars.accounting.domain.model.DataGenerator;
 import com.futurecollars.accounting.domain.model.Invoice;
-import com.futurecollars.accounting.domain.model.InvoiceEntry;
-import com.futurecollars.accounting.domain.model.Vat;
 import com.futurecollars.accounting.infrastructure.database.DatabaseOperationException;
 import com.futurecollars.accounting.service.InvoiceBook;
 import org.junit.jupiter.api.Test;
@@ -14,10 +11,7 @@ import org.mockito.Mock;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,7 +66,6 @@ class InvoiceControllerTest {
     //given
     InvoiceBook book = mock(InvoiceBook.class);
     InvoiceController controller = new InvoiceController(book);
-    UUID id = UUID.randomUUID();
     Invoice invoice = DataGenerator.randomInvoice().build();
     when(book.getInvoices()).thenReturn(Arrays.asList(
         new Invoice(invoice)));
