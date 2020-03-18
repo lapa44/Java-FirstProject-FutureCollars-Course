@@ -1,5 +1,7 @@
 package com.futurecollars.accounting.domain.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.time.LocalDate;
@@ -11,11 +13,18 @@ import java.util.stream.Collectors;
 
 public final class Invoice {
 
+  @NotNull
   private final UUID id;
+  @NotNull
   private final String invoiceNumber;
+  @NotNull
+  @PastOrPresent
   private final LocalDate date;
+  @NotNull
   private final Company buyer;
+  @NotNull
   private final Company seller;
+  @NotNull
   private final List<InvoiceEntry> entries;
 
   @JsonCreator

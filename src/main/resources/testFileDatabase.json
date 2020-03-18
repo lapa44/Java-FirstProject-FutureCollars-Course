@@ -1,0 +1,1 @@
+{"id":"733ec4e7-3731-4369-99f5-3dd2e4bccbcb","invoiceNumber":" ","date":"2020-03-08","buyer":{"taxIdentificationNumber":"1f8abb6d-aae4-43d1-adc0-8546b7b9712b","address":" ","name":" "},"seller":{"taxIdentificationNumber":"8dc1499e-1e92-4cad-beae-7d6fe2d5318c","address":" ","name":" "},"entries":[{"description":"Cola","unit":"PLN","price":5,"vatValue":0.0,"vatRate":"VAT_0"}]}
