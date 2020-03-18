@@ -1,5 +1,5 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://futurecollars.pl/soap"
-  targetNamespace="http://futurecollars.pl/soap" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://futurecollars.com/soap"
+  targetNamespace="http://futurecollars.com/soap" elementFormDefault="qualified">
 
   <xs:element name="getInvoiceRequest">
     <xs:complexType>
@@ -19,16 +19,39 @@
 
   <xs:complexType name="invoice">
     <xs:sequence>
-      <xs:element name="title" type="xs:string"/>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="invoiceNumber" type="xs:string"/>
       <xs:element name="date" type="xs:date"/>
-      <xs:element name="type" type="tns:type"/>
+      <xs:element name="buyer" type="tns:company"/>
+      <xs:element name="seller" type="tns:company"/>
+      <!--      <xs:element name="entries" type="tns:entry" maxOccurs="unbounded"/>-->
     </xs:sequence>
   </xs:complexType>
 
-  <xs:simpleType name="type">
+  <xs:complexType name="company">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="address" type="xs:string"/>
+      <xs:element name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!--  <xs:complexType name="entry">-->
+  <!--    <xs:sequence>-->
+  <!--      <xs:element name="description" type="xs:string"/>-->
+  <!--      <xs:element name="unit" type="xs:string"/>-->
+  <!--      <xs:element name="price" type="xs:decimal"/>-->
+  <!--      <xs:element name="vatValue" type="xs:decimal"/>-->
+  <!--      <xs:element name="Vat" type="tns:Vat"/>-->
+  <!--    </xs:sequence>-->
+  <!--  </xs:complexType>-->
+
+  <xs:simpleType name="Vat">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="PRO_FORMA"/>
-      <xs:enumeration value="FINAL"/>
+      <xs:enumeration value="VAT_23"/>
+      <xs:enumeration value="VAT_8"/>
+      <xs:enumeration value="VAT_5"/>
+      <xs:enumeration value="VAT_0"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
