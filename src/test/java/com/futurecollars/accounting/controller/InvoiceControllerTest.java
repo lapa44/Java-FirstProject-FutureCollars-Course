@@ -1,6 +1,7 @@
 package com.futurecollars.accounting.controller;
 
 import com.futurecollars.accounting.domain.model.Company;
+import com.futurecollars.accounting.domain.model.DataGenerator;
 import com.futurecollars.accounting.domain.model.Invoice;
 import com.futurecollars.accounting.domain.model.InvoiceEntry;
 import com.futurecollars.accounting.domain.model.Vat;
@@ -41,11 +42,8 @@ class InvoiceControllerTest {
     //given
     InvoiceBook book = mock(InvoiceBook.class);
     InvoiceController controller = new InvoiceController(book);
-    Invoice invoice = new Invoice(UUID.randomUUID(), "123", LocalDate.now(),
-        new Company(UUID.randomUUID(), "address2", "company2"),
-        new Company(UUID.randomUUID(), "address3", "company3"),
-        Collections.singletonList(new InvoiceEntry("computer", "unit",
-            new BigDecimal("2.25"), Vat.VAT_23)));
+    Invoice invoice = DataGenerator.randomInvoice().build();
+
     //when
     controller.saveInvoice(invoice);
     //then
@@ -59,11 +57,8 @@ class InvoiceControllerTest {
     InvoiceBook book = mock(InvoiceBook.class);
     InvoiceController controller = new InvoiceController(book);
     UUID id = UUID.randomUUID();
-    Invoice invoice = new Invoice(UUID.randomUUID(), "123", LocalDate.now(),
-        new Company(UUID.randomUUID(), "address2", "company2"),
-        new Company(UUID.randomUUID(), "address3", "company3"),
-        Collections.singletonList(new InvoiceEntry("computer", "unit",
-            new BigDecimal("2.25"), Vat.VAT_23)));
+    Invoice invoice = DataGenerator.randomInvoice().build();
+
     //when
     controller.getInvoiceById(id);
     //then
@@ -78,12 +73,10 @@ class InvoiceControllerTest {
     InvoiceBook book = mock(InvoiceBook.class);
     InvoiceController controller = new InvoiceController(book);
     UUID id = UUID.randomUUID();
+    Invoice invoice = DataGenerator.randomInvoice().build();
     when(book.getInvoices()).thenReturn(Arrays.asList(
-        new Invoice(id, "123", LocalDate.now(),
-            new Company(UUID.randomUUID(), "address2", "company2"),
-            new Company(UUID.randomUUID(), "address3", "company3"),
-            Collections.singletonList(new InvoiceEntry("computer", "unit",
-                new BigDecimal("2.25"), Vat.VAT_23)))));
+        new Invoice(invoice)));
+
     //when
     ResponseEntity<List<Invoice>> result = controller.getInvoices();
     //then
@@ -100,11 +93,6 @@ class InvoiceControllerTest {
     InvoiceBook book = mock(InvoiceBook.class);
     InvoiceController controller = new InvoiceController(book);
     UUID id = UUID.randomUUID();
-    Invoice invoice = new Invoice(id, "123", LocalDate.now(),
-        new Company(UUID.randomUUID(), "address2", "company2"),
-        new Company(UUID.randomUUID(), "address3", "company3"),
-        Collections.singletonList(new InvoiceEntry("computer", "unit",
-            new BigDecimal("2.25"), Vat.VAT_23)));
 
     //when
     ResponseEntity<Invoice> result = controller.removeInvoiceById(id);
