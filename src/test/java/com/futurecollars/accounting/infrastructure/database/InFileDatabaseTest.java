@@ -1,22 +1,22 @@
 package com.futurecollars.accounting.infrastructure.database;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.io.File;
 
 class InFileDatabaseTest extends DatabaseTest {
 
+  private String path = "src/main/resources/testFileDatabase.json";
+
   @Override
   Database getDatabase() {
-    return new InFileDatabase();
+    return new InFileDatabase(path);
   }
 
   @BeforeEach
   void removeTestFileBeforeTest() {
 
-    File file = new File("src\\main\\resources\\testFileDatabase.json");
+    File file = new File(path);
     System.out.println("Checking if file exist...");
     if (file.exists()) {
       file.delete();
