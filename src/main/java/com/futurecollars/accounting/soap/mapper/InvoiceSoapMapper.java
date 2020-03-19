@@ -8,7 +8,8 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.UUID;
 
-@Mapper(uses = {CompanySoapMapper.class}, imports = UUID.class)
+@Mapper(uses = {CompanySoapMapper.class, InvoiceEntrySoapMapper.class},
+    imports = UUID.class)
 public interface InvoiceSoapMapper {
 
   InvoiceSoapMapper INSTANCE = Mappers.getMapper(InvoiceSoapMapper.class);

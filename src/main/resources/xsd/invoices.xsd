@@ -1,6 +1,14 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://futurecollars.com/soap"
   targetNamespace="http://futurecollars.com/soap" elementFormDefault="qualified">
 
+  <xs:element name="saveInvoice">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="invoice" type="tns:invoice"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
   <xs:element name="getInvoiceRequest">
     <xs:complexType>
       <xs:sequence>
@@ -24,7 +32,7 @@
       <xs:element name="date" type="xs:date"/>
       <xs:element name="buyer" type="tns:company"/>
       <xs:element name="seller" type="tns:company"/>
-      <!--      <xs:element name="entries" type="tns:entry" maxOccurs="unbounded"/>-->
+      <xs:element name="entries" type="tns:invoiceEntry" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -36,15 +44,15 @@
     </xs:sequence>
   </xs:complexType>
 
-  <!--  <xs:complexType name="entry">-->
-  <!--    <xs:sequence>-->
-  <!--      <xs:element name="description" type="xs:string"/>-->
-  <!--      <xs:element name="unit" type="xs:string"/>-->
-  <!--      <xs:element name="price" type="xs:decimal"/>-->
-  <!--      <xs:element name="vatValue" type="xs:decimal"/>-->
-  <!--      <xs:element name="Vat" type="tns:Vat"/>-->
-  <!--    </xs:sequence>-->
-  <!--  </xs:complexType>-->
+  <xs:complexType name="invoiceEntry">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="unit" type="xs:string"/>
+      <xs:element name="price" type="xs:decimal"/>
+      <xs:element name="vatValue" type="xs:decimal"/>
+      <xs:element name="Vat" type="tns:Vat"/>
+    </xs:sequence>
+  </xs:complexType>
 
   <xs:simpleType name="Vat">
     <xs:restriction base="xs:string">

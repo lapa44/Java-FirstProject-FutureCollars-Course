@@ -1,7 +1,5 @@
 package com.futurecollars.accounting.infrastructure.database;
 
-import org.junit.jupiter.api.BeforeEach;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -14,7 +12,7 @@ class InFileDatabaseTest extends DatabaseTest {
     return new InFileDatabase(path);
   }
 
-  @BeforeEach
+  //  @BeforeEach
   void removeTestFileBeforeTest() {
 
     File file = new File(path);
