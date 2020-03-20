@@ -1,7 +1,9 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://futurecollars.com/soap"
-  targetNamespace="http://futurecollars.com/soap" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="http://futurecollars.com/soap"
+  targetNamespace="http://futurecollars.com/soap"
+  elementFormDefault="qualified">
 
-  <xs:element name="saveInvoice">
+  <xs:element name="invoiceToSaveRequest">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="invoice" type="tns:invoice"/>
@@ -9,7 +11,16 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="getInvoiceRequest">
+  <xs:element name="invoiceToSaveResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="invoice" type="tns:invoice"/>
+        <xs:element name="errorMsg" type="xs:string" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getInvoiceByIdRequest">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="id" type="xs:string"/>
@@ -17,7 +28,7 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="getInvoiceResponse">
+  <xs:element name="getInvoiceByIdResponse">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="invoice" type="tns:invoice"/>
@@ -38,7 +49,7 @@
 
   <xs:complexType name="company">
     <xs:sequence>
-      <xs:element name="id" type="xs:string"/>
+      <xs:element name="taxIdentificationNumber" type="xs:string"/>
       <xs:element name="address" type="xs:string"/>
       <xs:element name="name" type="xs:string"/>
     </xs:sequence>
@@ -50,7 +61,7 @@
       <xs:element name="unit" type="xs:string"/>
       <xs:element name="price" type="xs:decimal"/>
       <xs:element name="vatValue" type="xs:decimal"/>
-      <xs:element name="Vat" type="tns:Vat"/>
+      <xs:element name="vatRate" type="tns:Vat"/>
     </xs:sequence>
   </xs:complexType>
 

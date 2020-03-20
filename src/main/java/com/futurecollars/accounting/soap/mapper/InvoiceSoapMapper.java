@@ -15,7 +15,7 @@ public interface InvoiceSoapMapper {
   InvoiceSoapMapper INSTANCE = Mappers.getMapper(InvoiceSoapMapper.class);
 
   @Mappings({
-      @Mapping(target = "id", expression = "java(UUID.randomUUID())")})
+      @Mapping(target = "id", expression = "java(UUID.fromString(invoiceSoap.getId()))")})
   Invoice toInvoice(com.futurecollars.soap.Invoice invoiceSoap);
 
   @Mappings({
