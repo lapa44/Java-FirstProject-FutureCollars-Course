@@ -20,8 +20,7 @@ public class InFileDatabase implements Database {
   private final ObjectMapper mapper;
 
 
-  public InFileDatabase() {
-    String path = "src\\main\\resources\\testFileDatabase.json";
+  public InFileDatabase(String path) {
     this.fileHelper = new FileHelper(path);
     this.mapper = new ObjectMapper();
     this.mapper.registerModule(new JavaTimeModule());

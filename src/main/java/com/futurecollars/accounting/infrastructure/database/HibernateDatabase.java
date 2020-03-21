@@ -20,7 +20,7 @@ public class HibernateDatabase implements Database {
   }
 
   @Override
-  public Invoice saveInvoice(Invoice invoice) {
+  public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
@@ -28,7 +28,12 @@ public class HibernateDatabase implements Database {
     if (invoiceHibernate.getId() == null) {
       return InvoiceMapper.INSTANCE.toInvoice(insertInvoice(invoiceHibernate));
     }
-    return InvoiceMapper.INSTANCE.toInvoice(invoiceRepository.save(invoiceHibernate));
+    if (invoiceRepository.findById(invoiceHibernate.getId()).isPresent()) {
+      return InvoiceMapper.INSTANCE.toInvoice(invoiceRepository.save(invoiceHibernate));
+    } else {
+      throw new DatabaseOperationException(
+          new NoSuchElementException("Invoice of given ID was not found in database."));
+    }
   }
 
   private InvoiceHibernate insertInvoice(InvoiceHibernate invoice) {

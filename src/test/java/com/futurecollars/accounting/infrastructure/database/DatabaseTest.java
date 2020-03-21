@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.futurecollars.accounting.domain.model.Company;
+import com.futurecollars.accounting.domain.model.DataGenerator;
 import com.futurecollars.accounting.domain.model.Invoice;
 import com.futurecollars.accounting.domain.model.InvoiceEntry;
 import com.futurecollars.accounting.domain.model.Vat;
@@ -28,17 +29,7 @@ abstract class DatabaseTest {
       throws DatabaseOperationException {
     //given
     Database database = getDatabase();
-    Invoice invoice = new Invoice(null, "No1",
-        LocalDate.now(),
-        new Company(
-            UUID.randomUUID(), " ", " "),
-        new Company(UUID.randomUUID(), " ",
-            " "), Arrays.asList(
-        new InvoiceEntry(
-            "Tequila", "Pln",
-            new BigDecimal("20"), Vat.VAT_23),
-        new InvoiceEntry("Cola", "Pln",
-            new BigDecimal("5"), Vat.VAT_8)));
+    Invoice invoice = DataGenerator.randomInvoice().build();
     //when
     Invoice savedInvoice = database.saveInvoice(invoice);
     //then
@@ -57,21 +48,10 @@ abstract class DatabaseTest {
     Database database = getDatabase();
     //when
     Invoice savedInvoiceBeforeUpdate = database
-        .saveInvoice(new Invoice(null, "No1",
-            LocalDate.now(), new Company(UUID.randomUUID(), " ", " "),
-            new Company(
-                UUID.randomUUID(), " ", " "),
-            Arrays.asList(new InvoiceEntry(
-                    "Tequila", "PLN", new BigDecimal("20"), Vat.VAT_23),
-                new InvoiceEntry("Cola", "PLN", new BigDecimal("5"),
-                    Vat.VAT_8))));
-    Invoice savedInvoiceAfterUpdate = database.saveInvoice(
-        new Invoice(
-            savedInvoiceBeforeUpdate.getId(), "No2", LocalDate.now(),
-            new Company(UUID.randomUUID(), " ", " "),
-            new Company(UUID.randomUUID(),
-                " ", " "), Arrays.asList(new InvoiceEntry(
-            "Beer", "Pln", new BigDecimal("7"), Vat.VAT_5))));
+        .saveInvoice(DataGenerator.randomInvoice().build());
+    Invoice savedInvoiceAfterUpdate = database.saveInvoice(DataGenerator.randomInvoice()
+            .setId(savedInvoiceBeforeUpdate.getId())
+            .build());
     //then
     assertNotNull(savedInvoiceBeforeUpdate);
     assertNotNull(savedInvoiceAfterUpdate);
@@ -88,22 +68,8 @@ abstract class DatabaseTest {
       throws DatabaseOperationException {
     //given
     Database database = getDatabase();
-    Invoice invoice1 = new Invoice(null, "No1", LocalDate.now(),
-        new Company(UUID.randomUUID(), " ", " "),
-        new Company(UUID.randomUUID(),
-            " ", " "), Arrays.asList(
-        new InvoiceEntry("Beer01", "PLN", new BigDecimal("20"),
-            Vat.VAT_23),
-        new InvoiceEntry("Beer02", "PLN", new BigDecimal("5"),
-            Vat.VAT_8)));
-    Invoice invoice2 = new Invoice(null, "No1", LocalDate.now(),
-        new Company(UUID.randomUUID(), " ", " "),
-        new Company(UUID.randomUUID(),
-            " ", " "), Arrays.asList(
-        new InvoiceEntry("Whiskey01", "Pln", new BigDecimal("3.33"),
-            Vat.VAT_23),
-        new InvoiceEntry("whiskey02", "Pln", new BigDecimal("2.42"),
-            Vat.VAT_8)));
+    Invoice invoice1 = DataGenerator.randomInvoice().build();
+    Invoice invoice2 = DataGenerator.randomInvoice().build();
     //when
     Invoice savedInvoice1 = database.saveInvoice(invoice1);
     Invoice savedInvoice2 = database.saveInvoice(invoice2);
@@ -143,14 +109,7 @@ abstract class DatabaseTest {
     Database database = getDatabase();
     //when
     Invoice savedInvoice = database
-        .saveInvoice(new Invoice(null, "No1", LocalDate.now(),
-            new Company(UUID.randomUUID(), " ", " "),
-            new Company(UUID.randomUUID(),
-                " ", " "), Arrays.asList(
-            new InvoiceEntry("Tequila", "PLN", new BigDecimal("20"),
-                Vat.VAT_23),
-            new InvoiceEntry("Cola", "PLN", new BigDecimal("5"),
-                Vat.VAT_8))));
+        .saveInvoice(DataGenerator.randomInvoice().build());
     //then
     assertEquals(1, database.getInvoices().size());
     Invoice invoiceRemoved = database
@@ -170,7 +129,8 @@ abstract class DatabaseTest {
   void shouldBuildInvoiceByBuilderAndAddItToDatabase()
       throws DatabaseOperationException {
     Database database = getDatabase();
-    Invoice savedInvoice = database.saveInvoice(Invoice.builder()
+    Invoice savedInvoice = database.saveInvoice(
+        Invoice.builder()
         .setInvoiceNumber(" ")
         .setDate(LocalDate.now())
         .setBuyer(new Company(UUID.randomUUID(), " ", " "))
