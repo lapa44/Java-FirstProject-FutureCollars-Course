@@ -24,14 +24,14 @@ public class InvoiceEntryHibernate {
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
   private String description;
-  private String unit;
+  private Integer unit;
   private BigDecimal price;
   private BigDecimal vatValue;
   private Vat vatRate;
 
   public InvoiceEntryHibernate() {}
 
-  public InvoiceEntryHibernate(UUID id, String description, String unit, BigDecimal price,
+  public InvoiceEntryHibernate(UUID id, String description, Integer unit, BigDecimal price,
                                Vat vatRate) {
     this.id = id;
     this.description = description;
@@ -54,7 +54,7 @@ public class InvoiceEntryHibernate {
     return description;
   }
 
-  public String getUnit() {
+  public Integer getUnit() {
     return unit;
   }
 
@@ -86,7 +86,7 @@ public class InvoiceEntryHibernate {
   public static class Builder {
     private UUID id;
     private String description;
-    private String unit;
+    private Integer unit;
     private BigDecimal price;
     private BigDecimal vatValue;
     private Vat vatRate;
@@ -101,7 +101,7 @@ public class InvoiceEntryHibernate {
       return this;
     }
 
-    public Builder setUnit(String unit) {
+    public Builder setUnit(Integer unit) {
       this.unit = unit;
       return this;
     }

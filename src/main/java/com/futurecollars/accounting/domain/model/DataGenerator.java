@@ -22,7 +22,7 @@ public class DataGenerator {
   public static InvoiceEntry.Builder randomEntry() {
     return InvoiceEntry.builder()
         .setDescription(faker.commerce().productName())
-        .setUnit(faker.currency().name())
+        .setUnit(faker.random().nextInt(1, 100))
         .setPrice(new BigDecimal(faker.number().randomNumber(3, false)))
         .setVatRate(Vat.values()[faker.random().nextInt(Vat.values().length)]);
   }

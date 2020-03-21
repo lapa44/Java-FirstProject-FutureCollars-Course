@@ -54,7 +54,7 @@ public class RestControllerTest {
     Invoice invoice = new Invoice(id, "123", today,
         new Company(UUID.randomUUID(), "address2", "company2"),
         new Company(UUID.randomUUID(), "address3", "company3"),
-        Collections.singletonList(new InvoiceEntry("computer", "unit",
+        Collections.singletonList(new InvoiceEntry("computer", 10,
             new BigDecimal("2.25"), Vat.VAT_23)));
     mockMvc.perform(
         MockMvcRequestBuilders.post("/invoices")
@@ -72,7 +72,7 @@ public class RestControllerTest {
             new Invoice(id, "123", today,
                 new Company(UUID.randomUUID(), "address2", "company2"),
                 new Company(UUID.randomUUID(), "address3", "company3"),
-                Collections.singletonList(new InvoiceEntry("computer", "unit",
+                Collections.singletonList(new InvoiceEntry("computer", 10,
                     new BigDecimal("2.25"), Vat.VAT_23)))));
     this.mockMvc.perform(get("/invoices"))
         .andExpect(status().isOk())
@@ -95,7 +95,7 @@ public class RestControllerTest {
             new Invoice(id, "123", today,
                 new Company(taxId2, "address2", "company2"),
                 new Company(taxId3, "address3", "company3"),
-                Collections.singletonList(new InvoiceEntry("computer", "unit",
+                Collections.singletonList(new InvoiceEntry("computer", 10,
                     new BigDecimal("2.25"), Vat.VAT_23))));
     this.mockMvc.perform(get("/invoices/" + id))
         .andExpect(status().isOk())
@@ -125,7 +125,7 @@ public class RestControllerTest {
             new Invoice(id, "123", today,
                 new Company(taxId2, "address2", "company2"),
                 new Company(taxId3, "address3", "company3"),
-                Collections.singletonList(new InvoiceEntry("computer", "unit",
+                Collections.singletonList(new InvoiceEntry("computer", 10,
                     new BigDecimal("2.25"), Vat.VAT_23))));
     mockMvc.perform(get("/invoices/" + id))
         .andExpect(status().isBadRequest())

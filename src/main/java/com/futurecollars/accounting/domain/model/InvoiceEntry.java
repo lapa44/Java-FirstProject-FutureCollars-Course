@@ -8,12 +8,12 @@ import java.util.Objects;
 public final class InvoiceEntry {
 
   private final String description;
-  private final String unit;
+  private final Integer unit;
   private final BigDecimal price;
   private final BigDecimal vatValue;
   private final Vat vatRate;
 
-  public InvoiceEntry(String description, String unit, BigDecimal price,
+  public InvoiceEntry(String description, Integer unit, BigDecimal price,
       Vat vatRate) {
     this.description = description;
     this.unit = unit;
@@ -34,7 +34,7 @@ public final class InvoiceEntry {
     return description;
   }
 
-  public String getUnit() {
+  public Integer getUnit() {
     return unit;
   }
 
@@ -82,7 +82,7 @@ public final class InvoiceEntry {
 
   public static class Builder {
     private String description;
-    private String unit;
+    private Integer unit;
     private BigDecimal price;
     private BigDecimal vatValue;
     private Vat vatRate;
@@ -92,7 +92,7 @@ public final class InvoiceEntry {
       return this;
     }
 
-    public Builder setUnit(String unit) {
+    public Builder setUnit(Integer unit) {
       this.unit = unit;
       return this;
     }

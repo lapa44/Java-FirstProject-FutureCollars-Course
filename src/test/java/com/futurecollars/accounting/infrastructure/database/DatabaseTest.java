@@ -135,7 +135,7 @@ abstract class DatabaseTest {
         .setDate(LocalDate.now())
         .setBuyer(new Company(UUID.randomUUID(), " ", " "))
         .setSeller(new Company(UUID.randomUUID(), " ", " "))
-        .addEntry(new InvoiceEntry("Cola", "PLN", new BigDecimal("5"),
+        .addEntry(new InvoiceEntry("Cola", 100, new BigDecimal("5"),
             Vat.VAT_0))
         .build());
     assertNotNull(savedInvoice);
