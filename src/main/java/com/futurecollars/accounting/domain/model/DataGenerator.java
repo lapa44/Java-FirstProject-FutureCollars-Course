@@ -22,8 +22,9 @@ public class DataGenerator {
   public static InvoiceEntry.Builder randomEntry() {
     return InvoiceEntry.builder()
         .setDescription(faker.commerce().productName())
-        .setUnit(faker.random().nextInt(1, 100))
-        .setPrice(new BigDecimal(faker.number().randomNumber(3, false)))
+        .setUnit(faker.commerce().material())
+        .setQuantity(faker.random().nextInt(1, 100))
+        .setUnitPrice(new BigDecimal(faker.number().randomNumber(3, false)))
         .setVatRate(Vat.values()[faker.random().nextInt(Vat.values().length)]);
   }
 
@@ -40,7 +41,7 @@ public class DataGenerator {
         .setInvoiceNumber(faker.idNumber().valid())
         .setDate(LocalDate.ofInstant(
             faker.date().past(
-                faker.random().nextInt(1,10), TimeUnit.DAYS).toInstant(), ZoneId.systemDefault()))
+                faker.random().nextInt(1, 10), TimeUnit.DAYS).toInstant(), ZoneId.systemDefault()))
         .setBuyer(randomCompany().build())
         .setSeller(randomCompany().build())
         .setEntries(randomEntries(faker.number().randomDigitNotZero()));
