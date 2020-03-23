@@ -11,7 +11,7 @@ import com.github.javafaker.Faker;
 
 public class DataGenerator {
   private static Faker FAKER = new Faker();
-  private static String[] UNITS = {"Hours, Kilograms, Milliliters, Pieces"};
+  private static String[] UNITS = {"Hours", "Kilograms", "Milliliters", "Pieces"};
 
   public static Company.Builder randomCompany() {
     return Company.builder()
