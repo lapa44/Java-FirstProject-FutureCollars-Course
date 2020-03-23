@@ -10,22 +10,23 @@ import java.util.concurrent.TimeUnit;
 import com.github.javafaker.Faker;
 
 public class DataGenerator {
-  private static Faker faker = new Faker();
+  private static Faker FAKER = new Faker();
+  private static String[] UNITS = {"Hours, Kilograms, Milliliters, Pieces"};
 
   public static Company.Builder randomCompany() {
     return Company.builder()
         .setTaxIdentificationNumber( UUID.randomUUID())
-        .setAddress(faker.address().fullAddress())
-        .setName(faker.name().name());
+        .setAddress(FAKER.address().fullAddress())
+        .setName(FAKER.name().name());
   }
 
   public static InvoiceEntry.Builder randomEntry() {
     return InvoiceEntry.builder()
-        .setDescription(faker.commerce().productName())
-        .setUnit(faker.commerce().material())
-        .setQuantity(faker.random().nextInt(1, 100))
-        .setUnitPrice(new BigDecimal(faker.number().randomNumber(3, false)))
-        .setVatRate(Vat.values()[faker.random().nextInt(Vat.values().length)]);
+        .setDescription(FAKER.commerce().productName())
+        .setUnit(FAKER.options().nextElement(UNITS))
+        .setQuantity(FAKER.random().nextInt(1, 100))
+        .setUnitPrice(new BigDecimal(FAKER.number().randomNumber(3, false)))
+        .setVatRate(Vat.values()[FAKER.random().nextInt(Vat.values().length)]);
   }
 
   public static List<InvoiceEntry> randomEntries(int numberOfEntries) {
@@ -38,12 +39,12 @@ public class DataGenerator {
 
   public static Invoice.Builder randomInvoice() {
     return Invoice.builder()
-        .setInvoiceNumber(faker.idNumber().valid())
+        .setInvoiceNumber(FAKER.idNumber().valid())
         .setDate(LocalDate.ofInstant(
-            faker.date().past(
-                faker.random().nextInt(1, 10), TimeUnit.DAYS).toInstant(), ZoneId.systemDefault()))
+            FAKER.date().past(
+                FAKER.random().nextInt(1, 10), TimeUnit.DAYS).toInstant(), ZoneId.systemDefault()))
         .setBuyer(randomCompany().build())
         .setSeller(randomCompany().build())
-        .setEntries(randomEntries(faker.number().randomDigitNotZero()));
+        .setEntries(randomEntries(FAKER.number().randomDigitNotZero()));
   }
 }
