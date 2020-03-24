@@ -15,6 +15,7 @@ import com.futurecollars.accounting.domain.model.Vat;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -22,11 +23,11 @@ import java.util.UUID;
 
 abstract class DatabaseTest {
 
-  abstract Database getDatabase();
+  abstract Database getDatabase() throws IOException;
 
   @RepeatedTest(3)
   void shouldSaveInvoiceToMemoryAndReturnItById()
-      throws DatabaseOperationException {
+      throws DatabaseOperationException, IOException {
     //given
     Database database = getDatabase();
     Invoice invoice = DataGenerator.randomInvoice().build();
@@ -43,15 +44,15 @@ abstract class DatabaseTest {
 
   @RepeatedTest(3)
   void shouldSaveAndUpdateInvoiceInMemory()
-      throws DatabaseOperationException {
+      throws DatabaseOperationException, IOException {
     //given
     Database database = getDatabase();
     //when
     Invoice savedInvoiceBeforeUpdate = database
         .saveInvoice(DataGenerator.randomInvoice().build());
     Invoice savedInvoiceAfterUpdate = database.saveInvoice(DataGenerator.randomInvoice()
-            .setId(savedInvoiceBeforeUpdate.getId())
-            .build());
+        .setId(savedInvoiceBeforeUpdate.getId())
+        .build());
     //then
     assertNotNull(savedInvoiceBeforeUpdate);
     assertNotNull(savedInvoiceAfterUpdate);
@@ -65,7 +66,7 @@ abstract class DatabaseTest {
 
   @RepeatedTest(3)
   void shouldReturnAllInvoices()
-      throws DatabaseOperationException {
+      throws DatabaseOperationException, IOException {
     //given
     Database database = getDatabase();
     Invoice invoice1 = DataGenerator.randomInvoice().build();
@@ -82,21 +83,21 @@ abstract class DatabaseTest {
   }
 
   @RepeatedTest(3)
-  void shouldThrowExceptionForNoInvoiceWhileGettingById() {
+  void shouldThrowExceptionForNoInvoiceWhileGettingById() throws IOException {
     Database database = getDatabase();
     assertThrows(DatabaseOperationException.class, () ->
         database.getInvoiceById(UUID.randomUUID()));
   }
 
   @RepeatedTest(3)
-  void shouldThrowExceptionForNullIdWhileGettingById() {
+  void shouldThrowExceptionForNullIdWhileGettingById() throws IOException {
     Database database = getDatabase();
     assertThrows(IllegalArgumentException.class,
         () -> database.getInvoiceById(null));
   }
 
   @RepeatedTest(3)
-  void shouldThrowExceptionForNullInvoiceWhileSaving() {
+  void shouldThrowExceptionForNullInvoiceWhileSaving() throws IOException {
     Database database = getDatabase();
     assertThrows(IllegalArgumentException.class,
         () -> database.saveInvoice(null));
@@ -104,7 +105,7 @@ abstract class DatabaseTest {
 
   @RepeatedTest(3)
   void shouldRemoveInvoiceFromDatabase()
-      throws DatabaseOperationException {
+      throws DatabaseOperationException, IOException {
     //given
     Database database = getDatabase();
     //when
@@ -119,7 +120,7 @@ abstract class DatabaseTest {
   }
 
   @RepeatedTest(3)
-  void shouldThrowExceptionForNoInvoiceToRemove() {
+  void shouldThrowExceptionForNoInvoiceToRemove() throws IOException {
     Database database = getDatabase();
     assertThrows(DatabaseOperationException.class, () ->
         database.removeInvoiceById(UUID.randomUUID()));
@@ -127,7 +128,7 @@ abstract class DatabaseTest {
 
   @Test
   void shouldBuildInvoiceByBuilderAndAddItToDatabase()
-      throws DatabaseOperationException {
+      throws DatabaseOperationException, IOException {
     Database database = getDatabase();
     Invoice savedInvoice = database.saveInvoice(
         Invoice.builder()
@@ -142,7 +143,7 @@ abstract class DatabaseTest {
                 .setUnitPrice(new BigDecimal("3"))
                 .setVatRate(Vat.VAT_0)
                 .build())
-        .build());
+            .build());
     assertNotNull(savedInvoice);
     assertNotNull(savedInvoice.getId());
     assertEquals(savedInvoice,

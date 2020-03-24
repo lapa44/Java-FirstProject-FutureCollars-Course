@@ -16,12 +16,15 @@ public class FileHelper {
   private final String path;
   private final String endOfTheLine;
 
-  public FileHelper(String path) {
+  public FileHelper(String path) throws IOException {
     if (path == null) {
       throw new IllegalArgumentException("File path cannot by empty.");
     }
     if (!Files.isDirectory(Paths.get(path).getParent())) {
       throw new IllegalArgumentException("Directory does not exist.");
+    }
+    if (Files.notExists(Paths.get(path))) {
+      Files.createFile(Paths.get(path));
     }
     this.path = path;
     this.endOfTheLine = "\r\n";

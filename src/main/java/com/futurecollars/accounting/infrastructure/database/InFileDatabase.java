@@ -20,7 +20,7 @@ public class InFileDatabase implements Database {
   private final ObjectMapper mapper;
 
 
-  public InFileDatabase(String path) {
+  public InFileDatabase(String path) throws IOException {
     this.fileHelper = new FileHelper(path);
     this.mapper = new ObjectMapper();
     this.mapper.registerModule(new JavaTimeModule());

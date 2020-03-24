@@ -3,13 +3,14 @@ package com.futurecollars.accounting.infrastructure.database;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
+import java.io.IOException;
 
 class InFileDatabaseTest extends DatabaseTest {
 
   private String path = "src/main/resources/testFileDatabase.json";
 
   @Override
-  Database getDatabase() {
+  Database getDatabase() throws IOException {
     return new InFileDatabase(path);
   }
 
