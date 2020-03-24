@@ -12,33 +12,33 @@ import java.util.UUID;
 public class InvoiceBook {
 
   private final Database database;
-  private final List<InvoiceBookEvents> observers;
+  private final List<InvoiceBookObserver> observers;
 
   public InvoiceBook(Database database) {
     this.database = database;
     this.observers = new ArrayList<>();
   }
 
-  public void registerObserver(InvoiceBookEvents event) {
-    observers.add(event);
+  public void registerObserver(InvoiceBookObserver observer) {
+    observers.add(observer);
   }
 
   public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
     Invoice savedInvoice = database.saveInvoice(invoice);
     if (invoice.getId() == null) {
-      observers.forEach(invoiceBookEvents -> {
+      observers.forEach(observer -> {
         try {
-          invoiceBookEvents.invoiceInsert(savedInvoice);
+          observer.invoiceInserted(savedInvoice);
         } catch (MessagingException ex) {
-          throw new RuntimeException(ex);
+          // logger
         }
       });
     } else {
-      observers.forEach(invoiceBookEvents -> {
+      observers.forEach(observer -> {
         try {
-          invoiceBookEvents.invoiceModified(savedInvoice);
+          observer.invoiceModified(savedInvoice);
         } catch (MessagingException ex) {
-          throw new RuntimeException(ex);
+          // logger
         }
       });
     }
@@ -55,11 +55,11 @@ public class InvoiceBook {
 
   public Invoice removeInvoiceById(UUID id) throws DatabaseOperationException {
     Invoice removedInvoice = database.removeInvoiceById(id);
-    observers.forEach(invoiceBookEvents -> {
+    observers.forEach(observer -> {
       try {
-        invoiceBookEvents.invoiceDeleted(removedInvoice);
+        observer.invoiceDeleted(removedInvoice);
       } catch (MessagingException ex) {
-        throw new RuntimeException(ex);
+        // logger
       }
     });
     return removedInvoice;

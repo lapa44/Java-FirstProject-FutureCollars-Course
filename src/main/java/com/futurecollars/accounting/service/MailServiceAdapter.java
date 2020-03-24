@@ -3,7 +3,7 @@ package com.futurecollars.accounting.service;
 import javax.mail.MessagingException;
 import com.futurecollars.accounting.domain.model.Invoice;
 
-public class MailServiceAdapter implements InvoiceBookEvents {
+public class MailServiceAdapter implements InvoiceBookObserver {
 
   private final MailService mailService;
 
@@ -12,7 +12,7 @@ public class MailServiceAdapter implements InvoiceBookEvents {
   }
 
   @Override
-  public void invoiceInsert(Invoice invoice) throws MessagingException {
+  public void invoiceInserted(Invoice invoice) throws MessagingException {
     mailService.sendMail(invoice, MailMessage.ADDED);
   }
 
