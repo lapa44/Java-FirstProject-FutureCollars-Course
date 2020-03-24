@@ -54,11 +54,11 @@ class InvoiceControllerTest {
     Invoice invoice = DataGenerator.randomInvoice().build();
 
     //when
-    controller.getInvoiceById(id);
+    controller.getInvoiceById(id, "application/json");
     //then
     verify(book).getInvoiceById(id);
     assertNotNull(controller.saveInvoice(invoice));
-    assertThat(controller.getInvoiceById(id).equals(invoice));
+    assertThat(controller.getInvoiceById(id, "application/json").equals(invoice));
   }
 
   @Test
@@ -71,7 +71,7 @@ class InvoiceControllerTest {
         new Invoice(invoice)));
 
     //when
-    ResponseEntity<List<Invoice>> result = controller.getInvoices();
+    ResponseEntity<List<Invoice>> result = controller.getInvoices("application/json");
     //then
     verify(book).getInvoices();
     assertThat(result.equals(Arrays.asList()));
