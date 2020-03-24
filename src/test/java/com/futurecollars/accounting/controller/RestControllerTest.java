@@ -2,10 +2,8 @@ package com.futurecollars.accounting.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.futurecollars.accounting.domain.model.Company;
+import com.futurecollars.accounting.domain.model.DataGenerator;
 import com.futurecollars.accounting.domain.model.Invoice;
-import com.futurecollars.accounting.domain.model.InvoiceEntry;
-import com.futurecollars.accounting.domain.model.Vat;
 import com.futurecollars.accounting.service.InvoiceBook;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -49,13 +46,7 @@ public class RestControllerTest {
 
   @Test
   public void shouldSaveInvoice() throws Exception {
-    LocalDate today = LocalDate.now();
-    UUID id = UUID.randomUUID();
-    Invoice invoice = new Invoice(id, "123", today,
-        new Company(UUID.randomUUID(), "address2", "company2"),
-        new Company(UUID.randomUUID(), "address3", "company3"),
-        Collections.singletonList(new InvoiceEntry("computer", "unit",
-            new BigDecimal("2.25"), Vat.VAT_23)));
+    Invoice invoice = DataGenerator.randomInvoice().build();
     mockMvc.perform(
         MockMvcRequestBuilders.post("/invoices")
             .contentType(MediaType.APPLICATION_JSON)
@@ -69,11 +60,11 @@ public class RestControllerTest {
     LocalDate today = LocalDate.now();
     when(book.getInvoices())
         .thenReturn(Collections.singletonList(
-            new Invoice(id, "123", today,
-                new Company(UUID.randomUUID(), "address2", "company2"),
-                new Company(UUID.randomUUID(), "address3", "company3"),
-                Collections.singletonList(new InvoiceEntry("computer", "unit",
-                    new BigDecimal("2.25"), Vat.VAT_23)))));
+            DataGenerator.randomInvoice()
+              .setId(id)
+              .setDate(today)
+              .setInvoiceNumber("123")
+              .build()));
     this.mockMvc.perform(get("/invoices"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].invoiceNumber").value("123"))
@@ -87,16 +78,14 @@ public class RestControllerTest {
   @Test
   public void shouldGettingInvoiceById() throws Exception {
     UUID id = UUID.randomUUID();
-    UUID taxId2 = UUID.randomUUID();
-    UUID taxId3 = UUID.randomUUID();
     LocalDate today = LocalDate.now();
     when(book.getInvoiceById(id))
         .thenReturn(
-            new Invoice(id, "123", today,
-                new Company(taxId2, "address2", "company2"),
-                new Company(taxId3, "address3", "company3"),
-                Collections.singletonList(new InvoiceEntry("computer", "unit",
-                    new BigDecimal("2.25"), Vat.VAT_23))));
+            DataGenerator.randomInvoice()
+              .setId(id)
+              .setDate(today)
+              .setInvoiceNumber("123")
+              .build());
     this.mockMvc.perform(get("/invoices/" + id))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.invoiceNumber").value("123"))
@@ -117,16 +106,11 @@ public class RestControllerTest {
   @Test
   public void shouldReturnsStatus400_ForNullIdWhileGettingInvoiceById() throws Exception {
     UUID id = null;
-    UUID taxId2 = UUID.randomUUID();
-    UUID taxId3 = UUID.randomUUID();
-    LocalDate today = LocalDate.now();
     when(book.getInvoiceById(id))
         .thenReturn(
-            new Invoice(id, "123", today,
-                new Company(taxId2, "address2", "company2"),
-                new Company(taxId3, "address3", "company3"),
-                Collections.singletonList(new InvoiceEntry("computer", "unit",
-                    new BigDecimal("2.25"), Vat.VAT_23))));
+            DataGenerator.randomInvoice()
+              .setId(id)
+              .build());
     mockMvc.perform(get("/invoices/" + id))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$").doesNotHaveJsonPath());

@@ -12,8 +12,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public final class Invoice {
-
-  @NotNull
+  
   private final UUID id;
   @NotNull
   private final String invoiceNumber;

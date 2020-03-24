@@ -9,15 +9,19 @@ public final class InvoiceEntry {
 
   private final String description;
   private final String unit;
+  private final Integer quantity;
+  private final BigDecimal unitPrice;
   private final BigDecimal price;
   private final BigDecimal vatValue;
   private final Vat vatRate;
 
-  public InvoiceEntry(String description, String unit, BigDecimal price,
-      Vat vatRate) {
+  public InvoiceEntry(String description, String unit, Integer quantity, BigDecimal unitPrice,
+                      Vat vatRate) {
     this.description = description;
     this.unit = unit;
-    this.price = price;
+    this.quantity = quantity;
+    this.unitPrice = unitPrice;
+    this.price = unitPrice.multiply(BigDecimal.valueOf(quantity));
     this.vatRate = vatRate;
     this.vatValue = price.multiply(vatRate.getValue());
   }
@@ -25,6 +29,8 @@ public final class InvoiceEntry {
   public InvoiceEntry(InvoiceEntry invoiceEntry) {
     this.description = invoiceEntry.description;
     this.unit = invoiceEntry.unit;
+    this.quantity = invoiceEntry.quantity;
+    this.unitPrice = invoiceEntry.unitPrice;
     this.price = invoiceEntry.price;
     this.vatRate = invoiceEntry.vatRate;
     this.vatValue = invoiceEntry.vatValue;
@@ -36,6 +42,14 @@ public final class InvoiceEntry {
 
   public String getUnit() {
     return unit;
+  }
+
+  public Integer getQuantity() {
+    return quantity;
+  }
+
+  public BigDecimal getUnitPrice() {
+    return unitPrice;
   }
 
   public BigDecimal getPrice() {
@@ -61,6 +75,8 @@ public final class InvoiceEntry {
     InvoiceEntry that = (InvoiceEntry) ob;
     return Objects.equals(description, that.description)
         && Objects.equals(unit, that.unit)
+        && Objects.equals(quantity, that.quantity)
+        && unitPrice.compareTo(that.unitPrice) == 0
         && price.compareTo(that.price) == 0
         && vatValue.compareTo(that.vatValue) == 0
         && vatRate == that.vatRate;
@@ -68,7 +84,7 @@ public final class InvoiceEntry {
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, unit, price, vatValue, vatRate);
+    return Objects.hash(description, unit, quantity, unitPrice, price, vatValue, vatRate);
   }
 
   @JsonIgnore
@@ -83,6 +99,8 @@ public final class InvoiceEntry {
   public static class Builder {
     private String description;
     private String unit;
+    private Integer quantity;
+    private BigDecimal unitPrice;
     private BigDecimal price;
     private BigDecimal vatValue;
     private Vat vatRate;
@@ -94,6 +112,16 @@ public final class InvoiceEntry {
 
     public Builder setUnit(String unit) {
       this.unit = unit;
+      return this;
+    }
+
+    public Builder setQuantity(Integer quantity) {
+      this.quantity = quantity;
+      return this;
+    }
+
+    public Builder setUnitPrice(BigDecimal unitPrice) {
+      this.unitPrice = unitPrice;
       return this;
     }
 
@@ -114,13 +142,16 @@ public final class InvoiceEntry {
       if (unit == null) {
         throw new IllegalStateException("Unit cannot be null.");
       }
-      if (price == null) {
-        throw new IllegalStateException("Price cannot be null.");
+      if (quantity == null) {
+        throw new IllegalStateException("Quantity cannot be null.");
+      }
+      if (unitPrice == null) {
+        throw new IllegalStateException("Unit price cannot be null.");
       }
       if (vatRate == null) {
         throw new IllegalStateException("Vat rate cannot be null.");
       }
-      return new InvoiceEntry(description, unit, price, vatRate);
+      return new InvoiceEntry(description, unit, quantity, unitPrice, vatRate);
     }
   }
 }

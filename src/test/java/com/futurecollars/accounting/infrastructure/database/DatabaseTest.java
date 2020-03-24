@@ -131,12 +131,17 @@ abstract class DatabaseTest {
     Database database = getDatabase();
     Invoice savedInvoice = database.saveInvoice(
         Invoice.builder()
-        .setInvoiceNumber(" ")
-        .setDate(LocalDate.now())
-        .setBuyer(new Company(UUID.randomUUID(), " ", " "))
-        .setSeller(new Company(UUID.randomUUID(), " ", " "))
-        .addEntry(new InvoiceEntry("Cola", "PLN", new BigDecimal("5"),
-            Vat.VAT_0))
+            .setInvoiceNumber(" ")
+            .setDate(LocalDate.now())
+            .setBuyer(new Company(UUID.randomUUID(), " ", " "))
+            .setSeller(new Company(UUID.randomUUID(), " ", " "))
+            .addEntry(InvoiceEntry.builder()
+                .setDescription("Cola")
+                .setUnit("ml")
+                .setQuantity(100)
+                .setUnitPrice(new BigDecimal("3"))
+                .setVatRate(Vat.VAT_0)
+                .build())
         .build());
     assertNotNull(savedInvoice);
     assertNotNull(savedInvoice.getId());

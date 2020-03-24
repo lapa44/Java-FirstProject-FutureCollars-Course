@@ -25,18 +25,22 @@ public class InvoiceEntryHibernate {
   private UUID id;
   private String description;
   private String unit;
+  private Integer quantity;
+  private BigDecimal unitPrice;
   private BigDecimal price;
   private BigDecimal vatValue;
   private Vat vatRate;
 
   public InvoiceEntryHibernate() {}
 
-  public InvoiceEntryHibernate(UUID id, String description, String unit, BigDecimal price,
-                               Vat vatRate) {
+  public InvoiceEntryHibernate(UUID id, String description, String unit, Integer quantity,
+                               BigDecimal unitPrice, Vat vatRate) {
     this.id = id;
     this.description = description;
     this.unit = unit;
-    this.price = price;
+    this.quantity = quantity;
+    this.unitPrice = unitPrice;
+    this.price = unitPrice.multiply(BigDecimal.valueOf(quantity));
     this.vatRate = vatRate;
     this.vatValue = price.multiply(vatRate.getValue());
   }
@@ -45,6 +49,8 @@ public class InvoiceEntryHibernate {
     this.id = UUID.randomUUID();
     this.description = invoiceEntry.description;
     this.unit = invoiceEntry.unit;
+    this.quantity = invoiceEntry.quantity;
+    this.unitPrice = invoiceEntry.unitPrice;
     this.price = invoiceEntry.price;
     this.vatRate = invoiceEntry.vatRate;
     this.vatValue = invoiceEntry.vatValue;
@@ -56,6 +62,14 @@ public class InvoiceEntryHibernate {
 
   public String getUnit() {
     return unit;
+  }
+
+  public Integer getQuantity() {
+    return quantity;
+  }
+
+  public BigDecimal getUnitPrice() {
+    return unitPrice;
   }
 
   public BigDecimal getPrice() {
@@ -72,7 +86,7 @@ public class InvoiceEntryHibernate {
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, unit, price, vatValue, vatRate);
+    return Objects.hash(description, unit, quantity, unitPrice, price, vatValue, vatRate);
   }
 
   public BigDecimal getPriceWithTax() {
@@ -87,6 +101,8 @@ public class InvoiceEntryHibernate {
     private UUID id;
     private String description;
     private String unit;
+    private Integer quantity;
+    private BigDecimal unitPrice;
     private BigDecimal price;
     private BigDecimal vatValue;
     private Vat vatRate;
@@ -103,6 +119,16 @@ public class InvoiceEntryHibernate {
 
     public Builder setUnit(String unit) {
       this.unit = unit;
+      return this;
+    }
+
+    public Builder setQuantity(Integer quantity) {
+      this.quantity = quantity;
+      return this;
+    }
+
+    public Builder setUnitPrice(BigDecimal unitPrice) {
+      this.unitPrice = unitPrice;
       return this;
     }
 
@@ -123,13 +149,16 @@ public class InvoiceEntryHibernate {
       if (unit == null) {
         throw new IllegalStateException("Unit cannot be null.");
       }
-      if (price == null) {
-        throw new IllegalStateException("Price cannot be null.");
+      if (quantity == null) {
+        throw new IllegalStateException("Unit cannot be null.");
+      }
+      if (unitPrice == null) {
+        throw new IllegalStateException("Unit price cannot be null");
       }
       if (vatRate == null) {
         throw new IllegalStateException("Vat rate cannot be null.");
       }
-      return new InvoiceEntryHibernate(id, description, unit, price, vatRate);
+      return new InvoiceEntryHibernate(id, description, unit, quantity, unitPrice, vatRate);
     }
   }
 }

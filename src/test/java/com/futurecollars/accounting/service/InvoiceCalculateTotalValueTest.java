@@ -1,17 +1,16 @@
 package com.futurecollars.accounting.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import com.futurecollars.accounting.domain.model.Company;
+import com.futurecollars.accounting.domain.model.DataGenerator;
 import com.futurecollars.accounting.domain.model.Invoice;
-import com.futurecollars.accounting.domain.model.InvoiceEntry;
 import com.futurecollars.accounting.domain.model.Vat;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.UUID;
 
 class InvoiceCalculateTotalValueTest {
 
@@ -19,33 +18,50 @@ class InvoiceCalculateTotalValueTest {
   public void shouldReturnTotalValue() {
     //given
     InvoiceCalculateTotalValue invoiceCalculateTotalValue = new InvoiceCalculateTotalValue();
-    Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
-        new Company(UUID.randomUUID(), " ", " "), new Company(UUID.randomUUID(),
-        " ", " "), Arrays.asList(new InvoiceEntry("Tequila", "Pln",
-            new BigDecimal("20.00"), Vat.VAT_23),
-        new InvoiceEntry("Cola", "Pln", new BigDecimal("5"), Vat.VAT_8)));
+    Invoice invoice = DataGenerator.randomInvoice()
+        .clearEntries()
+        .setEntries(Arrays.asList(
+            DataGenerator.randomEntry()
+              .setQuantity(1)
+              .setUnitPrice(new BigDecimal("5"))
+              .setVatRate(Vat.VAT_8)
+              .build(),
+            DataGenerator.randomEntry()
+                .setQuantity(1)
+                .setUnitPrice(new BigDecimal("20"))
+                .setVatRate(Vat.VAT_23)
+                .build()
+        )).build();
 
     //when
     BigDecimal actual = invoiceCalculateTotalValue.getTotalValue(invoice.getEntries());
 
     //then
-    assertEquals(new BigDecimal("25.00"), actual);
+    assertThat(actual.compareTo(new BigDecimal("25.00"))).isEqualTo(0);
   }
 
   @Test
   public void shouldReturnTotalValueWithTaxes() {
     //given
     InvoiceCalculateTotalValue invoiceCalculateTotalValue = new InvoiceCalculateTotalValue();
-    Invoice invoice = new Invoice(UUID.randomUUID(), "No1", LocalDate.now(),
-        new Company(UUID.randomUUID(), " ", " "), new Company(UUID.randomUUID(),
-        " ", " "), Arrays.asList(new InvoiceEntry("Tequila", "Pln",
-            new BigDecimal("20"), Vat.VAT_23), new InvoiceEntry("Cola", "Pln",
-        new BigDecimal("5"), Vat.VAT_8)));
-
+    Invoice invoice = DataGenerator.randomInvoice()
+        .clearEntries()
+        .setEntries(Arrays.asList(
+            DataGenerator.randomEntry()
+                .setQuantity(1)
+                .setUnitPrice(new BigDecimal("5"))
+                .setVatRate(Vat.VAT_8)
+                .build(),
+            DataGenerator.randomEntry()
+                .setQuantity(1)
+                .setUnitPrice(new BigDecimal("20"))
+                .setVatRate(Vat.VAT_23)
+                .build()
+        )).build();
     //when
     BigDecimal actual = invoiceCalculateTotalValue.getTotalValueWithTaxes(invoice.getEntries());
 
     //then
-    assertEquals(new BigDecimal("30.00"), actual);
+    assertThat(actual.compareTo(new BigDecimal("30.00"))).isEqualTo(0);
   }
 }
