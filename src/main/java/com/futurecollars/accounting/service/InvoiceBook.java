@@ -68,7 +68,7 @@ public class InvoiceBook {
     try {
       invoiceById = database.getInvoiceById(id);
     } catch (DatabaseOperationException ex) {
-      logger.warn(String.valueOf(ex));
+      logger.error(String.valueOf(ex));
       throw ex;
     }
     logger.info("Invoice id - {} has been read successfully", id);
