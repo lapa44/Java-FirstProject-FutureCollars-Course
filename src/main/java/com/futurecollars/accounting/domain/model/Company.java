@@ -1,8 +1,12 @@
 package com.futurecollars.accounting.domain.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Objects;
 import java.util.UUID;
 
+@ApiModel(description = "Company data.")
 public final class Company {
 
   private final UUID taxIdentificationNumber;
@@ -15,14 +19,19 @@ public final class Company {
     this.name = name;
   }
 
+  @ApiModelProperty(required = true,
+      dataType = "UUID",
+      example = "2229b2e7-0a4e-4a7d-8e0b-c15774b80b71")
   public UUID getTaxIdentificationNumber() {
     return taxIdentificationNumber;
   }
 
+  @ApiModelProperty(required = true)
   public String getAddress() {
     return address;
   }
 
+  @ApiModelProperty(required = true)
   public String getName() {
     return name;
   }
@@ -51,11 +60,13 @@ public final class Company {
   }
 
   public static class Builder {
+
     private UUID taxIdentificationNumber;
     private String address;
     private String name;
 
-    private Builder() {}
+    private Builder() {
+    }
 
     public Builder setTaxIdentificationNumber(UUID taxIdentificationNumber) {
       this.taxIdentificationNumber = taxIdentificationNumber;

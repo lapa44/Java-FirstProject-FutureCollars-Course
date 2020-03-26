@@ -1,10 +1,13 @@
 package com.futurecollars.accounting.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@ApiModel(description = "Single entry of invoice.")
 public final class InvoiceEntry {
 
   private final String description;
@@ -16,7 +19,7 @@ public final class InvoiceEntry {
   private final Vat vatRate;
 
   public InvoiceEntry(String description, String unit, Integer quantity, BigDecimal unitPrice,
-                      Vat vatRate) {
+      Vat vatRate) {
     this.description = description;
     this.unit = unit;
     this.quantity = quantity;
@@ -36,18 +39,24 @@ public final class InvoiceEntry {
     this.vatValue = invoiceEntry.vatValue;
   }
 
+  @ApiModelProperty(required = true)
   public String getDescription() {
     return description;
   }
 
+  @ApiModelProperty(required = true,
+      example = "pcs",
+      value = "Unit, for example in kgs, pcs, liters...")
   public String getUnit() {
     return unit;
   }
 
+  @ApiModelProperty(required = true, example = "5")
   public Integer getQuantity() {
     return quantity;
   }
 
+  @ApiModelProperty(required = true, example = "2,56")
   public BigDecimal getUnitPrice() {
     return unitPrice;
   }
@@ -60,6 +69,7 @@ public final class InvoiceEntry {
     return vatValue;
   }
 
+  @ApiModelProperty(required = true, example = "VAT_5")
   public Vat getVatRate() {
     return vatRate;
   }
@@ -97,6 +107,7 @@ public final class InvoiceEntry {
   }
 
   public static class Builder {
+
     private String description;
     private String unit;
     private Integer quantity;

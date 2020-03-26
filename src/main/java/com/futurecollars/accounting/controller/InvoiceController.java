@@ -3,6 +3,11 @@ package com.futurecollars.accounting.controller;
 import com.futurecollars.accounting.domain.model.Invoice;
 import com.futurecollars.accounting.infrastructure.database.DatabaseOperationException;
 import com.futurecollars.accounting.service.InvoiceBook;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import com.futurecollars.accounting.service.PdfService;
 import com.futurecollars.accounting.service.ZipService;
 import com.itextpdf.text.DocumentException;
@@ -31,6 +36,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/invoices")
+@Api(value = "Invoice", description = "Menage your invoices.")
 public class InvoiceController {
 
   private final InvoiceBook invoiceBook;
@@ -40,6 +46,8 @@ public class InvoiceController {
   }
 
   @PostMapping
+  @ApiOperation(value = "Saves and update invoices.")
+
   public ResponseEntity<Invoice> saveInvoice(@Valid @RequestBody Invoice invoice) {
     try {
       return new ResponseEntity<>(invoiceBook.saveInvoice(invoice), OK);
@@ -49,6 +57,16 @@ public class InvoiceController {
   }
 
   @GetMapping("/{id}")
+  @ApiOperation(value = "Gets invoice by id.")
+  @ApiImplicitParam(
+      name = "id",
+      value = "Put id of invoice.",
+      dataType = "UUID",
+      example = "a80496dd-3749-4d35-8d8d-78ce51b3ae75")
+  @ApiResponses(value = {
+      @ApiResponse(code = 404, message = "Invoice not found."),
+      @ApiResponse(code = 200, message = "ok")})
+
   public ResponseEntity getInvoiceById(@Valid @RequestBody @PathVariable UUID id, @RequestHeader(
       name = "Accept", defaultValue = "application/json") String header) {
     try {
@@ -71,6 +89,7 @@ public class InvoiceController {
   }
 
   @GetMapping
+  @ApiOperation(value = "Gets all invoices.")
   public ResponseEntity getInvoices(@RequestHeader(value = "Accept",
       defaultValue = "application/json") String header) {
     List<Invoice> invoices;
@@ -92,6 +111,16 @@ public class InvoiceController {
   }
 
   @DeleteMapping("/{id}")
+  @ApiOperation(value = "Removes invoice by id.")
+  @ApiImplicitParam(
+      name = "id",
+      value = "Put id of invoice to remove.",
+      dataType = "UUID",
+      required = true,
+      example = "a80496dd-3749-4d35-8d8d-78ce51b3ae75")
+  @ApiResponses(value = {
+      @ApiResponse(code = 400, message = "Invoice not found."),
+      @ApiResponse(code = 204, message = "Invoice have been successfully removed.")})
   public ResponseEntity<Invoice> removeInvoiceById(@PathVariable UUID id) {
     try {
       return new ResponseEntity<>(invoiceBook.removeInvoiceById(id), NO_CONTENT);

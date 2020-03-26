@@ -1,6 +1,8 @@
 package com.futurecollars.accounting.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
+@ApiModel(description = "Complete invoice.")
 public final class Invoice {
 
   private final UUID id;
@@ -52,26 +55,37 @@ public final class Invoice {
         .collect(Collectors.toList());
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   public void addEntry(InvoiceEntry entry) {
     entries.add(entry);
   }
 
+  @ApiModelProperty(dataType = "UUID",
+      example = "f799b5df-c608-47cd-b26c-3ebf076cdb1f",
+      value = "Required only when invoice updated")
   public UUID getId() {
     return id;
   }
 
+  @ApiModelProperty(required = true)
   public String getInvoiceNumber() {
     return invoiceNumber;
   }
 
+  @ApiModelProperty(required = true, example = "2020-03-22")
   public LocalDate getDate() {
     return date;
   }
 
+  @ApiModelProperty(required = true)
   public Company getBuyer() {
     return buyer;
   }
 
+  @ApiModelProperty(required = true)
   public Company getSeller() {
     return seller;
   }
@@ -101,10 +115,6 @@ public final class Invoice {
   @Override
   public int hashCode() {
     return Objects.hash(id, invoiceNumber, date, buyer, seller, entries);
-  }
-
-  public static Builder builder() {
-    return new Builder();
   }
 
   public static class Builder {
