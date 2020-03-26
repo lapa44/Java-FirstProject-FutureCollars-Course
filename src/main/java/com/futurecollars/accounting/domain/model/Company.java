@@ -9,8 +9,11 @@ import java.util.UUID;
 @ApiModel(description = "Company data.")
 public final class Company {
 
+  @ApiModelProperty(position = 2, example = "8dc1499e-1e92-4cad-beae-7d6fe2d5318c")
   private final UUID taxIdentificationNumber;
+  @ApiModelProperty(position = 1)
   private final String address;
+  @ApiModelProperty(position = 0, example = "Company name")
   private final String name;
 
   public Company(UUID taxIdentificationNumber, String address, String name) {

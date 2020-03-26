@@ -10,12 +10,19 @@ import java.util.Objects;
 @ApiModel(description = "Single entry of invoice.")
 public final class InvoiceEntry {
 
+  @ApiModelProperty(position = 0, example = "Product description")
   private final String description;
+  @ApiModelProperty(position = 2, example = "pcs.")
   private final String unit;
+  @ApiModelProperty(position = 3, example = "5")
   private final Integer quantity;
+  @ApiModelProperty(position = 1, example = "3.99")
   private final BigDecimal unitPrice;
+  @ApiModelProperty(hidden = true)
   private final BigDecimal price;
+  @ApiModelProperty(hidden = true)
   private final BigDecimal vatValue;
+  @ApiModelProperty(position = 4, example = "VAT_5")
   private final Vat vatRate;
 
   public InvoiceEntry(String description, String unit, Integer quantity, BigDecimal unitPrice,
@@ -39,14 +46,16 @@ public final class InvoiceEntry {
     this.vatValue = invoiceEntry.vatValue;
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   @ApiModelProperty(required = true)
   public String getDescription() {
     return description;
   }
 
-  @ApiModelProperty(required = true,
-      example = "pcs",
-      value = "Unit, for example in kgs, pcs, liters...")
+  @ApiModelProperty(required = true, example = "pcs")
   public String getUnit() {
     return unit;
   }
@@ -56,7 +65,7 @@ public final class InvoiceEntry {
     return quantity;
   }
 
-  @ApiModelProperty(required = true, example = "2,56")
+  @ApiModelProperty(required = true, example = "2.56")
   public BigDecimal getUnitPrice() {
     return unitPrice;
   }
@@ -100,10 +109,6 @@ public final class InvoiceEntry {
   @JsonIgnore
   public BigDecimal getPriceWithTax() {
     return price.add(vatValue);
-  }
-
-  public static Builder builder() {
-    return new Builder();
   }
 
   public static class Builder {

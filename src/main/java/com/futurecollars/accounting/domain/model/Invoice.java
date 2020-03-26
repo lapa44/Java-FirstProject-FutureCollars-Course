@@ -16,17 +16,23 @@ import javax.validation.constraints.PastOrPresent;
 @ApiModel(description = "Complete invoice.")
 public final class Invoice {
 
+  @ApiModelProperty(position = 0, example = "e399c88d-8d7c-46d1-b6e3-22e14b9d25ab")
   private final UUID id;
   @NotNull
+  @ApiModelProperty(position = 1)
   private final String invoiceNumber;
   @NotNull
   @PastOrPresent
+  @ApiModelProperty(position = 2, example = "2020-03-25")
   private final LocalDate date;
   @NotNull
+  @ApiModelProperty(position = 4)
   private final Company buyer;
   @NotNull
+  @ApiModelProperty(position = 3)
   private final Company seller;
   @NotNull
+  @ApiModelProperty(position = 5)
   private final List<InvoiceEntry> entries;
 
   @JsonCreator

@@ -46,8 +46,11 @@ public class InvoiceController {
   }
 
   @PostMapping
-  @ApiOperation(value = "Saves and update invoices.")
-
+  @ApiOperation(value = "Saves or update invoices.")
+  @ApiResponses(value = {
+      @ApiResponse(code = 400,
+          message = "Wrong parameters"),
+      @ApiResponse(code = 200, message = "Invoice saved successfully.")})
   public ResponseEntity<Invoice> saveInvoice(@Valid @RequestBody Invoice invoice) {
     try {
       return new ResponseEntity<>(invoiceBook.saveInvoice(invoice), OK);
