@@ -21,10 +21,8 @@ public class ZipService {
 
   private static void addZipEntries(ZipOutputStream zipOutputStream, List<Invoice> invoices)
       throws DocumentException, IOException {
-    int counter = 1;
     for (Invoice invoice : invoices) {
-      ZipEntry entry = new ZipEntry("Invoice_" + counter + ".pdf");
-      counter++;
+      ZipEntry entry = new ZipEntry("Invoice_" + invoice.getInvoiceNumber() + ".pdf");
       byte[] pdf = PdfService.generateInvoiceFromPdf(invoice);
       entry.setSize(pdf.length);
       zipOutputStream.putNextEntry(entry);
