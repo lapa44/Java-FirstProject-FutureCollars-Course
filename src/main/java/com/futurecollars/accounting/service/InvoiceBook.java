@@ -4,6 +4,7 @@ import javax.mail.MessagingException;
 import com.futurecollars.accounting.domain.model.Invoice;
 import com.futurecollars.accounting.infrastructure.database.Database;
 import com.futurecollars.accounting.infrastructure.database.DatabaseOperationException;
+import com.itextpdf.text.DocumentException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +30,16 @@ public class InvoiceBook {
       observers.forEach(observer -> {
         try {
           observer.invoiceInserted(savedInvoice);
-        } catch (MessagingException ex) {
-          // logger
+        } catch (MessagingException | DocumentException ex) {
+          // logger.warn(String.valueOf(ex);
         }
       });
     } else {
       observers.forEach(observer -> {
         try {
           observer.invoiceModified(savedInvoice);
-        } catch (MessagingException ex) {
-          // logger
+        } catch (MessagingException | DocumentException ex) {
+          // logger.warn(String.valueOf(ex);
         }
       });
     }
@@ -58,8 +59,8 @@ public class InvoiceBook {
     observers.forEach(observer -> {
       try {
         observer.invoiceDeleted(removedInvoice);
-      } catch (MessagingException ex) {
-        // logger
+      } catch (MessagingException | DocumentException ex) {
+        // logger.warn(String.valueOf(ex);
       }
     });
     return removedInvoice;

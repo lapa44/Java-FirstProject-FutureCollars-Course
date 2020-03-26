@@ -6,15 +6,15 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
-import java.io.ByteArrayOutputStream;
 import com.futurecollars.accounting.domain.model.Invoice;
+import com.itextpdf.text.DocumentException;
 
 public class MailFactory {
 
   private static final String PDF = "application/pdf";
 
   public static MimeMultipart createMailBody(Invoice invoice, MailMessage mailMessage)
-      throws MessagingException {
+      throws MessagingException, DocumentException {
     MimeMultipart mailBody = new MimeMultipart();
     mailBody.addBodyPart(createTextBodyPart(invoice, mailMessage));
     mailBody.addBodyPart(createAttachmentBodyPart(invoice, PDF));
@@ -30,9 +30,8 @@ public class MailFactory {
   }
 
   private static MimeBodyPart createAttachmentBodyPart(Invoice invoice, String type)
-      throws MessagingException {
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    byte[] bytes = outputStream.toByteArray();
+      throws MessagingException, DocumentException {
+    byte[] bytes = PdfService.generateInvoiceFromPdf(invoice);
     DataSource dataSource = new ByteArrayDataSource(bytes, type);
     MimeBodyPart attachmentBodyPart = new MimeBodyPart();
     attachmentBodyPart.setDataHandler(new DataHandler(dataSource));
