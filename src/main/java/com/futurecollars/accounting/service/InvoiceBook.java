@@ -1,16 +1,16 @@
 package com.futurecollars.accounting.service;
 
-import javax.mail.MessagingException;
 import com.futurecollars.accounting.domain.model.Invoice;
 import com.futurecollars.accounting.infrastructure.database.Database;
 import com.futurecollars.accounting.infrastructure.database.DatabaseOperationException;
+import com.itextpdf.text.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.itextpdf.text.DocumentException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javax.mail.MessagingException;
 
 public class InvoiceBook {
 
