@@ -57,7 +57,8 @@ public class InvoiceBook {
         }
       });
     }
-    logger.info("Invoice Mo. - {}, id - {} was saved successfully.", savedInvoice.getInvoiceNumber(),
+    logger.info("Invoice Mo. - {}, id - {} was saved successfully.",
+        savedInvoice.getInvoiceNumber(),
         savedInvoice.getId());
     return savedInvoice;
   }
