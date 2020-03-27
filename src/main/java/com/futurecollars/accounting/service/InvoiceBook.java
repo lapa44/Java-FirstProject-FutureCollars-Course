@@ -40,6 +40,9 @@ public class InvoiceBook {
       logger.error(String.valueOf(ex));
       throw ex;
     }
+    logger.info("Invoice Mo. - {}, id - {} was saved successfully.",
+        savedInvoice.getInvoiceNumber(),
+        savedInvoice.getId());
     if (invoice.getId() == null) {
       observers.forEach(observer -> {
         try {
@@ -57,9 +60,6 @@ public class InvoiceBook {
         }
       });
     }
-    logger.info("Invoice Mo. - {}, id - {} was saved successfully.",
-        savedInvoice.getInvoiceNumber(),
-        savedInvoice.getId());
     return savedInvoice;
   }
 
@@ -92,6 +92,7 @@ public class InvoiceBook {
       logger.error(String.valueOf(ex));
       throw ex;
     }
+    logger.info("Invoice id - {}, was removed successfully.", id);
     observers.forEach(observer -> {
       try {
         observer.invoiceDeleted(removedInvoice);
@@ -99,7 +100,6 @@ public class InvoiceBook {
         logger.warn(String.valueOf(ex));
       }
     });
-    logger.info("Invoice id - {}, was removed successfully.", id);
     return removedInvoice;
   }
 }
