@@ -3,7 +3,22 @@
   targetNamespace="http://futurecollars.com/soap"
   elementFormDefault="qualified">
 
-  <xs:element name="invoiceToSaveRequest">
+  <xs:element name="getAllInvoicesRequest">
+    <xs:complexType>
+      <xs:sequence>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getAllInvoicesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="invoiceList" type="tns:invoiceList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="invoiceUpdateRequest">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="invoice" type="tns:invoice"/>
@@ -11,7 +26,7 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="invoiceToSaveResponse">
+  <xs:element name="invoiceUpdateResponse">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="invoice" type="tns:invoice"/>
@@ -32,6 +47,22 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element name="invoice" type="tns:invoice"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="invoiceRemoveByIdRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="invoiceRemoveByIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="response" type="xs:string"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -73,4 +104,11 @@
       <xs:enumeration value="VAT_0"/>
     </xs:restriction>
   </xs:simpleType>
+
+
+  <xs:complexType name="invoiceList">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="invoices" type="tns:invoice"/>
+    </xs:sequence>
+  </xs:complexType>
 </xs:schema>
