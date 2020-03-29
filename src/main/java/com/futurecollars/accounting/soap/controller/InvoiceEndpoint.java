@@ -11,8 +11,8 @@ import com.futurecollars.soap.GetInvoiceByIdResponse;
 import com.futurecollars.soap.InvoiceList;
 import com.futurecollars.soap.InvoiceRemoveByIdRequest;
 import com.futurecollars.soap.InvoiceRemoveByIdResponse;
-import com.futurecollars.soap.InvoiceUpdateRequest;
-import com.futurecollars.soap.InvoiceUpdateResponse;
+import com.futurecollars.soap.InvoiceSaveRequest;
+import com.futurecollars.soap.InvoiceSaveResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -30,6 +30,7 @@ public class InvoiceEndpoint {
 
   @Autowired
   private InvoiceBook invoiceBook;
+
 
   @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllInvoicesRequest")
   @ResponsePayload
@@ -69,13 +70,12 @@ public class InvoiceEndpoint {
     return response;
   }
 
-  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "invoiceUpdateRequest")
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "invoiceSaveRequest")
   @ResponsePayload
-  public InvoiceUpdateResponse updateInvoice(
-      @RequestPayload InvoiceUpdateRequest request) {
-
+  public InvoiceSaveResponse saveInvoice(
+      @RequestPayload InvoiceSaveRequest request) {
+    InvoiceSaveResponse response = new InvoiceSaveResponse();
     Invoice invoice = InvoiceSoapMapper.INSTANCE.toInvoice(request.getInvoice());
-    InvoiceUpdateResponse response = new InvoiceUpdateResponse();
 
     try {
       Invoice savedInvoice = invoiceBook.saveInvoice(invoice);
@@ -84,6 +84,7 @@ public class InvoiceEndpoint {
       ex.printStackTrace();
       response.getErrorMsg().add(ex.getMessage());
     }
+
     return response;
   }
 
