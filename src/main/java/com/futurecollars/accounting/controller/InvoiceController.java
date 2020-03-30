@@ -54,7 +54,7 @@ public class InvoiceController {
   public ResponseEntity<Invoice> saveInvoice(@Valid @RequestBody Invoice invoice) {
     try {
       return new ResponseEntity<>(invoiceBook.saveInvoice(invoice), OK);
-    } catch (DatabaseOperationException ex) {
+    } catch (DatabaseOperationException | IllegalArgumentException ex) {
       return new ResponseEntity<>(BAD_REQUEST);
     }
   }

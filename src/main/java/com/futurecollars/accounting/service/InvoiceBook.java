@@ -17,10 +17,12 @@ public class InvoiceBook {
   private final Database database;
   Logger logger = LoggerFactory.getLogger(InvoiceBook.class);
   private final List<InvoiceBookObserver> observers;
+  private final InvoiceValidator invoiceValidator;
 
   public InvoiceBook(Database database) {
     this.database = database;
     this.observers = new ArrayList<>();
+    this.invoiceValidator = new InvoiceValidator(database);
   }
 
   public void registerObserver(InvoiceBookObserver observer) {
@@ -32,6 +34,10 @@ public class InvoiceBook {
       logger.info("Try to save invoice No.: {}", invoice.getInvoiceNumber());
     } else {
       logger.info("Try to update invoice id: {}", invoice.getId());
+    }
+    if (!invoiceValidator.isInvoiceValid(invoice)) {
+      logger.error("Given invoice is invalid.");
+      throw new IllegalArgumentException("Given invoice is invalid.");
     }
     Invoice savedInvoice;
     try {
