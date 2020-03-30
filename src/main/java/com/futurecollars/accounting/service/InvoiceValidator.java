@@ -38,10 +38,9 @@ public class InvoiceValidator {
 
   private boolean areEntriesValid(List<InvoiceEntry> entries) {
     for (InvoiceEntry entry : entries) {
-      if (entry.getPrice() == null || entry.getDescription() == null
-          || entry.getPriceWithTax() == null || entry.getQuantity() == null
+      if (entry.getDescription() == null || entry.getQuantity() == null
           || entry.getUnit() == null || entry.getUnitPrice() == null
-          || entry.getVatRate() == null || entry.getVatValue() == null) {
+          || entry.getVatRate() == null) {
         return false;
       }
     }

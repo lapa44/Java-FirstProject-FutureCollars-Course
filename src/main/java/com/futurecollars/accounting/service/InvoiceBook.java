@@ -36,7 +36,7 @@ public class InvoiceBook {
       logger.info("Try to update invoice id: {}", invoice.getId());
     }
     if (!invoiceValidator.isInvoiceValid(invoice)) {
-      logger.error("Given invoice is invalid.");
+      logger.warn("Given invoice is invalid.");
       throw new IllegalArgumentException("Given invoice is invalid.");
     }
     Invoice savedInvoice;
@@ -46,7 +46,7 @@ public class InvoiceBook {
       logger.error(String.valueOf(ex));
       throw ex;
     }
-    logger.info("Invoice Mo. - {}, id - {} was saved successfully.",
+    logger.info("Invoice No. - {}, id - {} was saved successfully.",
         savedInvoice.getInvoiceNumber(),
         savedInvoice.getId());
     if (invoice.getId() == null) {
