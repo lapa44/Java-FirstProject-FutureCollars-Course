@@ -151,6 +151,11 @@ public final class InvoiceEntry {
       return this;
     }
 
+//todo    public Builder setVatValue(BigDecimal vatValue) {
+//      this.vatValue = vatValue;
+//      return this;
+//    }
+
     public InvoiceEntry build() {
       if (description == null) {
         throw new IllegalStateException("Description cannot be null.");

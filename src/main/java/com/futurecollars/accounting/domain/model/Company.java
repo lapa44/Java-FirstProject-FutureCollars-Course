@@ -94,7 +94,7 @@ public final class Company {
         throw new IllegalStateException("Address cannot be null.");
       }
       if (name == null) {
-        throw new IllegalStateException("Address cannot be null.");
+        throw new IllegalStateException("Name cannot be null.");
       }
       return new Company(taxIdentificationNumber, address, name);
     }
