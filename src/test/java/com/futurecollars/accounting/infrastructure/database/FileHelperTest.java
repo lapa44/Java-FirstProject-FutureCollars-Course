@@ -14,10 +14,12 @@ import java.util.List;
 
 class FileHelperTest {
 
+  private final String path = "src/main/resources/testFileDatabase.json";
+
   @BeforeEach
   void removeTestFileBeforeTest() {
 
-    File file = new File("src\\main\\resources\\testFileDatabase.json");
+    File file = new File(path);
     if (file.exists()) {
       file.delete();
     }
@@ -27,7 +29,6 @@ class FileHelperTest {
   void shouldWriteAndReadLineToFile() throws IOException {
     //given
     String line = "One line in file.";
-    String path = "src\\main\\resources\\testFileDatabase.json";
     FileHelper fileHelper = new FileHelper(path);
 
     //when
@@ -46,7 +47,6 @@ class FileHelperTest {
 
     //given
     String line = "Sample single line in file.";
-    String path = "src\\main\\resources\\testFileDatabase.json";
     int lineNumber = 0;
     FileHelper fileHelper = new FileHelper(path);
 
