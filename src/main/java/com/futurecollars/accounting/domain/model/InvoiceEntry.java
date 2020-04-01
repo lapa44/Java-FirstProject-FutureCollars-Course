@@ -1,22 +1,32 @@
 package com.futurecollars.accounting.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@ApiModel(description = "Single entry of invoice.")
 public final class InvoiceEntry {
 
+  @ApiModelProperty(position = 0, example = "Product description")
   private final String description;
+  @ApiModelProperty(position = 2, example = "pcs.")
   private final String unit;
+  @ApiModelProperty(position = 3, example = "5")
   private final Integer quantity;
+  @ApiModelProperty(position = 1, example = "3.99")
   private final BigDecimal unitPrice;
+  @ApiModelProperty(hidden = true)
   private final BigDecimal price;
+  @ApiModelProperty(hidden = true)
   private final BigDecimal vatValue;
+  @ApiModelProperty(position = 4, example = "VAT_5")
   private final Vat vatRate;
 
   public InvoiceEntry(String description, String unit, Integer quantity, BigDecimal unitPrice,
-                      Vat vatRate) {
+      Vat vatRate) {
     this.description = description;
     this.unit = unit;
     this.quantity = quantity;
@@ -36,18 +46,26 @@ public final class InvoiceEntry {
     this.vatValue = invoiceEntry.vatValue;
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  @ApiModelProperty(required = true)
   public String getDescription() {
     return description;
   }
 
+  @ApiModelProperty(required = true, example = "pcs")
   public String getUnit() {
     return unit;
   }
 
+  @ApiModelProperty(required = true, example = "5")
   public Integer getQuantity() {
     return quantity;
   }
 
+  @ApiModelProperty(required = true, example = "2.56")
   public BigDecimal getUnitPrice() {
     return unitPrice;
   }
@@ -60,6 +78,7 @@ public final class InvoiceEntry {
     return vatValue;
   }
 
+  @ApiModelProperty(required = true, example = "VAT_5")
   public Vat getVatRate() {
     return vatRate;
   }
@@ -92,11 +111,8 @@ public final class InvoiceEntry {
     return price.add(vatValue);
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   public static class Builder {
+
     private String description;
     private String unit;
     private Integer quantity;

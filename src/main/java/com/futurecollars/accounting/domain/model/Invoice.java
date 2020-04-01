@@ -1,8 +1,8 @@
 package com.futurecollars.accounting.domain.model;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,20 +10,29 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 
+@ApiModel(description = "Complete invoice.")
 public final class Invoice {
-  
+
+  @ApiModelProperty(position = 0, example = "e399c88d-8d7c-46d1-b6e3-22e14b9d25ab")
   private final UUID id;
   @NotNull
+  @ApiModelProperty(position = 1)
   private final String invoiceNumber;
   @NotNull
   @PastOrPresent
+  @ApiModelProperty(position = 2, example = "2020-03-25")
   private final LocalDate date;
   @NotNull
+  @ApiModelProperty(position = 4)
   private final Company buyer;
   @NotNull
+  @ApiModelProperty(position = 3)
   private final Company seller;
   @NotNull
+  @ApiModelProperty(position = 5)
   private final List<InvoiceEntry> entries;
 
   @JsonCreator
@@ -52,26 +61,37 @@ public final class Invoice {
         .collect(Collectors.toList());
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   public void addEntry(InvoiceEntry entry) {
     entries.add(entry);
   }
 
+  @ApiModelProperty(dataType = "UUID",
+      example = "f799b5df-c608-47cd-b26c-3ebf076cdb1f",
+      value = "Required only when invoice updated")
   public UUID getId() {
     return id;
   }
 
+  @ApiModelProperty(required = true)
   public String getInvoiceNumber() {
     return invoiceNumber;
   }
 
+  @ApiModelProperty(required = true, example = "2020-03-22")
   public LocalDate getDate() {
     return date;
   }
 
+  @ApiModelProperty(required = true)
   public Company getBuyer() {
     return buyer;
   }
 
+  @ApiModelProperty(required = true)
   public Company getSeller() {
     return seller;
   }
@@ -103,11 +123,8 @@ public final class Invoice {
     return Objects.hash(id, invoiceNumber, date, buyer, seller, entries);
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   public static class Builder {
+
     private UUID id;
     private String invoiceNumber;
     private LocalDate date;
