@@ -1,0 +1,30 @@
+<gs:invoiceSaveRequest xmlns:gs="http://futurecollars.com/soap">
+  <gs:invoice>
+    <gs:invoiceNumber>764</gs:invoiceNumber>
+    <gs:date>2020-02-22</gs:date>
+    <gs:buyer>
+      <gs:taxIdentificationNumber>6cfbb51b-3b5e-4e51-8338-a9e4328be456</gs:taxIdentificationNumber>
+      <gs:address>Apt. 224 39592 Jon Meadow, East Gail, WA 40986-7258</gs:address>
+      <gs:name>Kimber Kulas</gs:name>
+    </gs:buyer>
+    <gs:seller>
+      <gs:taxIdentificationNumber>fd78adf0-710d-4a63-9e61-3978b1783605</gs:taxIdentificationNumber>
+      <gs:address>7137 Hirthe Stream, East Bethville, NH 95976</gs:address>
+      <gs:name>Kiyoko Herman III</gs:name>
+    </gs:seller>
+    <gs:entries>
+      <gs:description>Chair</gs:description>
+      <gs:unit>pcs</gs:unit>
+      <gs:quantity>10</gs:quantity>
+      <gs:unitPrice>105</gs:unitPrice>
+      <gs:vatRate>VAT_5</gs:vatRate>
+    </gs:entries>
+    <gs:entries>
+      <gs:description>Small Copper Plate</gs:description>
+      <gs:unit>hrs</gs:unit>
+      <gs:quantity>5</gs:quantity>
+      <gs:unitPrice>20.1</gs:unitPrice>
+      <gs:vatRate>VAT_8</gs:vatRate>
+    </gs:entries>
+  </gs:invoice>
+</gs:invoiceSaveRequest>

@@ -82,7 +82,6 @@ public class InvoiceEndpoint {
       response.setInvoice(InvoiceSoapMapper.INSTANCE.toInvoiceSoap(savedInvoice));
     } catch (DatabaseOperationException ex) {
       ex.printStackTrace();
-      response.getErrorMsg().add(ex.getMessage());
     }
 
     return response;
