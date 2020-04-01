@@ -5,6 +5,7 @@ import com.futurecollars.accounting.domain.model.Invoice;
 import com.futurecollars.accounting.domain.model.InvoiceEntry;
 import com.futurecollars.accounting.domain.model.Vat;
 import com.futurecollars.accounting.infrastructure.database.Database;
+import com.futurecollars.accounting.infrastructure.database.DatabaseOperationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -54,13 +55,17 @@ public class SQLWithDriverDatabase implements Database {
     return (List<Invoice>) invoices.values();
   }
 
-  @Override
-  public Invoice saveInvoice(Invoice invoice) {
-    String sql = "INSERT INTO invoices (date, invoice_number) VALUES (?, ?)";
-    return jdbcTemplate.update(sql, new Object[]{(rs, i) ->
-        new Invoice()}
-  }
-
+//  @Override
+//  public Invoice saveInvoice(Invoice invoice) {
+//    String sql = "INSERT INTO invoices (date, invoice_number) VALUES (?, ?)";
+//    return jdbcTemplate.update(sql, new Object[]{(rs, i) ->
+//        new Invoice()}
+//  }
+//
+//  public Invoice updateInvoice(UUID id) {
+//    String sql = "INSERT INTO invoices (date, invoice_number) VALUES (?, ?)";
+//    return jdbcTemplate.update(sql, id);
+//  }
 
 //  @Override
 //  public Invoice getInvoiceById(UUID id) {
@@ -71,22 +76,18 @@ public class SQLWithDriverDatabase implements Database {
 //                .setId((UUID) rs.getObject("id"))
 //                .setInvoiceNumber(rs.getString("\"invoice_number\""))
 //                .setDate(rs.getDate("date").toLocalDate())
-////                .build();
+//                .build();
 //    );
 //  }
 
   @Override
-  public Invoice getInvoiceById(UUID id) {
-    String sql = "SELECT * FROM invoices WHERE id = ?";
-    return jdbcTemplate.queryForObject("SELECT * "
-            + "FROM invoices i"
-            + "LEFT OUTER JOIN entries e"
-            + "ON i.invoice_id = e.invoice_id"
-            + "LEFT OUTER JOIN buyers b"
-            + "ON i.invoice_id = b.invoice_id"
-            + "LEFT OUTER JOIN sellers s"
-            + "ON i.invoice_id = s.invoice_id",
-        SQLWithDriverDatabase::extractData);
+  public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
+    return null;
+  }
+
+  @Override
+  public Invoice getInvoiceById(UUID id) throws DatabaseOperationException {
+    return null;
   }
 
   @Override
@@ -103,12 +104,13 @@ public class SQLWithDriverDatabase implements Database {
   }
 
   @Override
-  public Invoice removeInvoiceById(UUID id) {
+  public Invoice removeInvoiceById(UUID id) throws DatabaseOperationException {
+    String sql = "DELETE FROM invoices WHERE id = ?";
     Invoice invoice = getInvoiceById(id);
     if (invoice == null) {
       return null;
     }
-    jdbcTemplate.update("DELETE FROM invoices WHERE id = ?", id);
+    jdbcTemplate.update(sql, id);
     return invoice;
   }
 }
