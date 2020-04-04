@@ -30,15 +30,7 @@ public class InvoiceBook {
   }
 
   public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
-    if (invoice.getId() == null) {
-      logger.info("Try to save invoice No.: {}", invoice.getInvoiceNumber());
-    } else {
-      logger.info("Try to update invoice id: {}", invoice.getId());
-    }
-    if (!invoiceValidator.isInvoiceValid(invoice)) {
-      logger.warn("Given invoice is invalid.");
-      throw new IllegalArgumentException("Given invoice is invalid.");
-    }
+    validateInvoice(invoice);
     Invoice savedInvoice;
     try {
       savedInvoice = database.saveInvoice(invoice);
@@ -49,10 +41,27 @@ public class InvoiceBook {
     logger.info("Invoice No. - {}, id - {} was saved successfully.",
         savedInvoice.getInvoiceNumber(),
         savedInvoice.getId());
+    notifyObserversOnSave(invoice);
+    return savedInvoice;
+  }
+
+  private void validateInvoice(Invoice invoice) throws DatabaseOperationException {
+    if (invoice.getId() == null) {
+      logger.info("Try to save invoice No.: {}", invoice.getInvoiceNumber());
+    } else {
+      logger.info("Try to update invoice id: {}", invoice.getId());
+    }
+    if (!invoiceValidator.isInvoiceValid(invoice)) {
+      logger.warn("Given invoice is invalid.");
+      throw new IllegalArgumentException("Given invoice is invalid.");
+    }
+  }
+
+  private void notifyObserversOnSave(Invoice invoice) {
     if (invoice.getId() == null) {
       observers.forEach(observer -> {
         try {
-          observer.invoiceInserted(savedInvoice);
+          observer.invoiceInserted(invoice);
         } catch (MessagingException | DocumentException ex) {
           logger.warn(String.valueOf(ex));
         }
@@ -60,13 +69,12 @@ public class InvoiceBook {
     } else {
       observers.forEach(observer -> {
         try {
-          observer.invoiceModified(savedInvoice);
+          observer.invoiceModified(invoice);
         } catch (MessagingException | DocumentException ex) {
           logger.warn(String.valueOf(ex));
         }
       });
     }
-    return savedInvoice;
   }
 
   public Invoice getInvoiceById(UUID id) throws DatabaseOperationException {
