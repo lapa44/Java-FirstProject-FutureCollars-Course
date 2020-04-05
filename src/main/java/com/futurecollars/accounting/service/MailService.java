@@ -1,19 +1,22 @@
 package com.futurecollars.accounting.service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import com.futurecollars.accounting.domain.model.Invoice;
 import com.itextpdf.text.DocumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 public class MailService {
 
+  private static Logger logger = LoggerFactory.getLogger(MailService.class);
   @Autowired
   private JavaMailSender javaMailSender;
-
   @Value("${mail.admin}")
   private String recipient;
 
@@ -25,6 +28,8 @@ public class MailService {
       throws MessagingException, DocumentException {
     MimeMessage message = createMail(invoice, mailMessage);
     javaMailSender.send(message);
+    logger.info(String.format("Invoice no. %s", invoice.getInvoiceNumber())
+        + " was send via email");
   }
 
   private MimeMessage createMail(Invoice invoice, MailMessage mailMessage)
