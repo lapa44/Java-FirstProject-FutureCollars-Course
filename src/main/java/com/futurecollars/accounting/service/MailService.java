@@ -28,8 +28,7 @@ public class MailService {
       throws MessagingException, DocumentException {
     MimeMessage message = createMail(invoice, mailMessage);
     javaMailSender.send(message);
-    logger.info(String.format("Invoice no. %s", invoice.getInvoiceNumber())
-        + " was send via email");
+    logger.info(String.format("Invoice no. %s was send via email.", invoice.getInvoiceNumber()));
   }
 
   private MimeMessage createMail(Invoice invoice, MailMessage mailMessage)

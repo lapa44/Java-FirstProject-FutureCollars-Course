@@ -21,8 +21,8 @@ public class PdfService {
     pdfDocument.addTitle(String.format("Invoice no. %s", invoice.getInvoiceNumber()));
     pdfDocument.add(PdfFactory.getParagraphFromInvoice(invoice));
     pdfDocument.close();
-    logger.info(String.format("Invoice no. %s", invoice.getInvoiceNumber())
-        + " was exported to pdf file.");
+    logger.info(String.format("Invoice no. %s  was exported to pdf file.",
+        invoice.getInvoiceNumber()));
     return pdfStream.toByteArray();
   }
 }
