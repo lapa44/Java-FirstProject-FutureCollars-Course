@@ -1,8 +1,8 @@
 package com.futurecollars.accounting.configuration;
 
 import com.futurecollars.accounting.service.InvoiceBook;
-import com.futurecollars.accounting.service.MailService;
-import com.futurecollars.accounting.service.MailServiceAdapter;
+import com.futurecollars.accounting.service.mail.MailService;
+import com.futurecollars.accounting.service.mail.MailServiceAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

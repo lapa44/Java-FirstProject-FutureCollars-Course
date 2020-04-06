@@ -1,7 +1,8 @@
-package com.futurecollars.accounting.service;
+package com.futurecollars.accounting.service.mail;
 
 import javax.mail.MessagingException;
 import com.futurecollars.accounting.domain.model.Invoice;
+import com.futurecollars.accounting.service.InvoiceBookObserver;
 import com.itextpdf.text.DocumentException;
 
 public class MailServiceAdapter implements InvoiceBookObserver {

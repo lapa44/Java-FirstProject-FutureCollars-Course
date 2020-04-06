@@ -1,4 +1,4 @@
-package com.futurecollars.accounting.service;
+package com.futurecollars.accounting.service.pdf;
 
 import com.futurecollars.accounting.domain.model.Invoice;
 import com.itextpdf.text.Document;

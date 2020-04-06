@@ -1,4 +1,4 @@
-package com.futurecollars.accounting.service;
+package com.futurecollars.accounting.service.mail;
 
 public enum MailMessage {
   ADDED("New", "<b>New Invoice</b> has been added to the system."),

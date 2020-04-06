@@ -1,4 +1,4 @@
-package com.futurecollars.accounting.service;
+package com.futurecollars.accounting.service.mail;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -7,6 +7,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 import com.futurecollars.accounting.domain.model.Invoice;
+import com.futurecollars.accounting.service.pdf.PdfService;
 import com.itextpdf.text.DocumentException;
 
 public class MailFactory {

@@ -1,4 +1,4 @@
-package com.futurecollars.accounting.service;
+package com.futurecollars.accounting.service.zip;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import com.futurecollars.accounting.domain.model.Invoice;
+import com.futurecollars.accounting.service.pdf.PdfService;
 import com.itextpdf.text.DocumentException;
 
 public class ZipService {

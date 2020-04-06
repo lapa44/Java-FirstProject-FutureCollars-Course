@@ -1,4 +1,4 @@
-package com.futurecollars.accounting.service;
+package com.futurecollars.accounting.service.pdf;
 
 import java.util.List;
 import com.futurecollars.accounting.domain.model.Company;

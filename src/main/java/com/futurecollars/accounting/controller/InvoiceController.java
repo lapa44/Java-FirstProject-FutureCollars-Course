@@ -8,8 +8,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import com.futurecollars.accounting.service.PdfService;
-import com.futurecollars.accounting.service.ZipService;
+import com.futurecollars.accounting.service.pdf.PdfService;
+import com.futurecollars.accounting.service.zip.ZipService;
 import com.itextpdf.text.DocumentException;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -36,7 +36,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/invoices")
-@Api(value = "Invoice", description = "Menage your invoices.")
+@Api(value = "Invoice", description = "Manage your invoices.")
 public class InvoiceController {
 
   private final InvoiceBook invoiceBook;
@@ -46,7 +46,7 @@ public class InvoiceController {
   }
 
   @PostMapping
-  @ApiOperation(value = "Saves or update invoices.")
+  @ApiOperation(value = "Saves or updates invoices.")
   @ApiResponses(value = {
       @ApiResponse(code = 400,
           message = "Wrong parameters"),
@@ -123,7 +123,7 @@ public class InvoiceController {
       example = "a80496dd-3749-4d35-8d8d-78ce51b3ae75")
   @ApiResponses(value = {
       @ApiResponse(code = 400, message = "Invoice not found."),
-      @ApiResponse(code = 204, message = "Invoice have been successfully removed.")})
+      @ApiResponse(code = 204, message = "Invoice has been successfully removed.")})
   public ResponseEntity<Invoice> removeInvoiceById(@PathVariable UUID id) {
     try {
       return new ResponseEntity<>(invoiceBook.removeInvoiceById(id), NO_CONTENT);
