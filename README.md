@@ -7,7 +7,6 @@
 * [Setup](#setup)
 * [Features](#features)
 * [Status](#status)
-* [Inspiration](#inspiration)
 * [Contact](#contact)
 
 ### General info
@@ -39,3 +38,12 @@ This API allows to generate and manage invoices.
 
 ### Status
 * in progres
+
+### Contact
+If you have any questions or you want to offer us a job feel free to contact us on our github accounts. ;)
+
+[Jonasz](https://github.com/lapa44)
+
+[Irek](https://github.com/ireneuo)
+
+[Magda](https://github.com/magdalena-git-hub)
