@@ -37,7 +37,7 @@ This API allows to generate and manage invoices.
 * Sending mail to admin, including every change in database.
 
 ### Status
-* in progres
+* In progress
 
 ### Contact
 If you have any questions or you want to offer us a job feel free to contact us on our github accounts. ;)
