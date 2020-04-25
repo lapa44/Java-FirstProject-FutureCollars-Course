@@ -1,0 +1,37 @@
+<h2>Invoice Details</h2>
+
+<hr/>
+<div *ngIf="invoice">
+  <div>
+    <label><b>Invoice Number: </b></label> {{invoice.invoiceNumber}}
+  </div>
+  <div>
+    <label><b>Date: </b></label> {{invoice.date}}
+  </div>
+  <div>
+    <label><b>Buyer Name: </b></label> {{invoice.buyer.name}}
+  </div>
+  <div>
+    <label><b>Buyer Address: </b></label> {{invoice.buyer.address}}
+  </div>
+  <div>
+    <label><b>Buyer Tax Identification Number: </b></label> {{invoice.buyer.taxIdentificationNumber}}
+  </div>
+  <div>
+    <label><b>Seller Name: </b></label> {{invoice.seller.name}}
+  </div>
+  <div>
+    <label><b>Seller Address: </b></label> {{invoice.seller.address}}
+  </div>
+  <div>
+    <label><b>Seller Tax Identification Number: </b></label> {{invoice.seller.taxIdentificationNumber}}
+  </div>
+<!--  <div *ngFor="let entry of invoice.entries">-->
+
+<!--  </div>-->
+
+</div>
+
+<br>
+<br>
+<button (click)="list()" class="btn btn-primary">Back to Invoices List</button><br>
