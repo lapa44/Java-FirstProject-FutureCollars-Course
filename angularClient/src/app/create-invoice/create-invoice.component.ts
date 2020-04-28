@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InvoiceService } from '../invoice.service';
 import { Invoice } from '../invoice';
 import { Router } from '@angular/router';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-create-invoice',
@@ -11,52 +11,78 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 })
 export class CreateInvoiceComponent implements OnInit {
 
-  invoice: Invoice = new Invoice();
+  constructor(private invoiceService: InvoiceService, private router: Router, private fb: FormBuilder) {}
+
+  invoiceForm = this.fb.group({
+                      invoiceNumber: [''],
+                      date: [''],
+      buyer: this.fb.group({
+                      taxIdentificationNumber: [''],
+                      address: [''],
+                      name: ['']
+      }),
+      seller: this.fb.group({
+                      taxIdentificationNumber: [''],
+                      address: [''],
+                      name: ['']
+      }),
+      entries: this.fb.array([
+                  this.fb.group({
+                      description: [''],
+                      unit: [''],
+                      quantity: [''],
+                      unitPrice: [''],
+                      vatRate: ['']
+                  })
+      ])
+  });
+
   submitted = false;
   vatRates: String[] = [
     'VAT_0', 'VAT_5', 'VAT_8', 'VAT_23'
   ];
-
-  constructor(private invoiceService: InvoiceService, private router: Router) {
-    //this.invoice.entries = new FormArray([]);
-    this.invoice.entries.push(new FormGroup({
-      description: new FormControl(''),
-      unit: new FormControl(''),
-      quantity: new FormControl(''),
-      unitPrice: new FormControl(''),
-      vatRate: new FormControl('')
-    }));
-  }
 
   ngOnInit(): void {
   }
 
   newInvoice(): void {
     this.submitted = false;
-    this.invoice = new Invoice();
   }
 
-  save() {
-    this.invoiceService.createInvoice(this.invoice)
+  save(invoice: Invoice) {
+    this.invoiceService.createInvoice(invoice)
       .subscribe(data => console.log(data), error => console.log(error));
-    this.invoice = new Invoice();
     this.goToList();
   }
 
   onSubmit() {
+    let invoice = new Invoice();
+    invoice = this.invoiceForm.value;
     this.submitted = true;
-    this.save();
+    this.save(invoice);
   }
 
   goToList() {
+    console.log('Going to invoices');
     this.router.navigate(['/invoices']);
   }
 
+  get entries() {
+      return this.invoiceForm.get('entries') as FormArray;
+    }
+
   addEntry() {
-    //this.invoice.entries.push(new FormControl(''));
+    console.log('trying to add entry');
+    this.entries.push( this.fb.group({
+                          description: [''],
+                          unit: [''],
+                          quantity: [''],
+                          unitPrice: [''],
+                          vatRate: ['']
+    }));
   }
 
   removeEntry(index: number) {
-    this.invoice.entries.removeAt(index);
+    this.entries.removeAt(index);
   }
 }

@@ -1,91 +1,91 @@
 <h3>Create Invoice</h3>
-<div [hidden]="submitted" style="width: 400px;">
-  <form (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="invoiceNumber">Invoice Number</label>
-      <input type="text" class="form-control" id="invoiceNumber" placeholder="Invoice number"
-             required [(ngModel)]="invoice.invoiceNumber" name="invoiceNumber">
-    </div>
-    <div class="form-group">
-      <label for="date">Date</label>
-      <input type="date" class="form-control" id="date" placeholder="Date"
-             required [(ngModel)]="invoice.date" name="date">
-    </div>
 
-<!--    BUYER-->
-    <div class="form-group">
-      <label for="invoiceNumber">Buyer Tax Identification Number</label>
-      <input type="text" class="form-control" id="buyerTax" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-             minlength="36" maxlength="36" required [(ngModel)]="invoice.buyer.taxIdentificationNumber" name="buyerTax">
-    </div>
-    <div class="form-group">
-      <label for="invoiceNumber">Buyer Address</label>
-      <input type="text" class="form-control" id="buyerAddress" placeholder="Buyer's address"
-             required [(ngModel)]="invoice.buyer.address" name="buyerAddress">
-    </div>
-    <div class="form-group">
-      <label for="invoiceNumber">Buyer Name</label>
-      <input type="text" class="form-control" id="buyerName" placeholder="Buyer's name"
-             required [(ngModel)]="invoice.buyer.name" name="buyerName">
-    </div>
+<form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
 
-    <!--    SELLER-->
-    <div class="form-group">
-      <label for="invoiceNumber">Seller Tax Identification Number</label>
-      <input type="text" class="form-control" id="sellerTax" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-             minlength="36" maxlength="36" required [(ngModel)]="invoice.seller.taxIdentificationNumber" name="sellerTax">
-    </div>
-    <div class="form-group">
-      <label for="invoiceNumber">Seller Address</label>
-      <input type="text" class="form-control" id="sellerAddress" placeholder="Seller's address"
-             required [(ngModel)]="invoice.seller.address" name="sellerAddress">
-    </div>
-    <div class="form-group">
-      <label for="invoiceNumber">Seller Name</label>
-      <input type="text" class="form-control" id="sellerName" placeholder="Seller's name"
-             required [(ngModel)]="invoice.seller.name" name="sellerName">
-    </div>
+  <label>
+    Invoice Number: <br/>
+    <input type="text" placeholder="Invoice number" formControlName="invoiceNumber">
+  </label>
+  <label style="margin-left: 10px">
+    Date: <br/>
+    <input type="date" placeholder="Date" formControlName="date">
+  </label>
 
-    <!-- ENTRIES-->
-    <div *ngFor="let entry of invoice.entries; index as i">
-      <div class="form-group">
-        <label for="description">Description</label>
-        <input type="text" class="form-control" id="description" placeholder="Entry's description"
-               required [(ngModel)]="invoice.entries[i].description" name="description">
-      </div>
-      <div class="form-group">
-        <label for="unit">Unit</label>
-        <input type="text" class="form-control" id="unit" placeholder="Entry's unit"
-               required [(ngModel)]="invoice.entries[i].unit" name="unit">
-      </div>
-      <div class="form-group">
-        <label for="quantity">Quantity</label>
-        <input type="number" class="form-control" id="quantity" placeholder="Entry's quantity"
-               required [(ngModel)]="invoice.entries[i].quantity" name="quantity">
-      </div>
-      <div class="form-group">
-        <label for="unitPrice">Unit price</label>
-        <input type="number" class="form-control" id="unitPrice" placeholder="Entry's unitPrice"
-               required [(ngModel)]="invoice.entries[i].unitPrice" name="unitPrice">
-      </div>
-      <div class="form-group">
-        <label for="vatRate">Vat Rate</label>
-        <mat-form-field>
-          <mat-label>Vat Rate</mat-label>
-          <mat-select [(ngModel)]="invoice.entries[i].vatRate">
-            <mat-option *ngFor="let vat of vatRates" [value]="vat">
-              {{vat}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <input type="text" class="form-control" id="vatRate" placeholder="Entry's Vat Rate"
-               required [(ngModel)]="invoice.entries[i].vatRate" name="vatRate">
-      </div>
-      <button (click)="removeEntry(i)">X</button>
+  <div formGroupName="buyer">
+    <h5>Buyer</h5>
+    <label>
+      Tax Identification Number: <br/>
+      <input type="text" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+             formControlName="taxIdentificationNumber" minlength="36" maxlength="36">
+    </label>
+    <label style="margin-left: 10px">
+      Address: <br/>
+      <input type="text" placeholder="Buyer's address" formControlName="address">
+    </label>
+    <label style="margin-left: 10px">
+      Name: <br/>
+      <input type="text" placeholder="Buyer's name" formControlName="name">
+    </label>
+  </div>
+
+  <div formGroupName="seller">
+    <h5>Seller</h5>
+    <label>
+      Tax Identification Number: <br/>
+      <input type="text" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+             formControlName="taxIdentificationNumber" minlength="36" maxlength="36">
+    </label>
+    <label style="margin-left: 10px">
+      Address: <br/>
+      <input type="text" placeholder="Seller's address" formControlName="address">
+    </label>
+    <label style="margin-left: 10px">
+      Name: <br/>
+      <input type="text" placeholder="Seller's name" formControlName="name">
+    </label>
+  </div>
+
+  <div formArrayName="entries">
+    <h5>Entries</h5>
+
+    <div *ngFor="let entry of entries.controls; let i=index">
+
+      <ng-container [formGroup]="entry">
+        <label>
+          Description: <br/>
+          <input type="text" formControlName="description">
+        </label>
+        <label style="margin-left: 10px">
+          Unit: <br/>
+          <input type="text" formControlName="unit">
+        </label>
+        <label style="margin-left: 10px">
+          Quantity: <br/>
+          <input type="number" formControlName="quantity">
+        </label>
+        <label style="margin-left: 10px">
+          Unit price: <br/>
+          <input type="number" formControlName="unitPrice">
+        </label>
+        <label style="margin-left: 10px">
+          VatRate: <br/>
+          <mat-form-field>
+            <mat-label>Vat Rate</mat-label>
+            <mat-select formControlName="vatRate">
+              <mat-option *ngFor="let vat of vatRates" [value]="vat">
+                {{vat}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </label>
+        <label style="margin-left: 10px">
+          <button type="button" class="btn btn-danger" (click)="removeEntry(i)">Remove Entry</button>
+        </label>
+      </ng-container>
     </div>
-
-
-    <button (click)="addEntry()">+</button>
     <button type="submit" class="btn btn-success">Submit</button>
-  </form>
-</div>
+    <button type="button" class="btn btn-info" (click)="addEntry()" style="float: right">Add Entry</button>
+  </div>
+
+</form>
+
