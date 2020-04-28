@@ -8,7 +8,7 @@ export class Invoice {
 
     buyer: Company;
     seller: Company;
-    entries: InvoiceEntry[] = [];
+    entries: InvoiceEntry[] = new Array();
 
     constructor() {
       this.buyer = new Company();

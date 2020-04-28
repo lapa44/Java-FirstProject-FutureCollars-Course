@@ -46,10 +46,46 @@
              required [(ngModel)]="invoice.seller.name" name="sellerName">
     </div>
 
+    <!-- ENTRIES-->
+    <div *ngFor="let entry of invoice.entries; index as i">
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" id="description" placeholder="Entry's description"
+               required [(ngModel)]="invoice.entries[i].description" name="description">
+      </div>
+      <div class="form-group">
+        <label for="unit">Unit</label>
+        <input type="text" class="form-control" id="unit" placeholder="Entry's unit"
+               required [(ngModel)]="invoice.entries[i].unit" name="unit">
+      </div>
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input type="number" class="form-control" id="quantity" placeholder="Entry's quantity"
+               required [(ngModel)]="invoice.entries[i].quantity" name="quantity">
+      </div>
+      <div class="form-group">
+        <label for="unitPrice">Unit price</label>
+        <input type="number" class="form-control" id="unitPrice" placeholder="Entry's unitPrice"
+               required [(ngModel)]="invoice.entries[i].unitPrice" name="unitPrice">
+      </div>
+      <div class="form-group">
+        <label for="vatRate">Vat Rate</label>
+        <mat-form-field>
+          <mat-label>Vat Rate</mat-label>
+          <mat-select [(ngModel)]="invoice.entries[i].vatRate">
+            <mat-option *ngFor="let vat of vatRates" [value]="vat">
+              {{vat}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <input type="text" class="form-control" id="vatRate" placeholder="Entry's Vat Rate"
+               required [(ngModel)]="invoice.entries[i].vatRate" name="vatRate">
+      </div>
+      <button (click)="removeEntry(i)">X</button>
+    </div>
 
 
-
-
+    <button (click)="addEntry()">+</button>
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
 </div>
