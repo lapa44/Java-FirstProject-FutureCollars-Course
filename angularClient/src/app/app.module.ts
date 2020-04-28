@@ -8,6 +8,9 @@ import { AppComponent } from './app.component';
 import { CreateInvoiceComponent } from './create-invoice/create-invoice.component';
 import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { InvoiceListComponent } from './invoice-list/invoice-list.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
