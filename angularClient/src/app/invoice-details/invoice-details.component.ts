@@ -13,6 +13,7 @@ export class InvoiceDetailsComponent implements OnInit {
 
   id: string;
   invoice: Invoice;
+  displayedColumns: string[] = ['description', 'unit', 'quantity', 'unitPrice', 'price', 'vatValue', 'vatRate'];
 
   constructor(private route: ActivatedRoute,private router: Router,
                   private invoiceService: InvoiceService) { }
