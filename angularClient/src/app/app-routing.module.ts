@@ -10,7 +10,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'invoice', pathMatch: 'full'},
   { path: 'invoices', component: InvoiceListComponent},
   { path: 'add', component: CreateInvoiceComponent},
-  { path: 'details/:id', component: InvoiceDetailsComponent}
+  { path: 'details/:id', component: InvoiceDetailsComponent},
+  { path: 'edit/:id', component: CreateInvoiceComponent}
 ];
 
 @NgModule({

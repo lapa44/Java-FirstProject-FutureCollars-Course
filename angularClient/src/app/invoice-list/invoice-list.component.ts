@@ -53,10 +53,12 @@ export class InvoiceListComponent implements OnInit {
     this.invoiceService.getInvoicesAsZip().subscribe(response => {
     console.log(response);
       let  blob = new Blob([response], { type: 'application/zip'});
-      //var url = URL.createObjectURL(blob);
-      //window.open(url);
       saveAs(blob, "Invoices.zip");
     }), error => console.log(error),
     () => console.info('Invoices downloaded successfully.')
+  }
+
+  editInvoice(id: string) {
+    this.router.navigate(['/edit', id]);
   }
 }
