@@ -18,7 +18,8 @@
           <td>{{invoice.buyer.name}}</td>
           <td>{{invoice.seller.name}}</td>
           <td>
-            <button (click)="deleteInvoice(invoice.id)" class="btn btn-danger" >Delete</button>
+            <button (click)="editInvoice(invoice.id)" class="btn btn-success">Edit</button>
+            <button (click)="deleteInvoice(invoice.id)" class="btn btn-danger" style="margin-left: 10px">Delete</button>
             <button (click)="invoiceDetails(invoice.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
             <button (click)="downloadAsPdf(invoice.id)" class="btn btn-info" style="margin-left: 10px">PDF</button>
           </td>
@@ -26,7 +27,7 @@
       <tr>
         <td></td><td></td><td></td>
         <td>
-          <button (click)="downloadAsZip()" class="btn btn-info" > Download all invoices as ZIP</button>
+          <button (click)="downloadAsZip()" class="btn btn-info"> Download all invoices as ZIP</button>
         </td>
       </tr>
       </tbody>

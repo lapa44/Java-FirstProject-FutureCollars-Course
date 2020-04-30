@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { InvoiceService } from '../invoice.service';
 import { Invoice } from '../invoice';
-import { Router } from '@angular/router';
+import { InvoiceEntry } from '../invoiceEntry';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormArray, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -11,7 +12,8 @@ import { FormArray, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 })
 export class CreateInvoiceComponent implements OnInit {
 
-  constructor(private invoiceService: InvoiceService, private router: Router, private fb: FormBuilder) {}
+  constructor(private invoiceService: InvoiceService, private router: Router, private fb: FormBuilder,
+              private _route: ActivatedRoute) {}
 
   invoiceForm = this.fb.group({
                       invoiceNumber: [''],
@@ -37,12 +39,53 @@ export class CreateInvoiceComponent implements OnInit {
       ])
   });
 
+  id = null;
   submitted = false;
   vatRates: String[] = [
     'VAT_0', 'VAT_5', 'VAT_8', 'VAT_23'
   ];
 
   ngOnInit(): void {
+     this._route.paramMap.subscribe(parameterMap => {
+        this.id = parameterMap.get('id');
+        if (this.id != null) {
+          this.patchInvoiceForm(this.id);
+        }
+     });
+  }
+
+  private patchInvoiceForm(id: string) {
+      this.invoiceService.getInvoice(id).subscribe(invoice => {
+        this.invoiceForm.patchValue({
+                  invoiceNumber: invoice.invoiceNumber,
+                  date: invoice.date,
+                  buyer: {
+                    taxIdentificationNumber: invoice.buyer.taxIdentificationNumber,
+                    address: invoice.buyer.address,
+                    name: invoice.buyer.name
+                  },
+                  seller: {
+                    taxIdentificationNumber: invoice.seller.taxIdentificationNumber,
+                    address: invoice.seller.address,
+                    name: invoice.seller.name
+                  }
+              });
+        this.patchEntries(invoice.entries);
+      })
+  }
+
+  private patchEntries(entries: InvoiceEntry[]) {
+      this.entries.clear();
+      for (let i = 0; i < entries.length; i++) {
+        this.entries.push(
+          this.fb.group({
+              description: entries[i].description,
+              unit: entries[i].unit,
+              quantity: entries[i].quantity,
+              unitPrice: entries[i].unitPrice,
+              vatRate: entries[i].vatRate
+          }));
+      }
   }
 
   newInvoice(): void {
@@ -58,6 +101,7 @@ export class CreateInvoiceComponent implements OnInit {
   onSubmit() {
     let invoice = new Invoice();
     invoice = this.invoiceForm.value;
+    invoice.id = this.id;
     this.submitted = true;
     this.save(invoice);
   }
