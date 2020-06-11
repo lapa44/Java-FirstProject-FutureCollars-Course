@@ -36,8 +36,29 @@ This API allows to generate and manage invoices.
 * Saving all invoices as PDF's in ZIP.
 * Sending mail to admin, including every change in database.
 
+### Setup
+
+To run tests on your local machine you can run them directly from your IDE, or type in terminal:
+
+``` mvn clean test ```
+
+or second way which will also check checkstyle rules:
+
+```mvn clean verify```
+
+Now if you want to run application, you can use your IDE again to execute `main` method in the `com.futurecollars.accounting.Application` class.
+The other method is to type in terminal:
+
+```mvn clean spring-boot:run```
+
+And the last thing to finish setup, while in terminal go to directory `angularClient` and type:
+
+```ng serve --open```
+
+It will launch basic angular front end, where you can try this app.
+
 ### Status
-* In progress
+* Currently finished, there are some things to add here, but I want to focus on other projects now.
 
 ### Contact
 If you have any questions or you want to offer us a job feel free to contact us on our github accounts. ;)
